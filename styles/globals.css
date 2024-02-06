@@ -1,33 +1,153 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --color-primary: #f63232;
+}
+* {
+  font-family: "Inter", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+::-webkit-scrollbar {
+  @apply w-2 bg-transparent; 
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-dark_secondary rounded;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-secondary;
+}
+
+
+::-webkit-scrollbar-track:hover {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #333;
+}
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-white text-black;
+}
+/* tables */
+table{
+  @apply rounded-md  border-dark_secondary overflow-hidden shadow-sm;
+}
+ tbody{
+  @apply divide-y divide-dark_secondary rounded-md;
+}
+ thead{
+  @apply bg-dark_secondary/50;
+}
+ tr{
+  @apply bg-dark_secondary/30;
+}
+ th,td{
+  @apply p-3;
+}
+/* buttons */
+
+button {
+  @apply relative overflow-hidden rounded-lg font-medium text-sm py-1 px-2 md:py-1.5 md:px-3 flex justify-center items-center active:scale-95 transition-all tracking-tight 
+   disabled:hover:bg-gray-300   disabled:active:scale-100
+   disabled:bg-white/10 disabled:text-gray-300 disabled:border-none
+   disabled:hover:bg-white/10
+   ;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.btn-sm {
+  @apply text-sm;
+}
+
+.btn-lg {
+  @apply text-lg;
+}
+/* filled */
+.btn-primary {
+  @apply bg-primary border border-primary active:bg-primary/75 hover:bg-primary/75 text-white;
+}
+.btn-secondary {
+  @apply bg-secondary border border-secondary active:bg-secondary/75 hover:bg-secondary/75 text-black;
+}
+.btn-general {
+  @apply  bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
+}
+
+/* outlined */
+.btn-text {
+  @apply bg-transparent;
+}
+.btn-text-primary {
+  @apply btn-text active:bg-primary/75 hover:bg-primary hover:text-white text-primary;
+}
+.btn-text-secondary {
+  @apply btn-text active:bg-secondary/75 hover:bg-secondary hover:text-general text-secondary;
+}
+.btn-text-general {
+  @apply btn-text active:bg-general/75 hover:bg-general hover:text-white text-general;
+}
+
+/* outlined */
+.btn-outlined {
+  @apply bg-transparent border;
+}
+.btn-outlined-primary {
+  @apply btn-outlined border-primary active:bg-primary/75 hover:bg-primary active:text-white hover:text-white text-primary;
+}
+.btn-outlined-secondary {
+  @apply btn-outlined border-secondary active:bg-secondary/75 hover:bg-secondary active:text-general hover:text-general text-general;
+}
+.btn-outlined-general {
+  @apply btn-outlined border-general active:bg-general/75 hover:bg-general active:text-white hover:text-white text-general;
+}
+
+/* Icon */
+
+.btn-icon {
+  @apply rounded-xl text-white p-2 bg-white/10  hover:bg-white/20 active:bg-white/30;
+}
+
+/* typography */
+h1 {
+  @apply text-3xl tracking-tight;
+}
+h2 {
+  @apply text-2xl tracking-tight;
+}
+
+h3 {
+  @apply text-xl tracking-tight;
+}
+
+p {
+  @apply text-base tracking-tight;
+}
+
+span {
+  @apply text-sm tracking-tight;
+}
+
+input,
+textarea,
+select {
+  @apply bg-dark_secondary/50 outline-none p-3 rounded-lg border border-white/20   focus:border-white transition-all font-normal  text-sm;
+}
+input::-webkit-color-swatch {
+  border: none;
+}
+
+/* toast */
+
+.Toastify__toast {
+  @apply text-sm p-1 capitalize;
+}
+
+.mkdwn p{
+  @apply text-secondary;
+}
+.mkdwn a{
+  @apply underline text-blue-400;
 }
