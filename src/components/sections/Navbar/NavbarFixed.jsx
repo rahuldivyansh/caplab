@@ -8,7 +8,7 @@ const NavbarFixed = () => {
         <Layout.Row className={styles.main}>
             <Layout.Container className={styles.main_container}>
                 <Layout.Row className={styles.navbar_row}>
-                    <Navbar />
+                    <Navbar withLogo/>
                 </Layout.Row>
             </Layout.Container>
         </Layout.Row>

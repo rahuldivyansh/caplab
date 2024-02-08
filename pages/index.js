@@ -7,7 +7,7 @@ import Typography from "@/src/components/ui/Typography";
 export default function Home() {
   return (
     <Layout.Col>
-      <NavbarFixed />
+      <NavbarFixed withLogo={true}/>
       <Layout.Container className="max-w-4xl">
         <Layout.Col className="py-24 text-center gap-4 justify-center items-center">
           <Typography.Title className="text-center font-black lg:text-5xl">
