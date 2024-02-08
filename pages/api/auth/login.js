@@ -21,12 +21,7 @@ export default async function handler(req, res) {
     cookies.set("refresh_token", data.session.refresh_token, {
       expires: timestamp,
     });
-    const getUserData = await supabaseClient
-      .from("users")
-      .select("*")
-      .eq("id", req.body.email);
-    if (getUserData.error) throw new Error("Error getting user data");
-    return res.status(200).json(getUserData.data[0]);
+    return res.status(200).json(data.user);
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);

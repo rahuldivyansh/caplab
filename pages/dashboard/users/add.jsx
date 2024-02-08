@@ -1,0 +1,51 @@
+import DashboardLayout from '@/src/components/layouts/Dashboard'
+import Button from '@/src/components/ui/Button'
+import Form from '@/src/components/ui/Form'
+import Input from '@/src/components/ui/Form/Input'
+import Layout from '@/src/components/ui/Layout'
+import Typography from '@/src/components/ui/Typography'
+import useFetch from '@/src/hooks/general/useFetch'
+import React from 'react'
+import { toast } from 'react-toastify'
+
+const ROLES = [
+    { role: "admin", value: 0 },
+    { role: "student", value: 1 },
+    { role: "teacher", value: 2 }
+]
+
+const AddUserPage = () => {
+    const addUser = useFetch({ method: "POST", url: "/api/auth/register" })
+    const onSubmit = async (body) => {
+        try {
+            const response = await addUser.dispatch(body)
+            const data = await response.data;
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+            toast.error("error adding user")
+        }
+    }
+    return (
+        <DashboardLayout>
+            <Layout.Col className="p-2 gap-2">
+                <Typography.Title>Add User</Typography.Title>
+                <Form onSubmit={onSubmit}>
+                    <Layout.Col className="gap-2 sm:items-start">
+                        <Input type="text" placeholder="Enter name" name="name" />
+                        <Input type="email" placeholder="Enter email" name="email" />
+                        <select name="role" className="input capitalize">
+                            <option value={-1}>Select Role</option>
+                            {ROLES.map((role, index) => (
+                                <option key={`form_user_role_${index}`} value={role.value} className='capitalize'>{role.role}</option>
+                            ))}
+                        </select>
+                        <Button className="btn-primary" loading={addUser.loading}>Submit</Button>
+                    </Layout.Col>
+                </Form>
+            </Layout.Col>
+        </DashboardLayout>
+    )
+}
+
+export default AddUserPage

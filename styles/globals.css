@@ -107,7 +107,7 @@ button {
 /* Icon */
 
 .btn-icon {
-  @apply rounded-xl text-white p-2 bg-white/10  hover:bg-white/20 active:bg-white/30;
+  @apply rounded-xl text-general p-2   hover:bg-secondary/20 active:bg-secondary/30;
 }
 
 /* typography */
@@ -133,7 +133,7 @@ span {
 input,
 textarea,
 select {
-  @apply bg-dark_secondary/50 outline-none p-3 rounded-lg border border-white/20   focus:border-white transition-all font-normal  text-sm;
+  @apply bg-secondary/50 outline-none p-3 rounded-lg border border-black/15   focus:border-black/30 transition-all font-normal  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;

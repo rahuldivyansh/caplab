@@ -18,7 +18,7 @@ export default function withAuthApi(handler) {
       if (userError) {
         throw userError;
       }
-      req.user = userData.user.email;
+      req.user = userData.user.id;
       return handler(req, res);
     } catch (error) {
       console.log(error);

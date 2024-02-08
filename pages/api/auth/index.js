@@ -16,12 +16,7 @@ const handler = async (req, res) => {
     }
     const session = await supabaseClient.auth.getSession();
     if (session.error) throw new Error("Error getting session");
-    const { data: user, error: userDataError } = await supabaseClient
-      .from("users")
-      .select("*")
-      .eq("id", session.data.session.user.email);
-    if (userDataError) throw new Error("Error getting user data");
-    return res.status(200).json(user[0]);
+    return res.status(200).json(session.data.session.user);
   } catch (error) {
     console.log(error);
     if (error instanceof Error) {
