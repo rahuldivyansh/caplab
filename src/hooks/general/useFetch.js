@@ -102,12 +102,17 @@ const useFetch = (props) => {
       });
     });
   };
-
-  //   if (props.method === "GET") dispatch();
   useEffect(() => {
-    if (props.method === "GET") getData();
+    console.log("useEffect", props);
+    if (props.method === "GET" && props.get_autoFetch) getData();
   }, []);
   return { data, setData, error, loading, dispatch };
 };
 
 export default useFetch;
+
+useFetch.defaultProps = {
+  get_autoFetch: true,
+  method: "GET",
+  url: "/api/hello",
+};

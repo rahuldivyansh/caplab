@@ -13,6 +13,22 @@ export default async function handler(req, res) {
       access_token: data.session.access_token,
       refresh_token: data.session.refresh_token,
     });
+    const role = await supabaseClient
+      .from("roles")
+      .select("role")
+      .eq("uid", data.user.id)
+      .single();
+    if (role.error) throw role.error;
+    const userData = await supabaseClient
+      .from("users")
+      .select("name")
+      .eq("uid", data.user.id)
+      .single();
+    if (userData.error) throw userData.error;
+    const app_meta = {
+      role: role.data.role,
+      name: userData.data.name,
+    };
     const cookies = new Cookies(req, res);
     const timestamp = new Date(moment.unix(data.session.expires_at).toString());
     cookies.set("access_token", data.session.access_token, {
@@ -21,7 +37,8 @@ export default async function handler(req, res) {
     cookies.set("refresh_token", data.session.refresh_token, {
       expires: timestamp,
     });
-    return res.status(200).json(data.user);
+
+    return res.status(200).json({ ...data.user, app_meta });
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);

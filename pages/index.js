@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import Layout from "@/src/components/ui/Layout";
 import NavbarFixed from "@/src/components/sections/Navbar/NavbarFixed";
 import Typography from "@/src/components/ui/Typography";

@@ -9,7 +9,11 @@ const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const init = useFetch({ method: "GET", url: "/api/auth" });
+  const init = useFetch({
+    method: "GET",
+    url: "/api/auth",
+    get_autoFetch: true,
+  });
 
   const loginWithEmailAndPassword = async (payload) => {
     try {
@@ -19,7 +23,7 @@ const useLogin = () => {
       if (res.status === 200) {
         setData(responseData);
         toast("successfully logged in", { type: "success" });
-        router.push("/");
+        router.push("/dashboard");
       } else {
         throw responseData;
       }

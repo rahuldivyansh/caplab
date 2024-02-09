@@ -16,6 +16,9 @@ const Navbar = (props) => {
                     <Link href="/register"><Button className="btn-icon">Register</Button></Link>
                     <Link href="/login"><Button className="btn-primary">Login</Button></Link>
                 </>}
+                {
+                    auth.data && <Link href="/dashboard"><Button className="btn-primary">Dashboard</Button></Link>
+                }
                 <AccountAvatar />
             </Layout.Row>
         </>
