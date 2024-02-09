@@ -1,6 +1,7 @@
 import React from 'react'
 import '@/styles/globals.css'
 import "nprogress/nprogress.css";
+import 'react-data-grid/lib/styles.css';
 import "react-toastify/dist/ReactToastify.css";
 import { Router } from "next/router"
 import nProgress from 'nprogress';

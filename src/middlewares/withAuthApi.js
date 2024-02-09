@@ -18,7 +18,13 @@ export default function withAuthApi(handler) {
       if (userError) {
         throw userError;
       }
+      const role = await supabaseClient
+        .from("roles")
+        .select("role")
+        .eq("uid", userData.user.id)
+        .single();
       req.user = userData.user.id;
+      req.role = await role.data.role;
       return handler(req, res);
     } catch (error) {
       console.log(error);

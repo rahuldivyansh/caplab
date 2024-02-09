@@ -5,6 +5,7 @@ import Input from '@/src/components/ui/Form/Input'
 import Layout from '@/src/components/ui/Layout'
 import Typography from '@/src/components/ui/Typography'
 import useFetch from '@/src/hooks/general/useFetch'
+import withAuthPage from '@/src/middlewares/withAuthPage'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -49,3 +50,18 @@ const AddUserPage = () => {
 }
 
 export default AddUserPage
+
+
+export const getServerSideProps = withAuthPage(async (ctx) => {
+    const { req } = ctx;
+    if (req.role !== ROLES.ADMIN) {
+        return {
+            notFound: true
+        }
+    }
+    return {
+        props: {
+            info: "can be accessed by admin only"
+        }, // will be passed to the page component as props
+    }
+})

@@ -23,7 +23,20 @@ const withAuthPage = (handler) => {
           permanent: false,
         },
       };
+    const { data: roleData, error: roleError } = await supabaseClient
+      .from("roles")
+      .select("role")
+      .eq("uid", data.user.id)
+      .single();
+    if (roleError)
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
     req.user = data.user.email;
+    req.role = roleData.role;
     return handler(ctx);
   };
 };

@@ -15,7 +15,7 @@ const AccountAvatar = () => {
         <>
             <Menu className={styles.main} as="div">
                 <Menu.Button>
-                    <Avatar seed={auth.data?.name} />
+                    <Avatar seed={auth.data?.app_meta?.name} />
                 </Menu.Button>
                 <Menu.Items className={styles.main_menu_items}>
                     <AccountAvatarWithName />
