@@ -1,3 +1,5 @@
+import React from 'react'
+import {ROLES as IMPORTED_ROLES} from '@/src/constants/roles'
 import DashboardLayout from '@/src/components/layouts/Dashboard'
 import Button from '@/src/components/ui/Button'
 import Form from '@/src/components/ui/Form'
@@ -6,7 +8,6 @@ import Layout from '@/src/components/ui/Layout'
 import Typography from '@/src/components/ui/Typography'
 import useFetch from '@/src/hooks/general/useFetch'
 import withAuthPage from '@/src/middlewares/withAuthPage'
-import React from 'react'
 import { toast } from 'react-toastify'
 
 const ROLES = [
@@ -54,7 +55,8 @@ export default AddUserPage
 
 export const getServerSideProps = withAuthPage(async (ctx) => {
     const { req } = ctx;
-    if (req.role !== ROLES.ADMIN) {
+    console.log(req.role, IMPORTED_ROLES.ADMIN);
+    if (req.role !== IMPORTED_ROLES.ADMIN) {
         return {
             notFound: true
         }
