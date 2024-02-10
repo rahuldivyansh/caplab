@@ -20,10 +20,10 @@ const LoginFormBlock = () => {
                 <Layout.Col className={styles.form_col_layout}>
                     <Form.Input type="email" placeholder="Enter email" name="email" />
                     <Form.Input type="password" placeholder="Enter password" name="password" />
+                    <Link href="/forgot-password" className='text-right'><Typography.Caption className="text-primary">Forgot password?</Typography.Caption></Link>
                     <Button className="btn-primary font-bold" loading={auth.loading} disabled={auth.loading}>Login</Button>
                 </Layout.Col>
             </Form>
-            <Link href="/register"><Button className="btn-secondary w-full mt-4">Register</Button></Link>
         </Layout.Container>
     )
 }

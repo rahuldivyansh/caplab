@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '@/src/components/sections/Navbar';
+import Navbar from '@/src/components/sections/Dashboard/Navbar';
 import Layout from '@/src/components/ui/Layout';
 import Typography from '@/src/components/ui/Typography';
 import Sidebar from './Sidebar';

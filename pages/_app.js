@@ -1,7 +1,8 @@
 import React from 'react'
+import "ag-grid-community/styles/ag-grid.css"; 
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import '@/styles/globals.css'
 import "nprogress/nprogress.css";
-import 'react-data-grid/lib/styles.css';
 import "react-toastify/dist/ReactToastify.css";
 import { Router } from "next/router"
 import nProgress from 'nprogress';
@@ -16,6 +17,6 @@ export default function App({ Component, pageProps }) {
 
   return <AuthProvider>
     <Component {...pageProps} />
-    <ToastContainer theme='dark' position='bottom-right'/>
+    <ToastContainer position='bottom-right'/>
   </AuthProvider>
 }
