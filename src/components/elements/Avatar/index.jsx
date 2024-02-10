@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 
 const Avatar = (props) => {
-    const avatar = createAvatar(funEmoji, {
+    const avatar = createAvatar(initials, {
         backgroundType: ["gradientLinear", "solid"],
         seed: props.seed,
         size: 96,

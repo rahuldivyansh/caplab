@@ -17,11 +17,11 @@ const Modal = (props) => {
                 leaveFrom="opacity-100 sm:scale-100"
                 leaveTo="opacity-0 sm:scale-0"
             >
-                <Dialog.Panel className="bg-general border rounded-t-xl sm:rounded-xl overflow-hidden border-dark_secondary">
-                    <Layout.Row className="items-center bg-dark_secondary/50 justify-between border-b border-dark_secondary py-1 px-2">
-                        <Typography.Body className="font-semibold text-white/80">{props.title}</Typography.Body>
+                <Dialog.Panel className="bg-white text-black border rounded-t-xl sm:rounded-xl overflow-hidden border-secondary">
+                    <Layout.Row className="items-center bg-white justify-between border-b border-secondary py-1 px-2">
+                        <Typography.Body className="font-semibold text-black">{props.title}</Typography.Body>
                         <Button onClick={props.onClose} className="btn-icon">
-                            <CloseIcon className="text-white w-5 h-5" />
+                            <CloseIcon className="text-black w-5 h-5" />
                         </Button>
                     </Layout.Row>
                     {props.children}

@@ -7,7 +7,6 @@ const DashboardPage = () => {
     return (
         <DashboardLayout>
             <Typography.Heading>Dashboard</Typography.Heading>
-
         </DashboardLayout>
     )
 }

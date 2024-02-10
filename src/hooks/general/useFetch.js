@@ -103,7 +103,6 @@ const useFetch = (props) => {
     });
   };
   useEffect(() => {
-    console.log("useEffect", props);
     if (props.method === "GET" && props.get_autoFetch) getData();
   }, []);
   return { data, setData, error, loading, dispatch };

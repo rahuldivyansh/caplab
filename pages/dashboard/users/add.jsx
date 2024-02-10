@@ -1,5 +1,5 @@
 import React from 'react'
-import {ROLES as IMPORTED_ROLES} from '@/src/constants/roles'
+import { ROLES as IMPORTED_ROLES } from '@/src/constants/roles'
 import DashboardLayout from '@/src/components/layouts/Dashboard'
 import Button from '@/src/components/ui/Button'
 import Form from '@/src/components/ui/Form'
@@ -9,6 +9,7 @@ import Typography from '@/src/components/ui/Typography'
 import useFetch from '@/src/hooks/general/useFetch'
 import withAuthPage from '@/src/middlewares/withAuthPage'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 const ROLES = [
     { role: "admin", value: 0 },
@@ -18,11 +19,16 @@ const ROLES = [
 
 const AddUserPage = () => {
     const addUser = useFetch({ method: "POST", url: "/api/auth/register" })
+    const router = useRouter()
     const onSubmit = async (body) => {
+        if (body.role === '-1') return toast.error("Select role")
         try {
             const response = await addUser.dispatch(body)
             const data = await response.data;
-            console.log(data)
+            if (data) {
+                toast.success("User added")
+                router.push("/dashboard/users")
+            }
         } catch (error) {
             console.log(error)
             toast.error("error adding user")
@@ -55,7 +61,6 @@ export default AddUserPage
 
 export const getServerSideProps = withAuthPage(async (ctx) => {
     const { req } = ctx;
-    console.log(req.role, IMPORTED_ROLES.ADMIN);
     if (req.role !== IMPORTED_ROLES.ADMIN) {
         return {
             notFound: true

@@ -43,8 +43,8 @@ const Sidebar = () => {
         dashboard.setSidebarCollapsed(prev => !prev);
     }
     return (
-        <Layout.Col className={`border-r h-full transition-all ease-in-out ${dashboard.sidebarCollapsed ? "w-1/2 lg:w-1/4" : "w-auto"}`}>
-            <Layout.Row className="p-2 justify-between items-center border-b">
+        <Layout.Col className={`border-r p-3 gap-4 h-full transition-all ease-in-out ${dashboard.sidebarCollapsed ? "w-1/2 lg:w-1/4" : "w-auto"}`}>
+            <Layout.Row className="justify-between items-center">
                 {dashboard.sidebarCollapsed && <Logo />}
                 <Button onClick={toggleSidebar} className="btn-icon"><MenuIcon width={24} height={24} /></Button>
             </Layout.Row>
