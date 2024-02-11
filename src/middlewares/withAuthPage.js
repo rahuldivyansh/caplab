@@ -35,8 +35,10 @@ const withAuthPage = (handler) => {
           permanent: false,
         },
       };
-    req.user = data.user.email;
+    req.user = data.user.id;
     req.role = roleData.role;
+    console.log("req.role", req.role);
+    console.log("req.user", req.user);  
     return handler(ctx);
   };
 };

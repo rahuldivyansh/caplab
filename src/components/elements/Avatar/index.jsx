@@ -5,7 +5,7 @@ import React from 'react'
 
 const Avatar = (props) => {
     const avatar = createAvatar(initials, {
-        backgroundType: ["gradientLinear", "solid"],
+        backgroundType: ["solid"],
         seed: props.seed,
         size: 96,
     })
