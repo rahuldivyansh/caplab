@@ -63,15 +63,12 @@ export const getServerSideProps = withAuthPage(async (ctx) => {
     const ALLOWED_ROLES = [ROLES.TEACHER];
     if (role === undefined || !ALLOWED_ROLES.includes(role)) {
         return {
-            redirect: {
-                destination: '/dashboard',
-                permanent: false,
-            },
+            notFound: true
         }
     }
     return {
         props: {
-            info: "can be accessed by authenticated users only"
+            info: "can be accessed by teachers only"
         },
     }
 })

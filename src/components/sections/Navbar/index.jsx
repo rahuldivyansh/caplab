@@ -13,7 +13,6 @@ const Navbar = (props) => {
             {props.withLogo && <Logo />}
             <Layout.Row className={styles.navbar_row}>
                 {!auth.data && <>
-                    <Link href="/register"><Button className="btn-icon">Register</Button></Link>
                     <Link href="/login"><Button className="btn-primary">Login</Button></Link>
                 </>}
                 {
