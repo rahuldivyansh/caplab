@@ -49,9 +49,17 @@ const GroupsPage = () => {
 export default GroupsPage
 
 export const getServerSideProps = withAuthPage(async (ctx) => {
+    const { req } = ctx;
+    const { role } = req
+    const ALLOWED_ROLES = [ROLES.TEACHER,ROLES.STUDENT];
+    if (role === undefined || !ALLOWED_ROLES.includes(role)) {
+        return {
+            notFound: true
+        }
+    }
     return {
         props: {
-            info: "can be accessed by authenticated users only"
+            info: "can be accessed by students and teachers only"
         },
     }
 })
