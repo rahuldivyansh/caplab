@@ -37,10 +37,6 @@ const DashboardPage = () => {
 export default DashboardPage;
 
 export const getServerSideProps = withAuthPage(async (ctx) => {
-    ctx.res.setHeader(
-        'Cache-Control',
-        'private, s-maxage=60, stale-while-revalidate=59'
-    )
     return {
         props: {
             info: "can be accessed by authenticated users only"
