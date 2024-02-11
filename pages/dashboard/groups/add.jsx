@@ -20,36 +20,35 @@ const AddGroupPage = () => {
             session: parseInt(body.session)
         }
         try {
-            await addGroup.dispatch(payload)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    useEffect(() => {
-        if (addGroup.error) {
-            toast.error("error adding group")
-        }
-        if (addGroup.data) {
+            const response = await addGroup.dispatch(payload);
+            if (response.error) {
+                throw new Error(response.error)
+            }
             toast.success("Group added")
             router.push("/dashboard/groups")
+        } catch (error) {
+            toast.error("error adding group")
         }
-    }, [addGroup.error, addGroup.data, addGroup.loading])
+    }
+
     return (
         <DashboardLayout>
-            <Layout.Col className="p-2 gap-4">
+            <Layout.Col className="p-4 md:p-12 lg:p-16 gap-4">
                 <Layout.Col className="md:flex-row justify-between">
                     <Typography.Subtitle className="font-semibold">
                         Add Group
                     </Typography.Subtitle>
                 </Layout.Col>
-                <Form onSubmit={handleSubmit}>
-                    <Layout.Col className="gap-2 md:items-start">
-                        <Typography.Heading>General Info</Typography.Heading>
-                        <Input type="number" name="num" placeholder="Enter group number..." min={1} required />
-                        <Input type="number" name="session" placeholder="Enter session..." min={2000} max={9999} required />
-                        <Button className="btn-primary" loading={addGroup.loading}>Submit</Button>
-                    </Layout.Col>
-                </Form>
+                <Layout.Card className="max-w-md shadow-md">
+                    <Form onSubmit={handleSubmit}>
+                        <Layout.Col className="gap-2 items-start">
+                            <Typography.Heading>General Info</Typography.Heading>
+                            <Input type="number" name="num" placeholder="Enter group number..." className="w-full" min={1} required />
+                            <Input type="number" name="session" placeholder="Enter session..." className="w-full" min={2000} max={9999} required />
+                            <Button className="btn-primary" loading={addGroup.loading}>Submit</Button>
+                        </Layout.Col>
+                    </Form>
+                </Layout.Card>
             </Layout.Col>
         </DashboardLayout>
     )

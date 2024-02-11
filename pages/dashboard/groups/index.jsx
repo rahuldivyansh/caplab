@@ -8,7 +8,7 @@ import { useAuth } from '@/src/providers/Auth'
 import withAuthPage from '@/src/middlewares/withAuthPage'
 import Link from 'next/link'
 import useFetch from '@/src/hooks/general/useFetch'
-import { RotateLoader } from 'react-spinners'
+import { FadeLoader, RotateLoader, ScaleLoader } from 'react-spinners'
 
 const ALLOWED_ROLES = [ROLES.TEACHER];
 
@@ -18,7 +18,7 @@ const GroupsPage = () => {
     const role = auth.data?.app_meta?.role
     return (
         <DashboardLayout>
-            <Layout.Col className="p-2 gap-4">
+            <Layout.Col className="p-4 md:p-12 lg:p-16 gap-4">
                 <Layout.Row className="justify-between flex-grow">
                     <Typography.Subtitle className="font-semibold">
                         Groups
@@ -30,13 +30,15 @@ const GroupsPage = () => {
                     }
                 </Layout.Row>
                 <Layout.Grid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {groups.loading && <>loading...</>}
+                    {groups.loading && <Layout.Col className="col-span-4 items-center justify-center h-[500px]"><ScaleLoader /></Layout.Col>}
                     {groups.error && "error loading groups"}
                     {groups.data !== null && groups.data.map((group, index) => (
-                        <Layout.Card key={`group-${index}`}>
-                            <Typography.Heading className="font-semibold">Group-{group.num}</Typography.Heading>
-                            <Typography>Session-{group.session}</Typography>
-                        </Layout.Card>
+                        <Link href={`/dashboard/groups/${group.id}`} key={`group-${index}`}>
+                            <Layout.Card>
+                                <Typography.Heading className="font-semibold">Group-{group.num}</Typography.Heading>
+                                <Typography>Session-{group.session}</Typography>
+                            </Layout.Card>
+                        </Link>
                     ))}
                 </Layout.Grid>
             </Layout.Col>
