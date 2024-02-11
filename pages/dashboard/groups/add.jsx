@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 
 const AddGroupPage = () => {
     const router = useRouter();
-    const addGroup = useFetch({ method: "POST", url: "/api/groups" });
+    const addGroup = useFetch({ method: "POST", url: "/api/groups/add" });
     const handleSubmit = async (body) => {
         const payload = {
             num: parseInt(body.num),
