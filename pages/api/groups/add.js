@@ -4,7 +4,7 @@ import supabaseClient from "@/src/services/supabase";
 import { StatusCodes } from "http-status-codes";
 
 const handler = async (req, res) => {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res
       .status(StatusCodes.METHOD_NOT_ALLOWED)
       .json("method not allowed");
@@ -29,7 +29,7 @@ const handler = async (req, res) => {
         .json({ message: "group already exists" });
     const { data: groupsData, error: groupsError } = await supabaseClient
       .from("groups")
-      .insert({ ...req.body, owner: req.user });
+      .insert({ ...req.body, owner: req.user }).select("id, num, session").single();
     if (groupsError) throw groupsError;
     return res.status(StatusCodes.OK).json(groupsData);
   } catch (error) {

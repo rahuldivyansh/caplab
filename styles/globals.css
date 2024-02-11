@@ -133,7 +133,7 @@ span {
 input,
 textarea,
 select {
-  @apply bg-secondary/50 outline-none p-3 rounded-lg border border-black/15   focus:border-black/30 transition-all font-normal  text-sm;
+  @apply bg-secondary/20 outline-none p-3 rounded-md border border-black/15   focus:border-primary transition-all font-normal  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;

@@ -10,8 +10,8 @@ const DashboardLayout = (props) => {
         <DashboardLayoutProvider>
             <Layout.Row className="fixed inset-0 w-full">
                 <Sidebar />
-                <Layout.Col className="col-span-3 w-3/4 flex-1">
-                    <Layout.Row className="justify-end items-center border-b p-2">
+                <Layout.Col className="col-span-3 w-3/4 flex-1 overflow-auto">
+                    <Layout.Row className="justify-end items-center border-b p-2 sticky top-0 bg-white z-40">
                         <Navbar />
                     </Layout.Row>
                     <Layout.Col>
