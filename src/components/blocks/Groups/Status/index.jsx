@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const statusComponent = () => {
+const StatusComponent = () => {
   const router = useRouter();
   const { group_id } = router.query;
 
@@ -28,4 +28,4 @@ const statusComponent = () => {
   </>;
 };
 
-export default statusComponent;
+export default StatusComponent;
