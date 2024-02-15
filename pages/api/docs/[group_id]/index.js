@@ -1,4 +1,5 @@
 import { BUCKET_NAME } from "@/src/constants/storage";
+import withAuthApi from "@/src/middlewares/withAuthApi";
 import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
@@ -29,6 +30,7 @@ const DELETE = async (group_id) => {
 
 const handler = async (req, res) => {
   const { group_id } = req.query;
+  const {user,role} = req;
   try {
     if (req.method === "GET") {
       const docs = await GET(group_id);
@@ -40,7 +42,6 @@ const handler = async (req, res) => {
       const data = await DELETE(group_id);
       return res.status(200).json({ data });
     }
-
     return res
       .status(StatusCodes.METHOD_NOT_ALLOWED)
       .end(ReasonPhrases.METHOD_NOT_ALLOWED);
@@ -49,4 +50,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default withAuthApi(handler);
