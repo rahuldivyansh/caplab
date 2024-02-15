@@ -4,17 +4,8 @@ import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
-const GET = async (group_id) => {
-  try {
-    const PATH = `group_${group_id}`;
-    const { data: docsData, error: docsError } = await supabaseClient.storage
-      .from(BUCKET_NAME)
-      .list(PATH);
-    if (docsError) throw new CustomError("Error fetching docs", 500, docsError);
-    return docsData;
-  } catch (error) {
-    throw error;
-  }
+const GET = async (group_id, name) => {
+  return {};
 };
 
 const POST = async (group_id) => {
@@ -24,13 +15,21 @@ const POST = async (group_id) => {
 const PUT = async (group_id) => {
   return {};
 };
-const DELETE = async (group_id) => {
-  return {};
+const DELETE = async (group_id, name) => {
+  try {
+    const PATH = `group_${group_id}/${name}`;
+    const { data: docData, error: docError } = await supabaseClient.storage
+      .from(BUCKET_NAME)
+      .remove([PATH]);
+    if (docError) throw new CustomError("Error deleting doc", 500, docError);
+    return { message: "Doc deleted successfully" };
+  } catch (error) {
+    throw error;
+  }
 };
 
 const handler = async (req, res) => {
-  const { group_id } = req.query;
-  const { user, role } = req;
+  const { group_id, name } = req.query;
   try {
     if (req.method === "GET") {
       const docs = await GET(group_id);
@@ -39,8 +38,8 @@ const handler = async (req, res) => {
       const data = await PUT(group_id);
       return res.status(200).json({ data });
     } else if (req.method === "DELETE") {
-      const data = await DELETE(group_id);
-      return res.status(200).json({ data });
+      const data = await DELETE(group_id, name);
+      return res.status(StatusCodes.OK).json(data);
     }
     return res
       .status(StatusCodes.METHOD_NOT_ALLOWED)
