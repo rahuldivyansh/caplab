@@ -1,3 +1,4 @@
+import GroupDocsBlock from '@/src/components/blocks/Dashboard/Groups/docs';
 import DashboardLayout from '@/src/components/layouts/Dashboard';
 import Button from '@/src/components/ui/Button';
 import Layout from '@/src/components/ui/Layout';
@@ -10,6 +11,7 @@ import React, { Fragment } from 'react'
 const TAB_LABELS = ["status", "documents", "settings"];
 
 const GroupPage = (props) => {
+    const { id } = props;
     return (
         <DashboardLayout>
             <Layout.Col>
@@ -29,7 +31,7 @@ const GroupPage = (props) => {
                             <Typography>Status</Typography>
                         </Tab.Panel>
                         <Tab.Panel>
-                            <Typography>Documents</Typography>
+                            <GroupDocsBlock groupId={id} />
                         </Tab.Panel>
                         <Tab.Panel>
                             <Typography>Settings</Typography>
