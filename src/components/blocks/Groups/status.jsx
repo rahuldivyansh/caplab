@@ -2,13 +2,13 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const StatusComponent = () => {
+const DashboardGroupsStatusBlock = () => {
   const router = useRouter();
   const { group_id } = router.query;
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("/api/status/[status_id]", {
+      const response = await axios.get(`/api/status/${group_id}`, {
         params: {
           group_id: group_id,
         },
@@ -28,4 +28,4 @@ const StatusComponent = () => {
   </>;
 };
 
-export default StatusComponent;
+export default DashboardGroupsStatusBlock;

@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 
 const GET = async (group_id, status_id) => {
   try {
-    const { data: statusData, error: statusError } = await SupabaseClient.from(
+    const { data: statusData, error: statusError } = await supabaseClient.from(
       "status"
     )
       .select("*")
@@ -14,12 +14,10 @@ const GET = async (group_id, status_id) => {
       .eq("group_id", group_id);
 
     if (statusError) throw statusError;
-
     return statusData;
+
   } catch (error) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error, message: "Error while fetching data from database." });
+    throw error;
   }
 };
 
@@ -32,12 +30,11 @@ const DELETE = async (group_id, status_id) => {
       .eq("group_id", group_id);
 
     if (deleteError) throw deleteError;
+    // return res.status(StatusCodes.OK).json({ message: "Deletion successfull" });
+    console.log("Deletion successful");
 
-    return res.status(StatusCodes.OK).json({ message: "Deletion successfull" });
   } catch (error) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error, message: "Error while deleting data from database." });
+    throw error;
   }
 };
 

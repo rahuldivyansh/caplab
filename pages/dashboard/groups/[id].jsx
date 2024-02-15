@@ -6,7 +6,7 @@ import { ROLES } from '@/src/constants/roles';
 import withAuthPage from '@/src/middlewares/withAuthPage';
 import { Tab } from '@headlessui/react';
 import React, { Fragment } from 'react'
-import StatusComponent from '@/src/components/blocks/Groups/Status';
+import DashboardGroupsStatusBlock from '@/src/components/blocks/Groups';
 
 const TAB_LABELS = ["status", "documents", "settings"];
 
@@ -27,7 +27,7 @@ const GroupPage = (props) => {
                     </Tab.List>
                     <Tab.Panels>
                         <Tab.Panel>
-                        <StatusComponent/>
+                        <DashboardGroupsStatusBlock/>
                             {/* <Typography></Typography> */}
                         </Tab.Panel>
                         <Tab.Panel>
