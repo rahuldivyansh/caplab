@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import FileIcon from "@heroicons/react/24/outline/DocumentIcon";
+import FileIconH from "@heroicons/react/24/outline/DocumentIcon";
 import Button from '@/src/components/ui/Button'
 import Layout from '@/src/components/ui/Layout'
 import Typography from '@/src/components/ui/Typography'
@@ -10,6 +10,8 @@ import { LoaderElement } from '@/src/components/elements/Loaders';
 import moment from 'moment';
 import Modal from '@/src/components/ui/Modal';
 import { byteToMb } from '@/src/utils/converters';
+import EmptyElement from '@/src/components/elements/Empty';
+import { FileIcon, defaultStyles } from 'react-file-icon';
 
 const FileUploader = ({ groupId, getDocs }) => {
     const uploaderRef = useRef(null);
@@ -89,7 +91,9 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         <Modal open={currentDoc !== null} onClose={() => setCurrentDoc(null)} title={currentDoc?.name}>
             <Layout.Col className="p-4 gap-2">
                 <Layout.Col className="gap-2 bg-gray-50 border justify-center items-center p-4">
-                    <FileIcon width={64} className="text-gray-800" />
+                    <Layout.Row className="gap-2 items-center justify-center w-16 h-24 overflow-hidden"  >
+                        <FileIcon extension={currentDoc?.name.split(".")[1]} {...defaultStyles[currentDoc?.name.split(".")[1] || "txt"]} />
+                    </Layout.Row>
                 </Layout.Col>
                 <Typography>Size - {byteToMb(currentDoc?.metadata.size).toFixed(2)}MB</Typography>
                 <Typography>Uploaded at - {moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")}</Typography>
@@ -100,10 +104,12 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         {
             docsList.map((doc, _) => {
                 return (
-                    <Layout.Row onClick={() => { setCurrentDoc(doc) }} key={`group-doc-${doc.id}`} className="p-2 justify-between items-center gap-2 hover:bg-gray-200 active:bg-gray-300 transition-all cursor-pointer select-none">
+                    <Layout.Row onClick={() => { setCurrentDoc(doc) }} key={`group-doc-${doc.id}`} className="px-2 justify-between items-center gap-2 hover:bg-gray-200 active:bg-gray-300 transition-all cursor-pointer select-none">
                         <Layout.Row className="gap-2 items-center text-wrap overflow-hidden">
-                            <FileIcon width={18} className="text-gray-800 hidden md:flex" />
-                            <Typography>{doc.name}</Typography>
+                            <Layout.Row className="gap-2 items-center justify-center w-8 h-12 scale-90 overflow-hidden"  >
+                                <FileIcon extension={doc.name.split(".")[1]} {...defaultStyles[doc.name.split(".")[1] || "txt"]} />
+                            </Layout.Row>
+                            <Typography.Caption className="font-semibold text-gray-600">{doc.name}</Typography.Caption>
                         </Layout.Row>
                         <Typography.Caption className="hidden md:flex">Uploaded {moment(doc.created_at).fromNow()}</Typography.Caption>
                     </Layout.Row>
@@ -118,7 +124,7 @@ const GroupDocsBlock = ({ groupId }) => {
     const docs = useFetch({ method: "GET", url: `/api/docs/${groupId}`, get_autoFetch: true })
     if (docs.loading) return <Wrapper groupId={groupId}><LoaderElement /></Wrapper>
     if (docs.error) return <Wrapper groupId={groupId}>Error fetching docs</Wrapper>
-    if (!docs.loading && docs.data !== null && Array.from(docs.data).length === 0) return <Wrapper groupId={groupId}>No docs found</Wrapper>
+    if (!docs.loading && docs.data !== null && Array.from(docs.data).length === 0) return <Wrapper groupId={groupId}><EmptyElement /></Wrapper>
     if (!docs.data) return null;
     return (
         <Wrapper groupId={groupId} getDocs={docs.dispatch}>
