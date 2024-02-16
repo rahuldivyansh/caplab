@@ -6,7 +6,7 @@ import { ROLES } from '@/src/constants/roles';
 import withAuthPage from '@/src/middlewares/withAuthPage';
 import { Tab } from '@headlessui/react';
 import React, { Fragment } from 'react'
-import DashboardGroupsStatusBlock from '@/src/components/blocks/Groups';
+import DashboardGroupsStatusBlock from '@/src/components/blocks/Groups/status';
 
 const TAB_LABELS = ["status", "documents", "settings"];
 
