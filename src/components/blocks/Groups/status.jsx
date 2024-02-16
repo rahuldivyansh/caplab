@@ -5,7 +5,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Layout from "../../ui/Layout";
 import Typography from "../../ui/Typography";
 import Button from "../../ui/Button";
-import DashboardGroupsIndividualStatusBlock from "../Status";
 import useFetch from "@/src/hooks/general/useFetch";
 import Modal from "../../ui/Modal";
 
