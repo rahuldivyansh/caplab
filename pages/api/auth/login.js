@@ -1,12 +1,18 @@
 import supabaseClient from "@/src/services/supabase";
 import moment from "moment/moment";
 import Cookies from "cookies";
+import EmailService from "@/src/services/email";
+import Handlebars from "handlebars";
+import template from "@/src/services/email/templates/newDeviceSigninAttempt";
+import { LOGOTEXT } from "@/src/constants";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json("method not allowed");
+  const { email, password, device, geolocation } = req.body;
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({
-      ...req.body,
+      email,
+      password,
     });
     if (error) throw error;
     await supabaseClient.auth.setSession({
@@ -25,6 +31,37 @@ export default async function handler(req, res) {
       .eq("uid", data.user.id)
       .single();
     if (userData.error) throw userData.error;
+    const { data: userDevicesData, error: userDevicesError } =
+      await supabaseClient
+        .from("auth_devices")
+        .select("*")
+        .eq("uid", data.user.id)
+        .eq("is_mobile", device.isMobile)
+        .eq("user_agent", device.userAgent);
+    if (userDevicesError) throw userDevicesError;
+    if (userDevicesData.length === 0) {
+      await supabaseClient.from("auth_devices").insert([
+        {
+          uid: data.user.id,
+          is_mobile: device.isMobile,
+          user_agent: device.userAgent,
+        },
+      ]);
+      const signInAttemptTemplate = Handlebars.compile(template);
+      await EmailService.emails.send({
+        from: "caplab@shortr.in",
+        to: email,
+        subject: `New device login`,
+        html: signInAttemptTemplate({
+          appName: LOGOTEXT,
+          email,
+          time: moment().format("MMMM Do YYYY, h:mm a"),
+          device: device.userAgent,
+          latitude: geolocation?.latitude || "unavailable",
+          longitude: geolocation?.longitude || "unavailable",
+        }),
+      });
+    }
     const app_meta = {
       role: role.data.role,
       name: userData.data.name,

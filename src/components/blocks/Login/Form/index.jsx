@@ -7,11 +7,23 @@ import Layout from '@/src/components/ui/Layout';
 import Typography from '@/src/components/ui/Typography';
 import { useAuth } from '@/src/providers/Auth';
 import { LOGOTEXT } from '@/src/constants';
+import useDevice from '@/src/hooks/general/useDevice';
+import useGeolocation from '@/src/hooks/general/useGeolocation';
+
+const EnableLocationMessage = () => {
+    return <Layout.Col className="gap-2 bg-yellow-200 text-yellow-600 p-2 rounded border border-yellow-400">
+        <Typography.Caption className="text-center">Please enable location to continue</Typography.Caption>
+        <Typography.Caption className="text-center">Location is required for security purposes</Typography.Caption>
+    </Layout.Col>
+
+}
 
 const LoginFormBlock = () => {
     const auth = useAuth();
+    const device = useDevice();
+    const geolocation = useGeolocation();
     const onSubmit = async (data) => {
-        await auth.loginWithEmailAndPassword(data);
+        await auth.loginWithEmailAndPassword({ ...data, device, geolocation });
     }
     return (
         <Layout.Container className={styles.main_container}>
