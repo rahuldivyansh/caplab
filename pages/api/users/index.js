@@ -4,13 +4,14 @@ import supabaseClient from "@/src/services/supabase";
 import { StatusCodes } from "http-status-codes";
 
 const handler = async (req, res) => {
+  const ALLOWED_ROLES = [ROLES.ADMIN,ROLES.TEACHER];
   try {
     if (req.method !== "GET") {
       return res
         .status(StatusCodes.METHOD_NOT_ALLOWED)
         .json("method not allowed");
     }
-    if (req.role !== ROLES.ADMIN) {
+    if (ALLOWED_ROLES.includes(req.role)) {
       return res.status(StatusCodes.UNAUTHORIZED).send("unauthorized");
     }
     const { data: usersData, error: usersError } = await supabaseClient

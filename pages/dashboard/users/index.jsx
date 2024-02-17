@@ -54,7 +54,6 @@ const DeleteUserBlock = (props) => {
 
 const UsersTableBlock = () => {
   const users = useFetch({ method: "GET", url: "/api/users", get_autoFetch: true })
-
   const columns = [
     { field: "name", headerName: "Name" },
     { field: "email", headerName: "Email" },
