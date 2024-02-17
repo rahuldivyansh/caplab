@@ -53,8 +53,6 @@ const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const data = await GET(group_id);
-      console.log(data);
-      // console.log(data);
       return res.status(200).json(data);
     } catch (error) {
       console.log(error);
@@ -66,7 +64,6 @@ const handler = async (req, res) => {
     try {
       const { body } = req;
       const data = await POST(group_id, body);
-      // console.log(data);
       return res.status(StatusCodes.CREATED).json(data);
     } catch (error) {
       return res.status(500).json(error, { error: error.message });
