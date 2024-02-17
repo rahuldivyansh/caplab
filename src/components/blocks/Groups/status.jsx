@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Layout from "../../ui/Layout";
 import Typography from "../../ui/Typography";
 import Button from "../../ui/Button";
