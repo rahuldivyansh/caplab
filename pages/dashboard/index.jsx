@@ -4,7 +4,7 @@ import Typography from '@/src/components/ui/Typography';
 import withAuthPage from '@/src/middlewares/withAuthPage';
 import Layout from '@/src/components/ui/Layout';
 import { useAuth } from '@/src/providers/Auth';
-import DashboardGroupsBlock from '@/src/components/blocks/Dashboard/Groups';
+import DashboardGroupsBlock from '@/src/components/blocks/Dashboard/Groups/groups';
 import DashboardTeachersBlock from '@/src/components/blocks/Dashboard/Teachers';
 import DashboardStudentsBlock from '@/src/components/blocks/Dashboard/Students';
 
