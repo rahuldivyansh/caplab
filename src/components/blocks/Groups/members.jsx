@@ -112,11 +112,11 @@ const GroupMembersBlock = ({ groupId }) => {
                 <Layout.Col className="divide-y">
                     {members.data.map((member, index) => (
                         <Layout.Row key={`member-${index}`} className="gap-2 py-2 items-center justify-between max-w-md">
-                            <Layout.Row className="items-center gap-1 flex-1">
+                            <Layout.Row className="items-center gap-1 flex-[2]">
                                 <Avatar seed={member.name} />
                                 <Layout.Col className="overflow-hidden">
                                     <Typography.Caption className="capitalize font-semibold line-clamp-1">{member.name}</Typography.Caption>
-                                    <Typography.Caption className="line-clamp-1">{member.email}</Typography.Caption>
+                                    <Typography.Caption className="line-clamp-1 break-all">{member.email}</Typography.Caption>
                                 </Layout.Col>
                             </Layout.Row>
                             {currentUserId === group.owner && <RemoveMemberButton member={member} groupId={groupId} getMembers={members.dispatch} />}
