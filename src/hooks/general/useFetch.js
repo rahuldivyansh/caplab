@@ -6,6 +6,10 @@ const useFetch = (props) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState(props.url);
+  const updateUrl = (url) => {
+    setUrl(url);
+  };
   const getData = async () => {
     setError(null);
     setLoading(true);
@@ -105,7 +109,7 @@ const useFetch = (props) => {
   useEffect(() => {
     if (props.method === "GET" && props.get_autoFetch) getData();
   }, []);
-  return { data, setData, error, loading, dispatch };
+  return { data, setData, error, loading, dispatch, updateUrl };
 };
 
 export default useFetch;

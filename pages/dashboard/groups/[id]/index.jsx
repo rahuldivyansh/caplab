@@ -40,7 +40,7 @@ const GroupPage = (props) => {
                                 <Tab
                                     as={Fragment}
                                     key={`group-page-tab-${index}`}
-                                >{({ selected }) => <Button className={`capitalize font-semibold hover:bg-secondary rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white"}`}>{label}</Button>}
+                                >{({ selected }) => <Button className={`uppercase text-sm font-semibold hover:bg-secondary rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white"}`}>{label}</Button>}
                                 </Tab>
                             )}
                         </Layout.Row>
@@ -50,7 +50,7 @@ const GroupPage = (props) => {
                             <Tab.Panel>
                                 <GroupAboutBlock />
                             </Tab.Panel>
-                            <Tab.Panel>
+                            <Tab.Panel className="overflow-x-scroll outline-none bg-gray-100 scroll-bar-none">
                                 <StatusComponent />
                             </Tab.Panel>
                             <Tab.Panel>

@@ -10,7 +10,7 @@ const GET = async (status_id) => {
     const { data: statusData, error: statusError } = await supabaseClient
       .from("status")
       .select("*")
-      .eq("id", status_id)
+      .eq("id", status_id);
 
     if (statusError) throw statusError;
     return statusData;
@@ -29,7 +29,7 @@ const DELETE = async (group_id, status_id) => {
 
     if (deleteError) throw deleteError;
     // return res.status(StatusCodes.OK).json({ message: "Deletion successfull" });
-    console.log("Deletion successful");
+    return { success: true };
   } catch (error) {
     throw error;
   }
@@ -79,7 +79,7 @@ const handler = async (req, res) => {
       const data = await PUT(status_id, body);
       return res.status(StatusCodes.OK).json({ data });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error, message: "Updation failed." });
