@@ -16,7 +16,7 @@ const GET = async (group_id) => {
       );
     if (membersData.length == 0) return [];
     const members = membersData.map((member) => {
-      return member.users;
+      return { ...member.users, id: member.id };
     });
     return members;
   } catch (error) {
@@ -33,7 +33,7 @@ const POST = async (group_id, payload) => {
         StatusCodes.BAD_REQUEST,
         {}
       );
-    const membersToAdd = members.map((uid) => ({  uid, group_id }));
+    const membersToAdd = members.map((uid) => ({ uid, group_id }));
     const { data, error } = await supabaseClient
       .from("members")
       .insert(membersToAdd)

@@ -1,4 +1,4 @@
-import GroupDocsBlock from '@/src/components/blocks/Dashboard/Groups/docs';
+import GroupDocsBlock from '@/src/components/blocks/Groups/docs';
 import DashboardLayout from '@/src/components/layouts/Dashboard';
 import Button from '@/src/components/ui/Button';
 import Layout from '@/src/components/ui/Layout';
@@ -7,8 +7,8 @@ import { ROLES } from '@/src/constants/roles';
 import withAuthPage from '@/src/middlewares/withAuthPage';
 import { Tab } from '@headlessui/react';
 import React, { Fragment } from 'react'
-import StatusComponent from '@/src/components/blocks/Groups/Status';
-import GroupMembersBlock from '@/src/components/blocks/Dashboard/Groups/members';
+import StatusComponent from '@/src/components/blocks/Groups/status';
+import GroupMembersBlock from '@/src/components/blocks/Groups/members';
 import supabaseClient from '@/src/services/supabase';
 import GroupProvider from '@/src/providers/Group';
 import GroupAboutBlock from '@/src/components/blocks/Groups/about';
@@ -34,7 +34,7 @@ const GroupPage = (props) => {
                     </Layout.Col>
                 </Layout.Col>
                 <Tab.Group>
-                    <Tab.List className="flex border-b shadow-sm overflow-x-scroll scroll-bar-none">
+                    <Tab.List className="flex border-b shadow-sm overflow-x-scroll scroll-bar-none sticky top-0">
                         <Layout.Row className="flex-nowrap">
                             {TAB_LABELS.map((label, index) =>
                                 <Tab
