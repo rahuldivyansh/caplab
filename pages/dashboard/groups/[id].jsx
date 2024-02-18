@@ -8,8 +8,9 @@ import withAuthPage from '@/src/middlewares/withAuthPage';
 import { Tab } from '@headlessui/react';
 import React, { Fragment } from 'react'
 import StatusComponent from '@/src/components/blocks/Groups/Status';
+import GroupMembersBlock from '@/src/components/blocks/Dashboard/Groups/members';
 
-const TAB_LABELS = ["status", "documents","members", "settings"];
+const TAB_LABELS = ["status", "documents", "members", "settings"];
 
 const GroupPage = (props) => {
     const { id } = props;
@@ -29,14 +30,13 @@ const GroupPage = (props) => {
                     </Tab.List>
                     <Tab.Panels>
                         <Tab.Panel>
-                        <StatusComponent/>
-                            {/* <Typography></Typography> */}
+                            <StatusComponent />
                         </Tab.Panel>
                         <Tab.Panel>
                             <GroupDocsBlock groupId={id} />
                         </Tab.Panel>
                         <Tab.Panel>
-                            <>Members</>
+                            <GroupMembersBlock groupId={id} />
                         </Tab.Panel>
                         <Tab.Panel>
                             <Typography>Settings</Typography>
