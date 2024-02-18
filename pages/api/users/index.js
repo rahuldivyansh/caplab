@@ -11,7 +11,7 @@ const handler = async (req, res) => {
         .status(StatusCodes.METHOD_NOT_ALLOWED)
         .json("method not allowed");
     }
-    if (ALLOWED_ROLES.includes(req.role)) {
+    if (!ALLOWED_ROLES.includes(req.role)) {
       return res.status(StatusCodes.UNAUTHORIZED).send("unauthorized");
     }
     const { data: usersData, error: usersError } = await supabaseClient

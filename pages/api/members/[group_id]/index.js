@@ -33,10 +33,10 @@ const POST = async (group_id, payload) => {
         StatusCodes.BAD_REQUEST,
         {}
       );
-    const members = members.map((member) => ({ member, group_id }));
+    const membersToAdd = members.map((uid) => ({  uid, group_id }));
     const { data, error } = await supabaseClient
       .from("members")
-      .insert(members)
+      .insert(membersToAdd)
       .select("*");
     if (error)
       throw new CustomError(
