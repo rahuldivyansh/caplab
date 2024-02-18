@@ -9,8 +9,11 @@
   font-family: "Inter", sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
+.scroll-bar-none::-webkit-scrollbar {
+  @apply hidden;
+}
 ::-webkit-scrollbar {
-  @apply w-2 bg-transparent; 
+  @apply w-2 bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -20,7 +23,6 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-secondary;
 }
-
 
 ::-webkit-scrollbar-track:hover {
   @apply bg-transparent;
@@ -33,19 +35,20 @@ body {
   @apply bg-white text-black;
 }
 /* tables */
-table{
+table {
   @apply rounded-md  border-dark_secondary overflow-hidden shadow-sm;
 }
- tbody{
+tbody {
   @apply divide-y divide-dark_secondary rounded-md;
 }
- thead{
+thead {
   @apply bg-dark_secondary/50;
 }
- tr{
+tr {
   @apply bg-dark_secondary/30;
 }
- th,td{
+th,
+td {
   @apply p-3;
 }
 /* buttons */
@@ -54,8 +57,7 @@ button {
   @apply relative overflow-hidden rounded-lg font-medium text-sm py-1 px-2 md:py-1.5 md:px-3 flex justify-center items-center active:scale-95 transition-all tracking-tight 
    disabled:hover:bg-gray-300   disabled:active:scale-100
    disabled:bg-white/10 disabled:text-gray-300 disabled:border-none
-   disabled:hover:bg-white/10
-   ;
+   disabled:hover:bg-white/10;
 }
 
 .btn-sm {
@@ -73,7 +75,7 @@ button {
   @apply bg-secondary border border-secondary active:bg-secondary/75 hover:bg-secondary/75 text-black;
 }
 .btn-general {
-  @apply  bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
+  @apply bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
 }
 
 /* outlined */
@@ -145,9 +147,9 @@ input::-webkit-color-swatch {
   @apply text-sm p-1 capitalize;
 }
 
-.mkdwn p{
+.mkdwn p {
   @apply text-secondary;
 }
-.mkdwn a{
+.mkdwn a {
   @apply underline text-blue-400;
 }

@@ -33,7 +33,7 @@ const Modal = (props) => {
               <CloseIcon className="text-black w-5 h-5" />
             </Button>
           </Layout.Row>
-          <div className="p-10">{props.children}</div>
+          {props.children}
         </Dialog.Panel>
       </Transition>
     </Dialog>

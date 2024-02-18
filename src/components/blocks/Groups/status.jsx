@@ -19,20 +19,6 @@ const DashboardGroupsStatusBlock = () => {
   });
   const [currentTodo, setCurrentTodo] = useState(null);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`/api/status/${group_id}`);
-      const data = await response.data;
-      setTasks(data);
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleCardClick = (group_id, task) => {
     setCurrentTodo(task);
@@ -58,11 +44,11 @@ const DashboardGroupsStatusBlock = () => {
           </Layout.Col>
         )}
       </Modal>
-      <Layout.Card className="flex-grow ">
+      <Layout.Card className="flex-grow">
         <Layout.Col>
-          <Typography.Heading className="text-red-800">
+          <Typography className="text-red-800">
             Backlog
-          </Typography.Heading>
+          </Typography>
           {task.data !== null &&
             task.data
               .filter((task) => task.type == -1)
@@ -78,11 +64,11 @@ const DashboardGroupsStatusBlock = () => {
               ))}
         </Layout.Col>
       </Layout.Card>
-      <Layout.Card className="flex-grow ">
+      <Layout.Card className="flex-grow">
         <Layout.Col>
-          <Typography.Heading className="text-green-800">
-            In Progress
-          </Typography.Heading>
+          <Typography className="text-red-800">
+            In progress
+          </Typography>
           {task.data !== null &&
             task.data
               .filter((task) => task.type == 0)
