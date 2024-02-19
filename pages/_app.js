@@ -1,9 +1,9 @@
 import React from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import "@/styles/globals.css";
 import "nprogress/nprogress.css";
 import "react-toastify/dist/ReactToastify.css";
+import "@/styles/globals.css";
 import { Router } from "next/router";
 import nProgress from "nprogress";
 import AuthProvider from "@/src/providers/Auth";
