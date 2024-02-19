@@ -7,14 +7,15 @@ import { ROLES } from '@/src/constants/roles';
 import withAuthPage from '@/src/middlewares/withAuthPage';
 import { Tab } from '@headlessui/react';
 import React, { Fragment } from 'react'
-import StatusComponent from '@/src/components/blocks/Groups/status';
+import GroupStatusBlock from '@/src/components/blocks/Groups/status';
 import GroupMembersBlock from '@/src/components/blocks/Groups/members';
+import GroupAboutBlock from '@/src/components/blocks/Groups/about';
+import GroupDiscussions from '@/src/components/blocks/Groups/discussions';
 import supabaseClient from '@/src/services/supabase';
 import GroupProvider from '@/src/providers/Group';
-import GroupAboutBlock from '@/src/components/blocks/Groups/about';
 import Avatar from '@/src/components/elements/Avatar';
 
-const TAB_LABELS = ["about", "status", "documents", "members", "settings"];
+const TAB_LABELS = ["about", "status", "documents", "members", "discussions", "settings"];
 
 const GroupPage = (props) => {
     const { group } = props;
@@ -51,13 +52,16 @@ const GroupPage = (props) => {
                                 <GroupAboutBlock />
                             </Tab.Panel>
                             <Tab.Panel className="overflow-x-scroll outline-none bg-gray-100 scroll-bar-none">
-                                <StatusComponent />
+                                <GroupStatusBlock />
                             </Tab.Panel>
                             <Tab.Panel>
                                 <GroupDocsBlock groupId={id} />
                             </Tab.Panel>
                             <Tab.Panel>
                                 <GroupMembersBlock groupId={id} />
+                            </Tab.Panel>
+                            <Tab.Panel>
+                                <GroupDiscussions />
                             </Tab.Panel>
                             <Tab.Panel>
                                 <Typography>Settings</Typography>
