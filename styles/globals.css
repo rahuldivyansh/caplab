@@ -129,7 +129,7 @@ p {
   @apply text-base tracking-tight;
 }
 
-span {
+.caption {
   @apply text-sm tracking-tight;
 }
 
