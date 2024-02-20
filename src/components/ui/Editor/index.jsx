@@ -1,21 +1,45 @@
-// import { Editor as NovelEditor } from 'novel'
-// import { useEffect, useState } from 'react'
+import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import PropTypes from "prop-types";
+import { useRouter } from "next/router";
+//import the component
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
-// const Editor = (props) => {
-//     const [ready, setReady] = useState(false);
-//     useEffect(() => {
-//         if (localStorage.getItem("novel__content")) {
-//             localStorage.removeItem("novel__content");
-//             setReady(true);
-//         } else {
-//             setReady(true);
-//         }
-//     }, [])
-//     return (
-//         <>
-//             {ready ? <NovelEditor {...props}/> : null}
-//         </>
-//     )
-// }
+const MyStatefulEditor = ({ onChange, initialValue,disabled }) => {
+    const [value, setValue] = useState();
+    const router = useRouter();
+    useEffect(() => {
+        const importModule = async () => {
+            const module = await import("react-rte");
+            setValue(module.createValueFromString(initialValue, "html"));
+        };
+        importModule();
+    }, [router.pathname]);
 
-// export default Editor
+    const handleOnChange = (value) => {
+        setValue(value);
+        if (onChange) {
+            onChange(value.toString("html"));
+        }
+    };
+
+    if (!value) {
+        return null;
+    }
+
+    return <RichTextEditor value={value} onChange={handleOnChange} className="w-full" disabled={disabled}/>;
+};
+
+MyStatefulEditor.defaultProps = {
+    initialValue: "",
+    onChange: () => { },
+    disabled: false,
+}
+
+MyStatefulEditor.propTypes = {
+    onChange: PropTypes.func,
+    initialValue: PropTypes.string,
+    disabled: PropTypes.bool,
+};
+
+export default MyStatefulEditor;
