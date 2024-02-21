@@ -154,3 +154,6 @@ input::-webkit-color-swatch {
 .mkdwn a {
   @apply underline text-blue-400;
 }
+.tiptap .ProseMirror {
+  @apply p-3 w-full rounded;
+}

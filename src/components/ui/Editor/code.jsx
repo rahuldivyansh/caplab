@@ -1,25 +1,25 @@
 import React from 'react'
 import Button from '../Button'
-import { Italic } from 'lucide-react'
+import { CodeIcon } from 'lucide-react'
 import ControllerButton from './controller-button'
 import { ICON_DIMENSIONS } from './constants'
 
-const EditorItalicController = ({ editor }) => {
+const EditorCodeController = ({ editor }) => {
     return (
         <ControllerButton
-            onClick={() => editor.chain().focus().toggleItalic().run()}
+            onClick={() => editor.chain().focus().toggleCode().run()}
             disabled={
                 !editor.can()
                     .chain()
                     .focus()
-                    .toggleItalic()
+                    .toggleCode()
                     .run()
             }
-            active={editor.isActive('italic')}
+            active={editor.isActive('code')}
         >
-            <Italic width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
+            <CodeIcon width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }
 
-export default EditorItalicController
+export default EditorCodeController
