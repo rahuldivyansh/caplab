@@ -4,9 +4,13 @@ import Layout from '../../ui/Layout'
 import Typography from '../../ui/Typography'
 import Button from '../../ui/Button'
 import useFetch from '@/src/hooks/general/useFetch'
-import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import Editor from '../../ui/Editor'
+
+const DEFAULT_TEMPLATE_HTML = `
+<h1>Project Title</h1>
+<p>Group description</p>
+`
 
 const GroupDetail = ({ identifier, value }) => {
     return (
@@ -45,7 +49,7 @@ const ProjectDescriptionEditor = () => {
     }
 
     return <><Button onClick={handleEdit} className="capitalize btn-primary" loading={saveDescription.loading}>{edit ? "save" : "edit"}</Button>
-        <Editor initialValue={description} disabled={!edit} onChange={onChange} /></>
+        <Editor content={description} disabled={!edit} onChange={onChange} /></>
 }
 
 const GroupAboutBlock = () => {

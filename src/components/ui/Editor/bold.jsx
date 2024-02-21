@@ -1,9 +1,12 @@
 import React from 'react'
 import Button from '../Button'
+import ControllerButton from './controller-button'
+import { Bold } from 'lucide-react'
+import { ICON_DIMENSIONS } from './constants'
 
 const EditorBoldController = ({ editor }) => {
     return (
-        <Button
+        <ControllerButton
             onClick={() => editor.chain().focus().toggleBold().run()}
             disabled={
                 !editor.can()
@@ -12,10 +15,10 @@ const EditorBoldController = ({ editor }) => {
                     .toggleBold()
                     .run()
             }
-            className={`font-extrabold btn-icon border  flex-1 ${editor.isActive('bold') ? 'is-active' : ''}`}
+            active={editor.isActive('bold')}
         >
-            B
-        </Button>
+            <Bold width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
+        </ControllerButton>
     )
 }
 

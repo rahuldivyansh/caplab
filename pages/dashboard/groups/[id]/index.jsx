@@ -1,4 +1,3 @@
-"use client";
 import GroupDocsBlock from '@/src/components/blocks/Groups/docs';
 import DashboardLayout from '@/src/components/layouts/Dashboard';
 import Button from '@/src/components/ui/Button';
@@ -18,6 +17,8 @@ import Avatar from '@/src/components/elements/Avatar';
 
 const TAB_LABELS = ["about", "status", "documents", "members", "discussions", "settings"];
 
+
+
 const GroupPage = (props) => {
     const { group } = props;
     const { id, num, session } = group
@@ -30,8 +31,8 @@ const GroupPage = (props) => {
                     <Layout.Col className="gap-1">
                         <Typography className=" text-xs text-gray-500">Created by</Typography>
                         <Layout.Row className="items-center gap-1">
-                            <Avatar seed={group.users.name} />
-                            <Typography className="font-semibold text-gray-800 capitalize">{group.users.name}</Typography>
+                            <Avatar seed={group.users?.name || "user"} />
+                            <Typography className="font-semibold text-gray-800 capitalize">{group.users?.name}</Typography>
                         </Layout.Row>
                     </Layout.Col>
                 </Layout.Col>

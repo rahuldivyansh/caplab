@@ -1,9 +1,12 @@
 import React from 'react'
 import Button from '../Button'
+import { Strikethrough } from 'lucide-react'
+import { ICON_DIMENSIONS } from './constants'
+import ControllerButton from './controller-button'
 
-const StrikeThroughController = ({ editor }) => {
+const EditorStrikeThroughController = ({ editor }) => {
     return (
-        <Button
+        <ControllerButton
             onClick={() => editor.chain().focus().toggleStrike().run()}
             disabled={
                 !editor.can()
@@ -12,11 +15,12 @@ const StrikeThroughController = ({ editor }) => {
                     .toggleStrike()
                     .run()
             }
-            className={editor.isActive('strike') ? 'is-active' : ''}
+            editor={editor}
+            activeTarget="strike"
         >
-            S
-        </Button>
+            <Strikethrough width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
+        </ControllerButton>
     )
 }
 
-export default StrikeThroughController
+export default EditorStrikeThroughController
