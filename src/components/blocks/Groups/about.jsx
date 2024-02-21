@@ -6,7 +6,7 @@ import Button from '../../ui/Button'
 import useFetch from '@/src/hooks/general/useFetch'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-const Editor = dynamic(() => import('../../ui/Editor').then(mod => mod.default), { ssr: false });
+import Editor from '../../ui/Editor'
 
 const GroupDetail = ({ identifier, value }) => {
     return (

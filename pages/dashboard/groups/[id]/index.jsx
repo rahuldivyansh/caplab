@@ -1,3 +1,4 @@
+"use client";
 import GroupDocsBlock from '@/src/components/blocks/Groups/docs';
 import DashboardLayout from '@/src/components/layouts/Dashboard';
 import Button from '@/src/components/ui/Button';
