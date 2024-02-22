@@ -62,7 +62,7 @@ const GroupPage = (props) => {
                             <Tab.Panel>
                                 <GroupMembersBlock groupId={id} />
                             </Tab.Panel>
-                            <Tab.Panel>
+                            <Tab.Panel as={Fragment}>
                                 <GroupDiscussions />
                             </Tab.Panel>
                             <Tab.Panel>

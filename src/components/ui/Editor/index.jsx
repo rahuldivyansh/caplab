@@ -25,24 +25,22 @@ const MenuBar = () => {
         return null
     }
     return (
-        <Layout.Card className="w-full">
-            <Layout.Row className="flex-wrap gap-2 items-center justify-start">
-                <EditorBoldController editor={editor} />
-                <EditorItalicController editor={editor} />
-                <EditorStrikeThroughController editor={editor} />
-                <EditorCodeController editor={editor} />
-                <EditorParagraphController editor={editor} />
-                {Array.from({ length: 6 }, (_, i) => (
-                    <EditorHeadingController key={i} editor={editor} level={i + 1} />
-                ))}
-                <EditorUnorderedListController editor={editor} />
-                <EditorOrderedListController editor={editor} />
-                <EditorBlockquoteController editor={editor} />
-                <EditorDividerController editor={editor} />
-                <EditorUndoController editor={editor} />
-                <EditorRedoController editor={editor} />
-            </Layout.Row>
-        </Layout.Card>
+        <Layout.Row className="flex-wrap gap-2 items-center justify-start p-2 border-b bg-white">
+            <EditorBoldController editor={editor} />
+            <EditorItalicController editor={editor} />
+            <EditorStrikeThroughController editor={editor} />
+            <EditorCodeController editor={editor} />
+            <EditorParagraphController editor={editor} />
+            {Array.from({ length: 6 }, (_, i) => (
+                <EditorHeadingController key={i} editor={editor} level={i + 1} />
+            ))}
+            <EditorUnorderedListController editor={editor} />
+            <EditorOrderedListController editor={editor} />
+            <EditorBlockquoteController editor={editor} />
+            <EditorDividerController editor={editor} />
+            <EditorUndoController editor={editor} />
+            <EditorRedoController editor={editor} />
+        </Layout.Row>
     )
 }
 
@@ -68,12 +66,12 @@ const CustomEditor = ({ disabled, content, onChange }) => {
         onChange(state.editor?.getHTML())
     }
     return (
-        <Layout.Col className="flex-grow bg-white w-full">
+        <Layout.Col className="flex-grow  w-full rounded-lg border overflow-hidden bg-white">
             <EditorProvider
                 autofocus={true}
                 editorProps={{
                     attributes: {
-                        class: "w-full bg-white p-4 prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none"
+                        class: "w-full rounded bg-white p-4 prose lg:prose-lg mx-auto container focus:outline-none"
                     }
 
                 }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar /> : null} extensions={extensions} content={content} />
