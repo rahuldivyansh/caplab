@@ -6,19 +6,9 @@ import Button from '../../ui/Button'
 import useFetch from '@/src/hooks/general/useFetch'
 import { toast } from 'react-toastify'
 import Editor from '../../ui/Editor'
-import { Check, LucidePencil, Pencil } from 'lucide-react'
+import { Check, LucidePencil } from 'lucide-react'
 import { ICON_DIMENSIONS } from '../../ui/Editor/constants'
 
-
-
-const GroupDetail = ({ identifier, value }) => {
-    return (
-        <Layout.Col className="justify-between sm:flex-row py-2">
-            <Typography className="font-semibold capitalize">{identifier}</Typography>
-            <Typography>{value}</Typography>
-        </Layout.Col>
-    )
-}
 
 const ProjectDescriptionEditor = () => {
     const [edit, setEdit] = useState(false)
@@ -62,13 +52,8 @@ const ProjectDescriptionEditor = () => {
 const GroupAboutBlock = () => {
     const group = useGroup()
     return (
-        <Layout.Col>
-            <Layout.Col className="gap-2 max-w-md divide-y p-4 border-b">
-                <GroupDetail identifier="number" value={group.num} />
-                <GroupDetail identifier="session" value={group.session} />
-                <GroupDetail identifier="owner" value={group.users?.name} />
-            </Layout.Col>
-            <Layout.Col className="gap-2 items-start bg-gray-100 p-4">
+        <Layout.Col className="p-2 bg-gray-100 gap-2">
+            <Layout.Col className="gap-2 items-start bg-gray-100">
                 <ProjectDescriptionEditor />
             </Layout.Col>
         </Layout.Col>
