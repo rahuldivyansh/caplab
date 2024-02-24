@@ -11,6 +11,7 @@ const EditorRedoController = ({ editor }) => {
         .run()
     return (
         <Button
+            type="button"
             onClick={() => editor.chain().focus().redo().run()}
             className="border btn-icon"
             disabled={

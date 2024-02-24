@@ -41,7 +41,7 @@ const Modal = (props) => {
 };
 
 Modal.defaultProps = {
-  title: "Title",
+  title: "",
 };
 
 export default Modal;
