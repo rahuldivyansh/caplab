@@ -47,11 +47,10 @@ const GroupDiscussions = () => {
     const group = useGroup()
     const membersList = useFetch({ method: "GET", url: `/api/members/${group.id}`, get_autoFetch: false })
     const onMessageChange = (e) => {
-        console.log(e.target.value)
-        setCurrentMessage(e.target.value.trim());
+        setCurrentMessage(e.target.value);
     }
     const sendMessage = async () => {
-        if (currentMessage.length === 0) return;
+        if (currentMessage.trim().length === 0) return;
         const { data, error } = await supabaseBrowser.from('messages').insert({
             payload: encrypt(currentMessage),
             group_id: group.id,
