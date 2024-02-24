@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Button from '../../ui/Button'
 import { useGroup } from '@/src/providers/Group'
 import { useAuth } from '@/src/providers/Auth'
-
 import { toast } from 'react-toastify'
 import Layout from '../../ui/Layout'
 import Form from '../../ui/Form'
@@ -13,6 +12,7 @@ import useFetch from '@/src/hooks/general/useFetch'
 import Avatar from '../../elements/Avatar'
 import Typography from '../../ui/Typography'
 import moment from 'moment'
+import { decrypt, encrypt } from '@/src/utils/security/encryption'
 
 const ChatHead = ({ message, currentUserId }) => {
     const [showMoreInfo, setShowMoreInfo] = useState(false)
@@ -53,7 +53,7 @@ const GroupDiscussions = () => {
     const sendMessage = async () => {
         if (currentMessage.length === 0) return;
         const { data, error } = await supabaseBrowser.from('messages').insert({
-            payload: btoa(currentMessage),
+            payload: encrypt(currentMessage),
             group_id: group.id,
             sent_by: userId
         }).select("*").single()
@@ -88,7 +88,7 @@ const GroupDiscussions = () => {
                 if (data.length === 0) return
                 const currentMessages = data.map(message => ({
                     ...message,
-                    payload: atob(message.payload),
+                    payload:decrypt( message.payload),
                     sent_by: { name: currentMembersMap[message.sent_by]?.name, uid: message.sent_by },
                 }))
                 setMessages(currentMessages)
@@ -108,7 +108,7 @@ const GroupDiscussions = () => {
                     (payload) => {
                         if (payload.new.group_id === id && payload.new.sent_by !== userId) {
                             setMessages(prev => [...prev,
-                            { ...payload.new, payload: atob(payload.new.payload), sent_by: { name: membersMap[payload.new.sent_by]?.name, uid: payload.sent_by } }])
+                            { ...payload.new, payload: decrypt(payload.new.payload), sent_by: { name: membersMap[payload.new.sent_by]?.name, uid: payload.sent_by } }])
                         }
                     }
                 )
@@ -120,17 +120,16 @@ const GroupDiscussions = () => {
     }, [membersMap, userId])
     return (
         <>
-            <Layout.Col className="w-full min-h-[50dvh] relative overflow-y-scroll mx-auto container max-w-xl pb-2 pt-2 px-2 md:px-0">
+            <Layout.Col className="w-full min-h-[50dvh] h-full relative overflow-y-scroll mx-auto container max-w-xl pb-2 pt-2 px-2 md:px-0">
                 <Layout.Col className="gap-2">
                     {messages && messages.map((message, index) => (<ChatHead message={message} currentUserId={userId} key={`message-${index}`} />))}
                 </Layout.Col>
-
             </Layout.Col>
             <Layout.Col className="sticky w-full left-0 right-0 bottom-0 bg-white border-t">
                 <Form onSubmit={sendMessage}>
                     <Layout.Row className="p-2 max-w-xl mx-auto container gap-2 items-center">
-                        <Input name="payload" value={currentMessage} onSubmit={sendMessage} onChange={onMessageChange} className="flex-grow flex-1 rounded-full font-semibold focus:ring-2 caret-primary bg-gray-100 py-4" placeholder="Enter message..." />
-                        <Button  type="submit" className="aspect-square items-center justify-center text-white flex-shrink btn-primary rounded-full disabled:bg-white" disabled={currentMessage.length === 0}><Send width={20} height={20} /></Button>
+                        <Input name="payload" value={currentMessage} onSubmit={sendMessage} onChange={onMessageChange} className="flex-grow flex-1 rounded-full font-semibold focus:ring-2 caret-primary  py-4" placeholder="Enter message..." />
+                        <Button type="submit" className="aspect-square items-center justify-center text-white flex-shrink btn-primary rounded-full disabled:bg-white" disabled={currentMessage.length === 0}><Send width={20} height={20} /></Button>
                     </Layout.Row>
                 </Form>
             </Layout.Col>

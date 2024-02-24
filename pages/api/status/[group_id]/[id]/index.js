@@ -36,11 +36,10 @@ const DELETE = async (group_id, status_id) => {
 };
 
 const PUT = async (status_id, payload) => {
-  const newType = payload.type;
   try {
     const { data: updateData, error: updateError } = await supabaseClient
       .from("status")
-      .update({ type: newType })
+      .update(payload)
       .eq("id", status_id)
       .select();
 

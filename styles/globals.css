@@ -18,20 +18,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-dark_secondary rounded;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
+  @apply bg-gray-800 active:bg-gray-900 focus:bg-gray-900 rounded-full;
 }
 
 ::-webkit-scrollbar-track:hover {
   @apply bg-transparent;
 }
 
-::-webkit-scrollbar-thumb:active {
-  background-color: #333;
-}
+
 body {
   @apply bg-white text-black;
 }
@@ -55,7 +49,7 @@ td {
 /* buttons */
 
 button {
-  @apply relative overflow-hidden rounded-lg font-medium text-sm py-1 px-2 md:py-1.5 md:px-3 flex justify-center items-center active:scale-95 transition-all tracking-tight 
+  @apply relative uppercase overflow-hidden rounded-lg font-medium text-sm py-1 px-2 md:py-1.5 md:px-3 flex justify-center items-center active:scale-95 transition-all tracking-tight 
    disabled:hover:bg-gray-300   disabled:active:scale-100
    disabled:bg-white/10 disabled:text-gray-300 disabled:border-none
    disabled:hover:bg-white/10;
@@ -136,7 +130,7 @@ p {
 input,
 textarea,
 select {
-  @apply bg-secondary/20 outline-none p-3 rounded-md border border-black/15   focus:border-primary transition-all font-normal  text-sm;
+  @apply outline-none p-3 rounded-md border border-black/15   focus:border-primary transition-all font-normal  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;
