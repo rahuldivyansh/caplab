@@ -12,22 +12,28 @@ import { Send } from 'lucide-react'
 import useFetch from '@/src/hooks/general/useFetch'
 import Avatar from '../../elements/Avatar'
 import Typography from '../../ui/Typography'
+import moment from 'moment'
 
 const ChatHead = ({ message, currentUserId }) => {
-    console.log(message.sent_by)
-    if (message.sent_by.uid === currentUserId) return (<Layout.Row className="justify-end">
-        <Layout.Col className="overflow-hidden max-w-[50%]">
-            <Typography.Body className="bg-primary text-white p-2 rounded-md break-all">
+    const [showMoreInfo, setShowMoreInfo] = useState(false)
+    const toggleShowMoreInfo = () => setShowMoreInfo(prev => !prev)
+    if (message.sent_by.uid === currentUserId) return (<Layout.Col className="justify-end items-end w-full">
+        <Layout.Row className="overflow-hidden max-w-[50%] items-end" onClick={toggleShowMoreInfo}>
+            <Typography.Body className="bg-primary text-white p-2 rounded-t rounded-bl break-all">
                 {message.payload}
             </Typography.Body>
-        </Layout.Col>
-    </Layout.Row>)
-    return (<Layout.Row className="justify-start items-center gap-2 overflow-hidden">
-        <Avatar seed={message.sent_by?.name || "user"} />
-        <Layout.Col className="overflow-hidden max-w-[50%]">
-            <Typography.Body className="bg-secondary text-black p-2 rounded-md overflow-hidden break-all">
+            <div className="border-solid rounded-bl border-t-primary border-t-[12px] border-l-transparent border-r-primary border-r-0 rotate-180 border-l-[12px] border-b-0" />
+        </Layout.Row>
+        {showMoreInfo && <Typography.Caption className="text-right text-gray-500 text-xs">{moment(message.created_at).format("MMMM Do YYYY, h:mm a")}</Typography.Caption>}
+    </Layout.Col>)
+    return (<Layout.Row className="justify-start items-start overflow-hidden">
+        <Avatar seed={message.sent_by?.name || "user"} dimensions={[24, 24]} />
+        <div className="border-solid border-t-secondary border-t-[12px] border-l-transparent border-r-secondary border-r-0 border-l-[12px] border-b-0" />
+        <Layout.Col className="overflow-hidden max-w-[50%] items-start" onClick={toggleShowMoreInfo}>
+            <Typography.Body className="bg-secondary text-black p-2 rounded-b rounded-tr overflow-hidden break-all">
                 {message.payload}
             </Typography.Body>
+            {showMoreInfo && <Typography.Caption className="text-left text-gray-500 text-xs">{moment(message.created_at).format("MMMM Do YYYY, h:mm a")}</Typography.Caption>}
         </Layout.Col>
     </Layout.Row>)
 }
@@ -36,12 +42,18 @@ const GroupDiscussions = () => {
     const auth = useAuth();
     const userId = auth.data?.id
     const [messages, setMessages] = useState([])
+    const [currentMessage, setCurrentMessage] = useState("")
     const [membersMap, setMembersMap] = useState({})
     const group = useGroup()
     const membersList = useFetch({ method: "GET", url: `/api/members/${group.id}`, get_autoFetch: false })
-    const onSubmit = async (body) => {
+    const onMessageChange = (e) => {
+        console.log(e.target.value)
+        setCurrentMessage(e.target.value.trim());
+    }
+    const sendMessage = async () => {
+        if (currentMessage.length === 0) return;
         const { data, error } = await supabaseBrowser.from('messages').insert({
-            payload: btoa(body.payload),
+            payload: btoa(currentMessage),
             group_id: group.id,
             sent_by: userId
         }).select("*").single()
@@ -50,7 +62,9 @@ const GroupDiscussions = () => {
             toast.error("unable to send message")
         }
         if (data) {
-            setMessages(prev => [...prev, { ...data[0], payload: body.payload, sent_by: { name: auth.data.app_meta.name, uid: userId } }])
+            setCurrentMessage("")
+            window.scrollTo(0, document.body.scrollHeight)
+            setMessages(prev => [...prev, { ...data[0], payload: currentMessage, sent_by: { name: auth.data.app_meta.name, uid: userId } }])
         }
 
     }
@@ -104,19 +118,19 @@ const GroupDiscussions = () => {
             subscribe()
 
     }, [membersMap, userId])
-    console.log(group, "group")
     return (
         <>
-            <Layout.Col className="w-full h-full relative overflow-y-auto mx-auto container max-w-lg pb-2 pt-2 px-2 md:px-0">
-                <Layout.Col className="gap-2 overflow-hidden">
+            <Layout.Col className="w-full min-h-[50dvh] relative overflow-y-scroll mx-auto container max-w-xl pb-2 pt-2 px-2 md:px-0">
+                <Layout.Col className="gap-2">
                     {messages && messages.map((message, index) => (<ChatHead message={message} currentUserId={userId} key={`message-${index}`} />))}
                 </Layout.Col>
+
             </Layout.Col>
             <Layout.Col className="sticky w-full left-0 right-0 bottom-0 bg-white border-t">
-                <Form onSubmit={onSubmit}>
-                    <Layout.Row className="p-2 border-t max-w-lg mx-auto container">
-                        <Input name="payload" required className="flex-grow" placeholder="Enter message..." />
-                        <Button type="submit" className="btn-icon flex-shrink"><Send /></Button>
+                <Form onSubmit={sendMessage}>
+                    <Layout.Row className="p-2 max-w-xl mx-auto container gap-2 items-center">
+                        <Input name="payload" value={currentMessage} onSubmit={sendMessage} onChange={onMessageChange} className="flex-grow flex-1 rounded-full font-semibold focus:ring-2 caret-primary bg-gray-100 py-4" placeholder="Enter message..." />
+                        <Button  type="submit" className="aspect-square items-center justify-center text-white flex-shrink btn-primary rounded-full disabled:bg-white" disabled={currentMessage.length === 0}><Send width={20} height={20} /></Button>
                     </Layout.Row>
                 </Form>
             </Layout.Col>
