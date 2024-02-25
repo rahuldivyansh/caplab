@@ -5,7 +5,7 @@ import { ICON_DIMENSIONS } from './constants'
 
 const EditorDividerController = ({ editor }) => {
     return (
-        <Button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+        <Button type="button" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
             <Slash width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </Button>
     )

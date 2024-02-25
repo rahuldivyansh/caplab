@@ -69,6 +69,7 @@ const handler = async (req, res) => {
       return res.status(500).json(error, { error: error.message });
     }
   }
+  return res.status(StatusCodes.METHOD_NOT_ALLOWED).send("Method not allowed");
 };
 
 export default handler;

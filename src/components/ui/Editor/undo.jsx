@@ -6,6 +6,7 @@ import { ICON_DIMENSIONS } from './constants'
 const EditorUndoController = ({ editor }) => {
     return (
         <Button
+            type="button"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={
                 !editor.can()
