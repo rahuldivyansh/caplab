@@ -93,6 +93,7 @@ const AuthProvider = (props) => {
           inactiveStatusHandler.dispatch()
         } else {
           activeStatusHandler.dispatch()
+          console.log("active")
         }
       }
       )
