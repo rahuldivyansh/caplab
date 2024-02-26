@@ -6,7 +6,7 @@ const GET = async (group_id) => {
   try {
     const { data: membersData, error: membersError } = await supabaseClient
       .from("members")
-      .select("id,users(name,email,uid)")
+      .select("id,users(name,email,uid,is_active)")
       .eq("group_id", group_id);
     if (membersError)
       throw new CustomError(
