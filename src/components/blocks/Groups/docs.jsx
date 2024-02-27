@@ -12,6 +12,8 @@ import Modal from '@/src/components/ui/Modal';
 import { byteToMb } from '@/src/utils/converters';
 import EmptyElement from '@/src/components/elements/Empty';
 import { FileIcon, defaultStyles } from 'react-file-icon';
+import FileViewerBlock from '@/src/components/blocks/Groups/fileviewer';
+import { useRouter } from 'next/router';
 
 const getExtension = (filename) => {
     if (!filename || !filename.includes(".")) return "txt";
@@ -87,8 +89,32 @@ const RemoveButton = ({ doc, groupId, closeModal, getDocs }) => {
     return <Button className="btn-secondary" onClick={handleRemove} loading={removeDoc.loading}>Remove</Button>
 }
 
+const ViewButton = ({ doc, groupId, changeViewButton }) => {
+    // console.log(doc.name, groupId, "in view button")
+    const viewDoc = useFetch({ method: "GET", url: `/api/docs/${groupId}/${doc.name}/url`, get_autoFetch: true })
+    const handleView = async () => {
+        const { data, error } = await viewDoc.dispatch();
+        if (error) {
+            toast.error("Error fetching doc url");
+        }
+        if (data && window !== undefined) {
+            // window.open(data.publicUrl, "_blank");
+            console.log(data.publicUrl, "in view button");
+            changeViewButton(data.publicUrl);
+        }
+    }
+    return  <Button className="btn-secondary" onClick={handleView}>View</Button> 
+}
+
 const DocsList = ({ docs, groupId, getDocs }) => {
     const [currentDoc, setCurrentDoc] = useState(null)
+    const [viewButtonClicked, setViewButtonClicked] = useState(null)
+
+    const changeViewButton = (publicUrl) => {
+        console.log('changeViewButton', publicUrl)
+        setViewButtonClicked(publicUrl);
+        
+    }
 
     const docsList = Array.from(docs).sort((doc1, doc2) => moment(doc2.created_at).diff(moment(doc1.created_at)));
 
@@ -104,6 +130,8 @@ const DocsList = ({ docs, groupId, getDocs }) => {
                 <Typography>Uploaded at - {moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")}</Typography>
                 <DownloadButton doc={currentDoc} groupId={groupId} />
                 <RemoveButton doc={currentDoc} groupId={groupId} closeModal={() => setCurrentDoc(null)} getDocs={getDocs} />
+                {!viewButtonClicked && <ViewButton doc={currentDoc} groupId={groupId} changeViewButton={changeViewButton} />}
+                {viewButtonClicked &&   <FileViewerBlock url={viewButtonClicked} fileType={getExtension(currentDoc?.name)} />}
             </Layout.Col>
         </Modal>
         {
