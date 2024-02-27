@@ -3,6 +3,7 @@ import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
 import { StatusCodes } from "http-status-codes";
 
+
 const handler = async (req, res) => {
   try {
     const { user } = req;
@@ -11,7 +12,6 @@ const handler = async (req, res) => {
     const { data, error } = await supabaseClient
       .from("users")
       .update({ is_active: flag === "true" ? true : false })
-      .select("name")
       .eq("uid", user)
       .single();
     if (error)

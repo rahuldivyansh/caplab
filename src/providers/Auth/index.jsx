@@ -87,7 +87,7 @@ const AuthProvider = (props) => {
     updateProfileInfoHandler.loading,
   ]);
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && authHandlers.data) {
       window.addEventListener("visibilitychange", function () {
         if (document?.hidden) {
           inactiveStatusHandler.dispatch()
@@ -98,7 +98,7 @@ const AuthProvider = (props) => {
       }
       )
     }
-  }, [])
+  }, [authHandlers.data])
   return (
     <AuthContext.Provider
       value={{

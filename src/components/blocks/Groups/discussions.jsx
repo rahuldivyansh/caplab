@@ -68,6 +68,7 @@ const GroupDiscussions = () => {
         }
 
     }
+    const activeMembers = useMemo(() => membersList.data?.filter(member => member.is_active) || [], [membersList.data])
     useEffect(() => {
         const getMessages = async () => {
             const currentUser = {
@@ -98,10 +99,12 @@ const GroupDiscussions = () => {
         getMessages()
     }, [])
     useEffect(() => {
+        const chatMessageChannel = supabaseBrowser.channel(`group_discussion_chat:${group.id}`)
+        const membersChannel = supabaseBrowser.channel(`group_discussion_members:${group.id}`)
+        const roomChannel = supabaseBrowser.channel(`group_discussion_room:${group.id}`)
         const subscribeToNewChatMessages = async () => {
             const { id } = group;
-            const channel = `group_discussion_chat:${id}`
-            supabaseBrowser.channel(channel)
+            chatMessageChannel
                 .on(
                     'postgres_changes',
                     { event: 'INSERT', schema: 'public', table: 'messages' },
@@ -115,9 +118,7 @@ const GroupDiscussions = () => {
                 .subscribe()
         }
         const subscribeToMemberStatus = async () => {
-            const { id } = group;
-            const channel = `group_discussion_members:${id}`
-            supabaseBrowser.channel(channel)
+            membersChannel
                 .on(
                     'postgres_changes',
                     { event: 'UPDATE', schema: 'public', table: 'users' },
@@ -127,13 +128,44 @@ const GroupDiscussions = () => {
                 )
                 .subscribe()
         }
+        const subscribeToCurrentRoom = async () => {
+            const { id } = group;
+            roomChannel.on(
+                "presence",
+                { event: 'sync' }, () => {
+                    const newState = currentRoom.presenceState();
+                    console.log("sync", newState)
+                }
+            ).on("presence", { event: "join" }, (data) => {
+                const newState = currentRoom.presenceState();
+                console.log("join", newState)
+
+            }).on("presence", { event: "leave" }, (data) => {
+                const newState = currentRoom.presenceState();
+                console.log("leave", newState)
+                console.log("leave", data)
+            })
+                .subscribe();
+        }
+        const joinRoom = async () => {
+            const { id } = group;
+            const currentRoom = supabaseBrowser.channel(`group_discussion_room:${id}`)
+            currentRoom.subscribe();
+        }
         if (userId && membersMap && Object.keys(membersMap).length > 0)
             subscribeToNewChatMessages()
         if (userId) {
-            subscribeToMemberStatus()
+            subscribeToMemberStatus();
+            subscribeToCurrentRoom();
+            joinRoom();
+        }
+        return () => {
+            chatMessageChannel.unsubscribe()
+            membersChannel.unsubscribe()
+            roomChannel.unsubscribe()
+            console.log("unsubscribed")
         }
     }, [membersMap, userId])
-    const activeMembers = useMemo(() => membersList.data?.filter(member => member.is_active) || [], [membersList.data])
     return (
         <>
             <Layout.Row className="sticky top-[3.5rem] sm:top-[6.5rem] border-y py-2 right-0 z-10 bg-white justify-end">
