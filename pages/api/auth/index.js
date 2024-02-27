@@ -25,6 +25,7 @@ const handler = async (req, res) => {
     if (role.error) throw role.error;
     const userData = await supabaseClient
       .from("users")
+      .update({ is_active: true })
       .select("name")
       .eq("uid", user.id)
       .single();

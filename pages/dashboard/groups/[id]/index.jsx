@@ -27,13 +27,13 @@ const GroupPage = (props) => {
         <DashboardLayout>
             <Layout.Col>
                 <Layout.Col className="p-2 gap-2 bg-white">
-                    <Layout.Col className="md:flex-row justify-between md:items-center">
+                    <Layout.Row className="flex-wrap justify-between md:items-center">
                         <Typography className="font-bold">Group - {num}</Typography>
                         <Layout.Row className="items-center gap-1">
                             <Avatar seed={group.users?.name || "user"} />
                             <Typography.Caption className="font-semibold text-gray-800 uppercase">{group.users?.name}</Typography.Caption>
                         </Layout.Row>
-                    </Layout.Col>
+                    </Layout.Row>
                     <Typography.Caption className="font-semibold">{session}</Typography.Caption>
                 </Layout.Col>
                 <Tab.Group>
