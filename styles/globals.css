@@ -7,7 +7,7 @@
   --color-primary: #f63232;
 }
 * {
-  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-family: "Plus Jakarta Sans", sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 .scroll-bar-none::-webkit-scrollbar {
@@ -123,7 +123,7 @@ p {
 }
 
 .caption {
-  @apply text-sm tracking-tight;
+  @apply text-xs tracking-tight;
 }
 
 input,
@@ -149,4 +149,7 @@ input::-webkit-color-swatch {
 }
 .tiptap .ProseMirror {
   @apply p-3 w-full rounded;
+}
+.ag-theme-quartz{
+  font-family:"Roboto","Arial",sans-serif !important;
 }

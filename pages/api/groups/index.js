@@ -20,7 +20,7 @@ const handler = async (req, res) => {
       if (role === ROLES.TEACHER) {
         const { data: groupsData, error: groupsError } = await supabaseClient
           .from("groups")
-          .select("id, num, session")
+          .select("id, num, session,keywords")
           .eq("owner", req.user);
         if (groupsError) throw groupsError;
         return res.status(StatusCodes.OK).json(groupsData);

@@ -26,7 +26,7 @@ const handler = async (req, res) => {
       const role = rolesData.find((role) => role.uid === user.uid);
       return { ...user, role: role.role };
     });
-
+    res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate");
     return res.status(StatusCodes.OK).json(usersDataWithRoles);
   } catch (error) {
     return res
