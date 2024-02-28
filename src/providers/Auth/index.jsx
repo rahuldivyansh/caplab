@@ -1,11 +1,21 @@
 import useLogin from "@/src/hooks/auth/useLogin";
 import useFetch from "@/src/hooks/general/useFetch";
-import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
-
+import { createContext, useContext, useEffect, useMemo } from "react";
 export const AuthContext = createContext(null);
 
 const AuthProvider = (props) => {
   const authHandlers = useLogin();
+
+  const activeStatusHandler = useFetch({
+    method: "GET",
+    url: "/api/auth/active?flag=true",
+    get_autoFetch: false,
+  });
+  const inactiveStatusHandler = useFetch({
+    method: "GET",
+    url: "/api/auth/active?flag=false",
+    get_autoFetch: false,
+  });
   const signoutHandler = useFetch({
     method: "POST",
     url: "/api/auth/logout",
@@ -76,6 +86,19 @@ const AuthProvider = (props) => {
     updateProfileInfoHandler.error,
     updateProfileInfoHandler.loading,
   ]);
+  useEffect(() => {
+    if (typeof window !== "undefined" && authHandlers.data) {
+      window.addEventListener("visibilitychange", function () {
+        if (document?.hidden) {
+          inactiveStatusHandler.dispatch()
+        } else {
+          activeStatusHandler.dispatch()
+          console.log("active")
+        }
+      }
+      )
+    }
+  }, [authHandlers.data])
   return (
     <AuthContext.Provider
       value={{
