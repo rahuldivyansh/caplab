@@ -40,7 +40,6 @@ const handler = async (req, res) => {
           membersData.map((member) => member.group_id)
         );
       if (groupsError) throw groupsError;
-      res.setHeader("Cache-Control", "max-age=3600, stale-while-revalidate");
       return res.status(StatusCodes.OK).json(groupsData);
     } catch (error) {
       console.log(error);
