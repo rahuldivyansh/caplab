@@ -15,6 +15,7 @@ import supabaseClient from '@/src/services/supabase';
 import GroupProvider from '@/src/providers/Group';
 import Avatar from '@/src/components/elements/Avatar';
 import { File, Info, ListTodo, MessageCircle, Settings, Users } from 'lucide-react';
+import GroupSettingsBlock from '@/src/components/blocks/Groups/settings';
 
 const TAB_LABELS = [{ label: "about", Icon: <Info className="ml-2" size={20}/> }, { label: "status", Icon: <ListTodo className="ml-2" size={20}/> }, { label: "documents", Icon: <File className="ml-2" size={20} /> }, { label: "members", Icon: <Users className="ml-2" size={20}/> }, { label: "discussions", Icon: <MessageCircle className="ml-2" size={20} /> }, { label: "settings", Icon: <Settings className="ml-2" size={20} /> }];
 
@@ -66,7 +67,7 @@ const GroupPage = (props) => {
                                 <GroupDiscussions />
                             </Tab.Panel>
                             <Tab.Panel>
-                                <Typography>Settings</Typography>
+                                <GroupSettingsBlock as={Fragment}/>
                             </Tab.Panel>
                         </Tab.Panels>
                     </GroupProvider>
