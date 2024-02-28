@@ -37,7 +37,6 @@ const withAuthPage = (handler) => {
       };
     req.user = data.user.id;
     req.role = roleData.role; 
-    res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate");
     return handler(ctx);
   };
 };
