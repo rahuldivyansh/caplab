@@ -3,7 +3,6 @@ const { CustomError } = require("@/src/utils/errors");
 const { StatusCodes } = require("http-status-codes");
 import supabaseClient from "@/src/services/supabase";
 
-
 const GET = async () => {
   try {
     let { data: teachersData, error: teachersError } = await supabaseClient
@@ -49,8 +48,6 @@ const GET = async () => {
 
 const PUT = async (group_id, payload) => {
   const { teacher } = payload;
-  console.log(teacher)
-  console.log(group_id)
   try {
     if (!teacher)
       throw new Error("please select a valid teacher", StatusCodes.BAD_REQUEST);
@@ -59,7 +56,6 @@ const PUT = async (group_id, payload) => {
       .update({ owner: teacher })
       .eq("id", group_id)
       .select();
-    console.log(groupError)
     if (groupError) {
       throw new Error(
         "cannot update group owner",
@@ -67,7 +63,7 @@ const PUT = async (group_id, payload) => {
         groupError
       );
     }
-    console.log(groupData)
+    console.log(groupData);
     return groupData;
   } catch (error) {
     throw error;
@@ -77,7 +73,6 @@ const PUT = async (group_id, payload) => {
 const handler = async (req, res) => {
   const { method, query, role } = req;
   const { group_id } = query;
-  console.log(group_id)
   if (!group_id) {
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -88,21 +83,12 @@ const handler = async (req, res) => {
       const data = await GET();
       return res.status(StatusCodes.OK).json(data);
     }
-
-    const ALLOWED_ROLES = [ROLES.TEACHER, ROLES.ADMIN];
-    // if (role === undefined || !ALLOWED_ROLES.includes(role)) {
-    //   return res
-    //     .status(StatusCodes.UNAUTHORIZED)
-    //     .json({ message: "unauthorized" });
-    // }
-    if(method == "PUT"){
-      // console.log(group_id)
-        const data = await PUT(group_id,req.body);
-        console.log(data)
-        return res.status(StatusCodes.CREATED).json(data);
+    if (method == "PUT") {
+      const data = await PUT(group_id, req.body);
+      console.log(data);
+      return res.status(StatusCodes.CREATED).json(data);
     }
   } catch (error) {}
 };
-
 
 export default handler;

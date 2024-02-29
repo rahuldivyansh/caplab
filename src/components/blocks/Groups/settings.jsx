@@ -16,7 +16,7 @@ import { set } from "nprogress";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const AddMemberBlock = ({ groupId, getMembers }) => {
-    const router = useRouter();
+  const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState({});
   const ownerToChange = useRef([]);
@@ -39,9 +39,8 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
     setModalOpen((prev) => !prev);
   };
   const onOptionChange = (values) => {
-    console.log(values);
+    // console.log(values);
     ownerToChange.current = values;
-    // console.log(ownerToChange.current)
   };
   const handleChangeOwner = async () => {
     if (ownerToChange.current == {}) return;
@@ -59,9 +58,8 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
       return;
     }
     if (data) {
-    //   await getMembers();
       onModalClose();
-        router.reload();
+      router.reload();
     }
   };
 
@@ -98,7 +96,7 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
   );
 };
 
-const Wrapper= ({ children, groupId, getMembers, members }) => {
+const Wrapper = ({ children, groupId, getMembers, members }) => {
   const auth = useAuth();
   const ALLOWED_ROLES = [ROLES.TEACHER];
   const role = auth.data?.app_meta?.role;
@@ -122,10 +120,17 @@ const GroupSettingsBlock = ({ groupId }) => {
   const group = useGroup();
   const auth = useAuth();
   const { id: currentUserId } = auth.data;
-//   console.log(groupId)
+  console.log("grp owner: " + group.owner);
+  console.log("current user: " + currentUserId);
   if (currentUserId !== group.owner) {
-    return <Wrapper groupId={groupId}>Members are not authorized to change anything</Wrapper>;
+    console.log("this is working1")
+    return (
+      <Wrapper groupId={groupId}>
+        Members are not authorized to change anything
+      </Wrapper>
+    );
   } else {
+    console.log("this is working2")
     return <Wrapper groupId={groupId}></Wrapper>;
   }
 };
