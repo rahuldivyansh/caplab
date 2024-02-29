@@ -66,8 +66,8 @@ const GroupPage = (props) => {
                             <Tab.Panel as={Fragment}>
                                 <GroupDiscussions />
                             </Tab.Panel>
-                            <Tab.Panel>
-                                <GroupSettingsBlock as={Fragment}/>
+                            <Tab.Panel >
+                                <GroupSettingsBlock groupId={id}/>
                             </Tab.Panel>
                         </Tab.Panels>
                     </GroupProvider>
