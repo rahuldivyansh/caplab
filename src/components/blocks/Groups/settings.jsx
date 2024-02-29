@@ -11,6 +11,7 @@ import useFetch from "@/src/hooks/general/useFetch";
 import { useAuth } from "@/src/providers/Auth";
 import { useGroup } from "@/src/providers/Group";
 import { TrashIcon } from "@heroicons/react/20/solid";
+import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import { set } from "nprogress";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -59,7 +60,8 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
     }
     if (data) {
       onModalClose();
-      router.reload();
+    //   redirect("/dashboard/groups");
+        router.push("/dashboard/groups")
     }
   };
 
