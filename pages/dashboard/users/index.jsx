@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Link from 'next/link'
 import DashboardLayout from '@/src/components/layouts/Dashboard'
 import Button from '@/src/components/ui/Button'
@@ -12,19 +12,21 @@ import { AgGridReact } from 'ag-grid-react'
 import { toast } from 'react-toastify'
 import Modal from '@/src/components/ui/Modal'
 import { useRouter } from 'next/router'
+import { set } from 'nprogress'
+import Input from '@/src/components/ui/Form/Input'
+import { LoaderElement } from '@/src/components/elements/Loaders'
 
 
 const DeleteUserBlock = (props) => {
   const { user } = props;
   const router = useRouter()
-  const [confirm, setConfirm] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const deleteUser = useFetch({ method: "DELETE", url: `/api/users/${user.uid}` })
   const deleteUserHandler = async () => {
     try {
       await deleteUser.dispatch()
       toast.success("User deleted")
-      router.reload()
+      props.getUsers();
     } catch (error) {
       toast.error("error deleting user")
     }
@@ -52,17 +54,52 @@ const DeleteUserBlock = (props) => {
 
 }
 
-const UsersTableBlock = () => {
+const UpdateRoleElement = (props) => {
+  const { user } = props;
+  const [role, setRole] = useState(user.role)
+  const updateRole = useFetch({ method: "PUT", url: `/api/roles/${user.uid}` })
+  const updateRoleHandler = async (e) => {
+    try {
+      const { value } = e.target;
+      const { data, error } = await updateRole.dispatch({ role: parseInt(value) })
+      if (error) throw error
+      toast.success("role updated")
+      setRole(data?.role)
+    } catch (error) {
+      toast.error("error updating role")
+    }
+  }
+  console.log("role", role)
+  return (
+    <Layout.Row className="gap-2">
+      <select disabled={updateRole.loading} value={role} onChange={updateRoleHandler} className="p-2 border capitalize rounded-md  transition-all w-full text-center">
+        {Object.keys(REV_ROLES).map((role) => {
+          return <option key={role} value={role}>{REV_ROLES[role]}</option>
+        })}
+      </select>
+    </Layout.Row>
+  )
+
+}
+
+const UsersTableBlock = ({ searchValue }) => {
   const users = useFetch({ method: "GET", url: "/api/users", get_autoFetch: true })
+  const filteredUsers = useMemo(() => {
+    if (users.data) {
+      if (!searchValue) return users.data;
+      return users.data.filter((user) => {
+        return Object.values(user).some((value) => value.toString().toLowerCase().includes(searchValue.toLowerCase()))
+      })
+    }
+    return []
+  }, [searchValue, users.data])
   const columns = [
-    { field: "name", headerName: "Name" },
+    { field: "name", headerName: "Name", cellRenderer: (params) => <Typography.Caption className="capitalize">{params.data.name}</Typography.Caption>, },
     { field: "email", headerName: "Email" },
     {
       field: "role",
       headerName: "Role",
-      cellRenderer: (params) => {
-        return <Typography.Caption className="capitalize">{REV_ROLES[params.data.role]}</Typography.Caption>
-      }
+      cellRenderer: (params) => <UpdateRoleElement user={params.data} />
     },
     {
       field: "uid", headerName: "UID",
@@ -73,39 +110,44 @@ const UsersTableBlock = () => {
       cellRenderer: (params) => {
         return (
           <Layout.Row className="h-full items-center justify-center">
-            <DeleteUserBlock user={params.data} />
+            <DeleteUserBlock user={params.data} getUsers={users.dispatch} />
           </Layout.Row>
         )
       },
     }]
   if (users.loading) {
-    return <div>Loading...</div>
+    return <LoaderElement />
   }
   if (users.error) {
     return <div>Error...</div>
   }
   if (users.data) {
 
-    return <Layout.Col className="ag-theme-quartz text-black h-56 justify-start">
-      <AgGridReact columnDefs={columns} rowData={users.data} />
+    return <Layout.Col className="ag-theme-quartz text-black h-[90dvh] justify-start">
+      <AgGridReact columnDefs={columns} rowData={filteredUsers} />
     </Layout.Col>
   }
   return <></>
 }
 
 const UsersPage = () => {
+  const [searchValue, setSearchValue] = useState("");
+  const handleChange = (e) => {
+    setSearchValue(e.target.value)
+  }
   return (
     <DashboardLayout>
       <Layout.Col className="p-2 gap-2">
-        <Typography.Title>Users</Typography.Title>
-        <Layout.Col className="md:flex-row justify-end">
+        <Typography.Title className="font-semibold capitalize">users</Typography.Title>
+        <Layout.Row className="justify-end items-center gap-2">
+          <Input type="text" placeholder="Search user" className="py-2" onChange={handleChange} />
           <Link href="/dashboard/users/add">
             <Button className="btn-primary">
               Add User
             </Button>
           </Link>
-        </Layout.Col>
-        <UsersTableBlock />
+        </Layout.Row>
+        <UsersTableBlock searchValue={searchValue} />
       </Layout.Col>
     </DashboardLayout>
   )

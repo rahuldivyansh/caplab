@@ -21,22 +21,13 @@ const TAB_LABELS = [{ label: "about", Icon: <Info className="ml-2" size={20}/> }
 
 
 
+
 const GroupPage = (props) => {
     const { group } = props;
     const { id, num, session } = group
     return (
         <DashboardLayout>
             <Layout.Col>
-                <Layout.Col className="p-2 gap-2 bg-white">
-                    <Layout.Row className="flex-wrap justify-between md:items-center">
-                        <Typography className="font-bold">Group - {num}</Typography>
-                        <Layout.Row className="items-center gap-1">
-                            <Avatar seed={group.users?.name || "user"} />
-                            <Typography.Caption className="font-semibold text-gray-800 uppercase">{group.users?.name}</Typography.Caption>
-                        </Layout.Row>
-                    </Layout.Row>
-                    <Typography.Caption className="font-semibold">{session}</Typography.Caption>
-                </Layout.Col>
                 <Tab.Group>
                     <Tab.List className="flex border-b shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10 bg-white">
                         <Layout.Row className="flex-nowrap">
