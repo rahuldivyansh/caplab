@@ -87,17 +87,17 @@ const AuthProvider = (props) => {
     updateProfileInfoHandler.loading,
   ]);
   useEffect(() => {
-    if (typeof window !== "undefined" && authHandlers.data) {
-      window.addEventListener("visibilitychange", function () {
-        if (document?.hidden) {
-          inactiveStatusHandler.dispatch()
-        } else {
-          activeStatusHandler.dispatch()
-          console.log("active")
-        }
-      }
-      )
-    }
+    // if (typeof window !== "undefined" && authHandlers.data) {
+    //   window.addEventListener("visibilitychange", function () {
+    //     if (document?.hidden) {
+    //       inactiveStatusHandler.dispatch()
+    //     } else {
+    //       activeStatusHandler.dispatch()
+    //       console.log("active")
+    //     }
+    //   }
+    //   )
+    // }
   }, [authHandlers.data])
   return (
     <AuthContext.Provider

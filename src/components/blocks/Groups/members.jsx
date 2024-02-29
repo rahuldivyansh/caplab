@@ -56,9 +56,9 @@ const AddMemberBlock = ({ groupId, getMembers, members }) => {
 
     return (
         <>
-            <Modal open={modalOpen} onClose={onModalClose} >
+            <Modal open={modalOpen} onClose={onModalClose} title="Add member">
                 <Layout.Col className="gap-4 p-4 h-screen lg:min-w-[500px]">
-                    <CustomComboBox placeholder="Select Members" list={availableMembers().map(member => ({ value: member.email, displayValue: member.name }))} onChange={onOptionChange} multiple={true} />
+                    <CustomComboBox placeholder="Select Members" list={availableMembers().map(member => ({ value: member.email, displayValue: member.name }))} onChange={onOptionChange} multiple={true} showValue/>
                     <Button className="btn-primary" loading={addMember.loading} onClick={handleAddMember}>Add</Button>
                 </Layout.Col>
             </Modal>
