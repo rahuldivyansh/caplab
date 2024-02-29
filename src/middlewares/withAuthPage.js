@@ -36,9 +36,7 @@ const withAuthPage = (handler) => {
         },
       };
     req.user = data.user.id;
-    req.role = roleData.role;
-    console.log("req.role", req.role);
-    console.log("req.user", req.user);  
+    req.role = roleData.role; 
     return handler(ctx);
   };
 };

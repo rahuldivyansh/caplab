@@ -21,12 +21,12 @@ const AddUserPage = () => {
     const addUser = useFetch({ method: "POST", url: "/api/auth/register" })
     const router = useRouter()
     const onSubmit = async (body) => {
-        if (body.role === '-1') return toast.error("Select role")
+        if (body.role === '-1') return toast.error("select role")
         try {
-            const response = await addUser.dispatch(body)
-            const data = await response.data;
+            const { error, data } = await addUser.dispatch({ ...body, name: new String(body.name).toLowerCase(), role: parseInt(body.role) })
+            if (error) throw error;
             if (data) {
-                toast.success("User added")
+                toast.success("user added")
                 router.push("/dashboard/users")
             }
         } catch (error) {
@@ -37,18 +37,18 @@ const AddUserPage = () => {
     return (
         <DashboardLayout>
             <Layout.Col className="p-2 gap-2">
-                <Typography.Title>Add User</Typography.Title>
+                <Typography.Heading className="font-semibold capitalize">add user</Typography.Heading>
                 <Form onSubmit={onSubmit}>
-                    <Layout.Col className="gap-2 sm:items-start">
-                        <Input type="text" placeholder="Enter name" name="name" />
-                        <Input type="email" placeholder="Enter email" name="email" />
+                    <Layout.Col className="gap-2 max-w-md">
+                        <Input type="text" placeholder="Enter name" name="name" required />
+                        <Input type="email" placeholder="Enter email" name="email" required />
                         <select name="role" className="input capitalize">
                             <option value={-1}>Select Role</option>
                             {ROLES.map((role, index) => (
                                 <option key={`form_user_role_${index}`} value={role.value} className='capitalize'>{role.role}</option>
                             ))}
                         </select>
-                        <Button className="btn-primary" loading={addUser.loading}>Submit</Button>
+                        <Button className="btn-primary sm:max-w-20" loading={addUser.loading}>Submit</Button>
                     </Layout.Col>
                 </Form>
             </Layout.Col>
@@ -68,7 +68,8 @@ export const getServerSideProps = withAuthPage(async (ctx) => {
     }
     return {
         props: {
-            info: "can be accessed by admin only"
-        }, // will be passed to the page component as props
+            info: "can be accessed by admin only",
+            
+        },
     }
 })

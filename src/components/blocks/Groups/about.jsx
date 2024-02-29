@@ -9,6 +9,14 @@ import Editor from '../../ui/Editor'
 import { Check, LucidePencil } from 'lucide-react'
 import { ICON_DIMENSIONS } from '../../ui/Editor/constants'
 
+const GroupDetail = ({ identifier, value }) => {
+    return (
+        <Layout.Col className="justify-between sm:flex-row py-2">
+            <Typography className="font-semibold capitalize">{identifier}</Typography>
+            <Typography>{value}</Typography>
+        </Layout.Col>
+    )
+}
 
 const ProjectDescriptionEditor = () => {
     const [edit, setEdit] = useState(false)
@@ -54,6 +62,11 @@ const GroupAboutBlock = () => {
     return (
         <Layout.Col className="p-2 bg-gray-100 gap-2">
             <Layout.Col className="gap-2 items-start bg-gray-100">
+                <Layout.Card className="w-full divide-y">
+                    <GroupDetail value={group?.num} identifier="Group number" />
+                    <GroupDetail value={group?.session} identifier="Session" />
+                    <GroupDetail value={group?.users?.name?.toUpperCase()} identifier="Owner" />
+                </Layout.Card>
                 <ProjectDescriptionEditor />
             </Layout.Col>
         </Layout.Col>

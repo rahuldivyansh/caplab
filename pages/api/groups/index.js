@@ -20,7 +20,7 @@ const handler = async (req, res) => {
       if (role === ROLES.TEACHER) {
         const { data: groupsData, error: groupsError } = await supabaseClient
           .from("groups")
-          .select("id, num, session")
+          .select("id, num, session,keywords")
           .eq("owner", req.user);
         if (groupsError) throw groupsError;
         return res.status(StatusCodes.OK).json(groupsData);
@@ -40,7 +40,6 @@ const handler = async (req, res) => {
           membersData.map((member) => member.group_id)
         );
       if (groupsError) throw groupsError;
-      res.setHeader("Cache-Control", "max-age=3600, stale-while-revalidate");
       return res.status(StatusCodes.OK).json(groupsData);
     } catch (error) {
       console.log(error);
