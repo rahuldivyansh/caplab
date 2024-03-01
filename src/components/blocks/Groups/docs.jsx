@@ -14,6 +14,7 @@ import EmptyElement from "@/src/components/elements/Empty";
 import { FileIcon, defaultStyles } from "react-file-icon";
 import FileViewerBlock from "@/src/components/blocks/Groups/fileviewer";
 import { useRouter } from "next/router";
+import { twMerge } from "tailwind-merge";
 
 const getExtension = (filename) => {
   if (!filename || !filename.includes(".")) return "txt";
@@ -171,12 +172,13 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         title={currentDoc?.name}
       >
         <Layout.Grid
-          className={`grid-cols-1 ${
-            viewButtonClicked ? "sm:grid-cols-2" : "sm:grid-cols-1"
-          } gap-2`}
+          // className={`grid-cols-1 lg:w-screen ${
+          //   viewButtonClicked ? "sm:grid-cols-4" : "sm:grid-cols-1"
+          // } gap-2`}
+          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1")  }
         >
           {viewButtonClicked && (
-            <Layout.Col className="p-4 gap-2 items-center">
+            <Layout.Col className="p-4 gap-2 items-center col-span-3">
               <FileViewerBlock
                 url={viewButtonClicked}
                 fileType={getExtension(currentDoc?.name)}

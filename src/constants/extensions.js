@@ -2,6 +2,7 @@ export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'web
 export const VIDEO_EXTENSIONS = ['mp4', 'avi', 'mov', 'wmv'];
 export const TEXT_EXTENSIONS = ['txt', 'doc', 'docx', 'pdf'];
 export const PROGRAMMING_EXTENSIONS = [,
+  "txt",
     "java",
     "py",
     "cpp",
