@@ -13,6 +13,7 @@ import Layout from "../../ui/Layout";
 import { toast } from "react-toastify";
 import dynamic from "next/dynamic";
 import PdfViewer from "../../ui/PdfViewer";
+import { IFrame } from "@/src/components/ui/DocxViewer";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -129,8 +130,7 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
           <source src={url} type={`video/${fileType}`} />
         </video>
       ),
-      docx: <p>Some docx file</p>,
-      txt: <p>{fileContent} </p>,
+      docx: <IFrame url={url} />,
       code: (
         <CustomEditor
           fileContent={fileContent}
@@ -138,7 +138,6 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
           path={`group_${group_id}/${doc.name}`}
           fetchFile={fetchFile}
         />
-        // <p>{`${fileContent.publicUrl}`}</p>
       ),
     };
 
