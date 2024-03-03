@@ -88,7 +88,9 @@ const handler = async (req, res) => {
       console.log(data);
       return res.status(StatusCodes.CREATED).json(data);
     }
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 export default handler;
