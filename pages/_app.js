@@ -2,6 +2,8 @@ import React from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import "nprogress/nprogress.css";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
 import { Router } from "next/router";

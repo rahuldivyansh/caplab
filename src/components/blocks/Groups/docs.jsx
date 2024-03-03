@@ -1,10 +1,8 @@
 import React, { useRef, useState } from "react";
-import FileIconH from "@heroicons/react/24/outline/DocumentIcon";
 import Button from "@/src/components/ui/Button";
 import Layout from "@/src/components/ui/Layout";
 import Typography from "@/src/components/ui/Typography";
 import useFetch from "@/src/hooks/general/useFetch";
-import Link from "next/link";
 import { toast } from "react-toastify";
 import { LoaderElement } from "@/src/components/elements/Loaders";
 import moment from "moment";
@@ -117,7 +115,7 @@ const RemoveButton = ({ doc, groupId, closeModal, getDocs }) => {
   };
   return (
     <Button
-      className="btn-secondary"
+      className="btn-danger  flex-1"
       onClick={handleRemove}
       loading={removeDoc.loading}
     >
@@ -143,7 +141,7 @@ const ViewButton = ({ doc, groupId, changeViewButton }) => {
     }
   };
   return (
-    <Button className="btn-secondary" onClick={handleView}>
+    <Button className="btn-secondary flex-1" onClick={handleView}>
       View
     </Button>
   );
@@ -172,18 +170,15 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         title={currentDoc?.name}
       >
         <Layout.Grid
-          // className={`grid-cols-1 lg:w-screen ${
-          //   viewButtonClicked ? "sm:grid-cols-4" : "sm:grid-cols-1"
-          // } gap-2`}
-          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1")  }
+          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1")}
         >
           {viewButtonClicked && (
-            <Layout.Col className="p-4 gap-2 items-center col-span-3">
+            <Layout.Col className=" gap-2 items-center col-span-3">
               <FileViewerBlock
                 url={viewButtonClicked}
                 fileType={getExtension(currentDoc?.name)}
-                doc = {currentDoc}
-                groupId = {groupId}
+                doc={currentDoc}
+                groupId={groupId}
               />
             </Layout.Col>
           )}
@@ -196,29 +191,30 @@ const DocsList = ({ docs, groupId, getDocs }) => {
                 />
               </Layout.Row>
             </Layout.Col>
-            <Typography>
+            <Typography.Caption>
               Size - {byteToMb(currentDoc?.metadata.size).toFixed(2)}MB
-            </Typography>
-            <Typography>
+            </Typography.Caption>
+            <Typography.Caption>
               Uploaded at -{" "}
               {moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")}
-            </Typography>
-            <Typography.Title className="mb-2">Actions</Typography.Title>
+            </Typography.Caption>
             <Layout.Col className="gap-2">
-              <DownloadButton doc={currentDoc} groupId={groupId} />
-              <RemoveButton
-                doc={currentDoc}
-                groupId={groupId}
-                closeModal={() => setCurrentDoc(null)}
-                getDocs={getDocs}
-              />
-              {!viewButtonClicked && (
-                <ViewButton
+              <Layout.Row className="grid-cols-2 gap-2">
+                <RemoveButton
                   doc={currentDoc}
                   groupId={groupId}
-                  changeViewButton={changeViewButton}
+                  closeModal={() => setCurrentDoc(null)}
+                  getDocs={getDocs}
                 />
-              )}
+                {!viewButtonClicked && (
+                  <ViewButton
+                    doc={currentDoc}
+                    groupId={groupId}
+                    changeViewButton={changeViewButton}
+                  />
+                )}
+              </Layout.Row>
+              <DownloadButton doc={currentDoc} groupId={groupId} />
             </Layout.Col>
           </Layout.Col>
         </Layout.Grid>
