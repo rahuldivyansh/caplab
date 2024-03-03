@@ -1,11 +1,10 @@
-import Image from "next/image";
-import { Document, Page } from "react-pdf";
 import { useState, useEffect } from "react";
 import supabaseClient from "@/src/services/supabase";
 import { BUCKET_NAME } from "@/src/constants/storage";
 import {
   IMAGE_EXTENSIONS,
   PROGRAMMING_EXTENSIONS,
+  VIDEO_EXTENSIONS,
 } from "@/src/constants/extensions";
 import axios from "axios";
 import Button from "../../ui/Button";
@@ -13,6 +12,7 @@ import { Save } from "lucide-react";
 import Layout from "../../ui/Layout";
 import { toast } from "react-toastify";
 import dynamic from "next/dynamic";
+import PdfViewer from "../../ui/PdfViewer";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -60,7 +60,6 @@ const CustomEditor = ({ fileContent, fileType, path, fetchFile }) => {
         defaultLanguage={fileType}
         value={currentFileContent}
         onChange={handleEditorChange}
-        theme="vs-dark"
         language={fileType}
         options={{
           wordWrap: "on",
@@ -69,7 +68,7 @@ const CustomEditor = ({ fileContent, fileType, path, fetchFile }) => {
         }}
         style={{ width: "100%", height: "100%" }}
       />
-      <Button onClick={handleSave} className = "btn-icon absolute bg-white right-1 top-1"><Save/></Button>
+      <Button onClick={handleSave} className="btn-primary absolute right-1 bottom-20">save<Save size={24} className="ml-2" /></Button>
     </Layout.Col >
   );
 };
@@ -105,28 +104,30 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
     }
   };
 
-  // Fetch file content
   useEffect(() => {
     fetchFile();
   }, []);
 
-  // Render file based on type
   const renderFile = () => {
     let type = fileType;
-    // console.log(fileContent, "file content in file viewer");
     if (PROGRAMMING_EXTENSIONS.includes(fileType)) {
       type = "code";
     }
-
+    if (VIDEO_EXTENSIONS.includes(fileType)) {
+      type = "video"
+    }
     if (IMAGE_EXTENSIONS.includes(fileType)) {
       type = "img";
     }
     const fileExtensions = {
-      img: <img src={url} alt="File" width={200} height={200} />,
+      img: <img src={url} alt="File" />,
       pdf: (
-        <Document file={url}>
-          <Page pageNumber={1} />
-        </Document>
+        <PdfViewer file={url} />
+      ),
+      video: (
+        <video controls>
+          <source src={url} type={`video/${fileType}`} />
+        </video>
       ),
       docx: <p>Some docx file</p>,
       txt: <p>{fileContent} </p>,

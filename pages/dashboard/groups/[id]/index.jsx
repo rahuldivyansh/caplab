@@ -27,7 +27,7 @@ const GroupPage = (props) => {
     const { id, num, session } = group
     return (
         <DashboardLayout>
-            <Layout.Col>
+            <Layout.Col className="bg-gray-50">
                 <Tab.Group>
                     <Tab.List className="flex border-b shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10 bg-white">
                         <Layout.Row className="flex-nowrap">
@@ -35,7 +35,7 @@ const GroupPage = (props) => {
                                 <Tab
                                     as={Fragment}
                                     key={`group-page-tab-${index}`}
-                                >{({ selected }) => <Button className={`uppercase text-xs font-bold hover:bg-secondary rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white"}`}>{tab.label} {tab.Icon}</Button>}
+                                >{({ selected }) => <Button className={`uppercase text-xs font-bold hover:bg-secondary rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white text-gray-800"}`}>{tab.label} {tab.Icon}</Button>}
                                 </Tab>
                             )}
                         </Layout.Row>

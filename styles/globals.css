@@ -71,6 +71,9 @@ button {
 .btn-general {
   @apply bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
 }
+.btn-danger{
+  @apply bg-red-100 border border-red-500 active:bg-red-300/75 hover:bg-red-300/50 text-red-500;
+}
 
 /* outlined */
 .btn-text {
@@ -123,7 +126,7 @@ p {
 }
 
 .caption {
-  @apply text-xs tracking-tight;
+  @apply text-sm tracking-tight;
 }
 
 input,

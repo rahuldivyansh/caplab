@@ -19,7 +19,6 @@ const Navbar = (props) => {
                 {props.withLogo && <Logo />}
             </Layout.Row>
             <Layout.Row className={styles.navbar_row}>
-                <Button className="btn-icon"><BellIcon width={24} height={24} /></Button>
                 <AccountAvatar />
             </Layout.Row>
         </>

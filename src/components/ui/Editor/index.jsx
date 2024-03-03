@@ -66,12 +66,13 @@ const CustomEditor = ({ disabled, content, onChange }) => {
         onChange(state.editor?.getHTML())
     }
     return (
-        <Layout.Col className="flex-grow  w-full rounded-lg border overflow-hidden bg-white">
+        <Layout.Col className="flex-grow  w-full rounded-lg border overflow-hidden bg-white" key={`readme-${disabled}`}>
             <EditorProvider
                 autofocus={true}
                 editorProps={{
                     attributes: {
-                        class: "w-full rounded bg-white p-4 prose lg:prose-lg mx-auto container focus:outline-none"
+                        class: "w-full rounded bg-white p-4 prose lg:prose-lg mx-auto container focus:outline-none",
+                        contentEditable:!disabled
                     }
 
                 }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar /> : null} extensions={extensions} content={content} />

@@ -18,7 +18,7 @@ const CustomComboBox = (props) => {
     const filteredList = query === '' ? props.list : props.list.filter((item) => item.displayValue.toLowerCase()
         .replace(/\s+/g, '')
         .includes(query.toLowerCase().replace(/\s+/g, '')));
-
+        console.log(value);
     return (
         <>
             <Combobox value={value} onChange={onChange} as={Layout.Col} className="relative z-10 rounded-md border shadow-sm bg-white text-sm w-full" multiple={props.multiple}>
@@ -33,7 +33,7 @@ const CustomComboBox = (props) => {
                         filteredList.map((item, index) => <Combobox.Option order={index} className="p-2 bg-white hover:bg-secondary cursor-pointer" value={item} key={item.value}>
                             {({ selected, active }) => <Layout.Row>
                                 <Layout.Col className="flex-grow">
-                                    <Typography.Caption className="capitalize">{item?.displayValue || `disp_${index}`}</Typography.Caption>
+                                    <Typography.Caption className="capitalize font-semibold">{item?.displayValue || `disp_${index}`}</Typography.Caption>
                                     {props.showValue && <Typography.Caption className="text-xs">{item?.value || `val_${index}`}</Typography.Caption>}
                                 </Layout.Col>
                                 {selected && <CheckIcon className="w-4 h-4 text-primary" />}
@@ -45,6 +45,7 @@ const CustomComboBox = (props) => {
             </Combobox>
             <Layout.Row className="gap-2 flex-wrap">
                 {props.multiple && value.map((item, index) => <Typography.Caption key={index} className="capitalize text-xs bg-primary/10 px-2 py-1 font-medium rounded-full text-primary">{item.displayValue}</Typography.Caption>)}
+                {!props.multiple && value.value !== "value" &&  <Typography.Caption className="capitalize text-xs bg-primary/10 px-2 py-1 font-medium rounded-full text-primary">{value.displayValue}</Typography.Caption>}
             </Layout.Row>
         </>
     )
@@ -56,7 +57,7 @@ CustomComboBox.defaultProps = {
     placeholder: "Combobox placeholder",
     list: [{ value: "item 1", displayValue: "item1" }],
     onChange: (currValue) => null,
-    value: "query",
+    value: {value:"value",displayValue:"displayValue"},
     showValue: false,
     multiple: false
 }
