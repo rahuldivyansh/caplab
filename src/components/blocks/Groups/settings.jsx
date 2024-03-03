@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Typography from "../../ui/Typography";
 
-const AddMemberBlock = ({ groupId, getMembers }) => {
+const SettingsBlock = ({ groupId }) => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState({});
@@ -25,6 +25,7 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
     method: "PUT",
     url: `/api/settings/${groupId}`,
   });
+
   const availableTeachers = () => {
     if (!teachers.data) return [];
     if (Array.isArray(teachers.data) && teachers.data.length == 0) return [];
@@ -35,7 +36,6 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
     setModalOpen((prev) => !prev);
   };
   const onOptionChange = (values) => {
-    // console.log(values);
     ownerToChange.current = values;
   };
   const handleChangeOwner = async () => {
@@ -55,7 +55,6 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
     }
     if (data) {
       onModalClose();
-      //   redirect("/dashboard/groups");
       router.push("/dashboard/groups");
     }
   };
@@ -93,19 +92,15 @@ const AddMemberBlock = ({ groupId, getMembers }) => {
   );
 };
 
-const Wrapper = ({ children, groupId, getMembers, members }) => {
+const Wrapper = ({ children, groupId }) => {
   const auth = useAuth();
   const ALLOWED_ROLES = [ROLES.TEACHER];
   const role = auth.data?.app_meta?.role;
   return (
-    <Layout.Col className="p-4 gap-2 min-h-screen">
+    <Layout.Col className="p-4 gap-2 ">
       {ALLOWED_ROLES.includes(role) && (
         <Layout.Col className="sm:items-start">
-          <AddMemberBlock
-            groupId={groupId}
-            getMembers={getMembers}
-            members={members}
-          />
+          <SettingsBlock groupId={groupId} />
         </Layout.Col>
       )}
       {children}
@@ -123,22 +118,97 @@ const SettingsTabListBLock = (props) => {
     <Layout.Card className="md:w-1/3 flex flex-col gap-2">
       <Typography.Heading className="font-semibold">Options</Typography.Heading>
       <Tab.List className="flex flex-col divide-dark_secondary gap-2">
-        {tabItems.map(item => <Tab key={item.tab} className="rounded-md cursor-pointer hover:bg-dark_decondary transition capitalize" as={Layout.Col}>
-          {({selected})=>(<Typography.Caption className={selected ?"bg-dark_secondary p-2 rounded-md":"p-2 rounded-md"}>{item.tab}</Typography.Caption>)}
-          </Tab>)}
+        {tabItems.map((item) => (
+          <Tab
+            key={item.tab}
+            className="rounded-md cursor-pointer hover:bg-dark_decondary  transition capitalize"
+            as={Layout.Col}
+          >
+            {({ selected }) => (
+              <Typography.Caption
+                className={
+                  selected
+                    ? "bg-dark_secondary p-2 rounded-md text-white"
+                    : "p-2 rounded-md"
+                }
+              >
+                {item.tab}
+              </Typography.Caption>
+            )}
+          </Tab>
+        ))}
       </Tab.List>
     </Layout.Card>
   );
 };
-const SettingsChangeOwner = ({groupId}) => {
-  return <Tab.Panel as={Layout.Col} className="gap-2">
-    <Typography.Heading>Change Owner</Typography.Heading>
-    <p className="bg-red">*this action will remove you from the group</p>
-    <Wrapper groupId={groupId}></Wrapper>
-  </Tab.Panel>;
+const SettingsChangeOwner = ({ groupId }) => {
+  return (
+    <Tab.Panel as={Layout.Col} className="gap-2">
+      <Typography.Heading>Change Owner</Typography.Heading>
+      <p className="text-red-600">
+        *this action will remove you from the group
+      </p>
+      <Wrapper groupId={groupId}></Wrapper>
+    </Tab.Panel>
+  );
 };
-const SettingsRemoveGroup = (props) => {
-  return <></>;
+const SettingsRemoveGroup = ({ groupId }) => {
+  const router = useRouter();
+  const deleteGroup = useFetch({
+    method: "DELETE",
+    url: `/api/settings/${groupId}/delete`,
+  });
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOnClick = () => {
+    setModalOpen((prev) => !prev);
+  };
+  const handleDeleteGroup = async () => {
+    const { data, error } = await deleteGroup.dispatch();
+    if (error) {
+      console.log(error);
+    }
+    if (data === null) {
+      handleOnClick();
+      router.push("/dashboard/groups");
+    }
+  };
+  const RemoveModel = () => {
+    return (
+      <Modal open={modalOpen} onClose={handleOnClick}>
+        <Layout.Col className="gap-4">
+          <Layout.Container>
+            <p>Are you sure you want to delete this group?</p>
+          </Layout.Container>
+
+          <Layout.Row className="gap-2 sm:items-center">
+            <button className="gap-4 btn-primary" onClick={handleOnClick}>
+              Cancel
+            </button>
+            <button
+              className="gap-4 bg-red-500 rounded-full hover:bg-red-700"
+              onClick={handleDeleteGroup}
+            >
+              Delete Group
+            </button>
+          </Layout.Row>
+        </Layout.Col>
+      </Modal>
+    );
+  };
+  return (
+    <Tab.Panel as={Layout.Col} className="gap-2">
+      <Typography.Heading>Delete Group</Typography.Heading>
+      <p  className="text-red-800">Warning!!!</p>
+      <p className="text-red-800">Continuing will delete the group and its content permanently</p>
+      <Button
+        className="bg-red-500 hover:bg-red-700 text-white font-bold  h-8 rounded-full"
+        onClick={handleOnClick}
+      >
+        Delete group
+      </Button>
+      {modalOpen && <RemoveModel />}
+    </Tab.Panel>
+  );
 };
 
 const GroupSettingsBlock = ({ groupId }) => {
@@ -170,8 +240,8 @@ const GroupSettingsBlock = ({ groupId }) => {
               <SettingsTabListBLock />
               <Layout.Card className="md:w-2/3">
                 <Tab.Panels>
-                  <SettingsChangeOwner groupId={groupId}/>
-                  <SettingsRemoveGroup />
+                  <SettingsChangeOwner groupId={groupId} />
+                  <SettingsRemoveGroup groupId={groupId} />
                 </Tab.Panels>
               </Layout.Card>
             </Layout.Col>

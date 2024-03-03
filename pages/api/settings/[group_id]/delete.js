@@ -61,31 +61,31 @@ const DELETE = async (group_id) => {
     throw error;
   }
   // delete the respestive group documents
-  const { data: documents, error: fetchDocumentsError } = await supabaseClient
-    .from("docs")
-    .select("*")
-    .eq("group_id", group_id);
-  if (documents && documents.length > 0) {
-    const { error: documentError } = await supabaseClient
-      .from("docs")
-      .delete()
-      .eq("group_id", group_id);
-    if (documentError) {
-      console.log("document error: " + documentError);
-      throw new CustomError(
-        "Cannot delete the group",
-        StatusCodes.BAD_REQUEST,
-        documentError
-      );
-    }
-  }
-  if (fetchDocumentsError) {
-    throw new CustomError(
-      "Cannot delete the group",
-      StatusCodes.BAD_REQUEST,
-      fetchDocumentsError
-    );
-  }
+  // const { data: documents, error: fetchDocumentsError } = await supabaseClient
+  //   .from("docs")
+  //   .select("*")
+  //   .eq("group_id", group_id);
+  // if (documents && documents.length > 0) {
+  //   const { error: documentError } = await supabaseClient
+  //     .from("docs")
+  //     .delete()
+  //     .eq("group_id", group_id);
+  //   if (documentError) {
+  //     console.log("document error: " + documentError);
+  //     throw new CustomError(
+  //       "Cannot delete the group",
+  //       StatusCodes.BAD_REQUEST,
+  //       documentError
+  //     );
+  //   }
+  // }
+  // if (fetchDocumentsError) {
+  //   throw new CustomError(
+  //     "Cannot delete the group",
+  //     StatusCodes.BAD_REQUEST,
+  //     fetchDocumentsError
+  //   );
+  // }
 
   // delete the group
   const { data: groups, error: fetchGroupError } = await supabaseClient
