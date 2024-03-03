@@ -47,10 +47,10 @@ const ProjectDescriptionEditor = () => {
 
     return <Layout.Col className="gap-2 w-full">
         <Layout.Card className="w-full">
-            <Layout.Col className="md:flex-row md:items-center md:justify-between">
+            <Layout.Row className="flex-wrap justify-between items-center">
                 <Typography className="font-semibold">{edit ? "Save Changes" : "Description"}</Typography>
-                <Button onClick={handleEdit} className="capitalize md:aspect-square transition-all bg-primary text-white border" loading={saveDescription.loading}>{edit ? <Check width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} /> : <LucidePencil width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />}</Button>
-            </Layout.Col>
+                <Button onClick={handleEdit} className="capitalize aspect-square transition-all bg-primary text-white border" loading={saveDescription.loading}>{edit ? <Check width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} /> : <LucidePencil width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />}</Button>
+            </Layout.Row>
         </Layout.Card>
         <hr className="my-2"/>
         <Editor content={description} disabled={!edit} onChange={onChange} />
@@ -60,12 +60,12 @@ const ProjectDescriptionEditor = () => {
 const GroupAboutBlock = () => {
     const group = useGroup()
     return (
-        <Layout.Col className="p-2 bg-gray-100 gap-2">
-            <Layout.Col className="gap-2 items-start bg-gray-100">
+        <Layout.Col className="p-2 gap-2 max-w-3xl mx-auto container min-h-screen">
+            <Layout.Col className="gap-2 items-start">
                 <Layout.Card className="w-full divide-y">
                     <GroupDetail value={group?.num} identifier="Group number" />
                     <GroupDetail value={group?.session} identifier="Session" />
-                    <GroupDetail value={group?.users?.name?.toUpperCase()} identifier="Owner" />
+                    <GroupDetail value={`${group?.users?.name?.toUpperCase()} (${group?.users?.email})`} identifier="Owner" />
                 </Layout.Card>
                 <ProjectDescriptionEditor />
             </Layout.Col>

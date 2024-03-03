@@ -1,122 +1,101 @@
-const { default: supabaseClient } = require("@/src/services/supabase");
-const { CustomError } = require("@/src/utils/errors");
-const { StatusCodes } = require("http-status-codes");
+import { BUCKET_NAME } from "@/src/constants/storage";
+import supabaseClient from "@/src/services/supabase";
+import { CustomError } from "@/src/utils/errors";
+import { StatusCodes } from "http-status-codes";
 
 const DELETE = async (group_id) => {
+  const response = {
+    group: null,
+    members: null,
+    messages: null,
+    status: null,
+    docs: false,
+  };
   try {
-    // delete respestive group members
-    const { data: members, error: fetchGroupMembers } = await supabaseClient
-      .from("members")
-      .select("*")
-      .eq("group_id", group_id);
-
-    if (members && members.length > 0) {
-      const { error: memberError } = await supabaseClient
+    const { data: deleteMembers, error: deleteMembersError } =
+      await supabaseClient
         .from("members")
         .delete()
-        .eq("group_id", group_id);
-      if (memberError) {
-        console.log("member error: " + memberError);
-        throw new CustomError(
-          "Cannot delete the group",
-          StatusCodes.BAD_REQUEST,
-          memberError
-        );
-      }
-    }
-    if (fetchGroupMembers) {
+        .eq("group_id", group_id)
+        .select();
+    if (deleteMembersError) {
       throw new CustomError(
-        "Cannot delete the group",
-        StatusCodes.BAD_REQUEST,
-        fetchGroupMembers
+        "error removing members",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        deleteMembersError
       );
     }
-    // delete the respestive group messages
-    const { data: messages, error: fetchMessagesError } = await supabaseClient
-      .from("messages")
-      .select("*")
-      .eq("group_id", group_id);
-    if (messages && messages.length > 0) {
-      const { error: messageError } = await supabaseClient
+    const { data: deleteMessages, error: deleteMessagesError } =
+      await supabaseClient
         .from("messages")
         .delete()
-        .eq("group_id", group_id);
-      if (messageError) {
-        console.log("message error: " + messageError);
-        throw new CustomError(
-          "Cannot delete the group",
-          StatusCodes.BAD_REQUEST,
-          messageError
-        );
-      }
-    }
-    if (fetchMessagesError) {
+        .eq("group_id", group_id)
+        .select();
+    if (deleteMessagesError) {
       throw new CustomError(
-        "Cannot delete the group",
-        StatusCodes.BAD_REQUEST,
-        fetchMessagesError
+        "error removing messages",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        deleteMessagesError
       );
     }
-  } catch (error) {
-    throw error;
-  }
-  // delete the respestive group documents
-  // const { data: documents, error: fetchDocumentsError } = await supabaseClient
-  //   .from("docs")
-  //   .select("*")
-  //   .eq("group_id", group_id);
-  // if (documents && documents.length > 0) {
-  //   const { error: documentError } = await supabaseClient
-  //     .from("docs")
-  //     .delete()
-  //     .eq("group_id", group_id);
-  //   if (documentError) {
-  //     console.log("document error: " + documentError);
-  //     throw new CustomError(
-  //       "Cannot delete the group",
-  //       StatusCodes.BAD_REQUEST,
-  //       documentError
-  //     );
-  //   }
-  // }
-  // if (fetchDocumentsError) {
-  //   throw new CustomError(
-  //     "Cannot delete the group",
-  //     StatusCodes.BAD_REQUEST,
-  //     fetchDocumentsError
-  //   );
-  // }
-
-  // delete the group
-  const { data: groups, error: fetchGroupError } = await supabaseClient
-    .from("groups")
-    .select("*")
-    .eq("id", group_id);
-  if (groups) {
-    const { data, error: groupError } = await supabaseClient
+    const { data: deleteStatus, error: deleteStatusError } =
+      await supabaseClient
+        .from("status")
+        .delete()
+        .eq("group_id", group_id)
+        .select();
+    if (deleteStatusError) {
+      throw new CustomError(
+        "error removing status",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        deleteStatusError
+      );
+    }
+    const { data: docs, error: docsError } = await supabaseClient.storage
+      .from(BUCKET_NAME)
+      .list(`group_${group_id}/`);
+    if (docsError) {
+      throw new CustomError(
+        "error fetching docs",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        docsError
+      );
+    }
+    if (docs.length > 0) {
+      const paths = docs.map((doc) => `group_${group_id}/${doc.name}`);
+      paths.push(`group_${group_id}`);
+      const { data: _deleteDocs, error: deleteDocsError } =
+        await supabaseClient.storage.from(BUCKET_NAME).remove(paths);
+      if (deleteDocsError) {
+        throw new CustomError(
+          "error removing docs",
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          deleteDocsError
+        );
+      }
+      response.docs = true;
+    }
+    const { data: group, error: groupError } = await supabaseClient
       .from("groups")
       .delete()
       .eq("id", group_id)
+      .select()
       .single();
-
     if (groupError) {
-      console.log("group error: " + groupError);
       throw new CustomError(
-        "Cannot delete the group",
-        StatusCodes.BAD_REQUEST,
+        "error removing group",
+        StatusCodes.INTERNAL_SERVER_ERROR,
         groupError
       );
     }
-    return data;
+    response.status = deleteStatus;
+    response.group = group;
+    response.members = deleteMembers;
+    response.messages = deleteMessages;
+    return response;
+  } catch (error) {
+    throw error;
   }
-  if (fetchGroupError) {
-    throw new CustomError(
-      "Cannot delete the group",
-      StatusCodes.BAD_REQUEST,
-      fetchGroupError
-    );
-  }
-  // return data;
 };
 
 const handler = async (req, res) => {
@@ -125,7 +104,7 @@ const handler = async (req, res) => {
 
   if (!group_id) {
     return res
-      .stauts(StatusCodes.BAD_REQUEST)
+      .status(StatusCodes.BAD_REQUEST)
       .send({ message: "group id is required", error: {} });
   }
 
@@ -135,7 +114,10 @@ const handler = async (req, res) => {
       return res.status(StatusCodes.OK).json(data);
     }
   } catch (error) {
-    throw error;
+    console.log(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({ message: error?.message, error });
   }
 };
 

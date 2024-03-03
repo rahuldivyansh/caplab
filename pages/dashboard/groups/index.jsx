@@ -11,6 +11,7 @@ import useFetch from '@/src/hooks/general/useFetch'
 import { ScaleLoader } from 'react-spinners'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Avatar from '@/src/components/elements/Avatar'
+import { LoaderElement } from '@/src/components/elements/Loaders'
 
 const ALLOWED_ROLES = [ROLES.TEACHER];
 
@@ -31,22 +32,24 @@ const GroupsPage = () => {
                         </Link>
                     }
                 </Layout.Row>
-                {groups.loading && <Layout.Col className="col-span-4 items-center justify-center h-[500px]"><ScaleLoader /></Layout.Col>}
+                {groups.loading && <LoaderElement/>}
+                {groups.error && "error loading groups"}
                 <ResponsiveMasonry
                     className='gap-2'
                     columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
                 >
                     <Masonry gutter={8}>
 
-                        {groups.error && "error loading groups"}
                         {groups.data !== null && groups.data.map((group, index) => (
                             <Link href={`/dashboard/groups/${group.id}`} key={`group-${index}`}>
                                 <Layout.Card className="active:border-primary gap-2 flex flex-col">
-                                    <Layout.Row className="items-center gap-2">
-                                    <Avatar seed={`GP-${group.num}-${group.session}`}/>
-                                    <Typography className="font-semibold uppercase">Group-{group.num}</Typography>
+                                    <Layout.Row className="items-center gap-2 justify-between">
+                                        <Layout.Row className="gap-2 items-center">
+                                            <Avatar seed={`GP-${group.num}-${group.session}`} />
+                                            <Typography className="font-semibold uppercase">Group-{group.num}</Typography>
+                                        </Layout.Row>
+                                        <Typography className="font-semibold">{group.session}</Typography>
                                     </Layout.Row>
-                                    <Typography>Session-{group.session}</Typography>
                                     <Layout.Row className="gap-2 items-start flex-wrap text-xs">
                                         {group.keywords && group.keywords.map((keyword, index) => (
                                             <Typography.Caption key={`keyword-${index}`} className="capitalize bg-primary/10 text-primary px-2 py-1 rounded-full">{keyword}</Typography.Caption>

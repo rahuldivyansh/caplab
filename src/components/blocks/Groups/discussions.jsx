@@ -28,7 +28,7 @@ const ChatHead = ({ message, currentUserId }) => {
         {showMoreInfo && <Typography.Caption className="text-right text-gray-500 text-xs">{moment(message.created_at).format("MMMM Do YYYY, h:mm a")}</Typography.Caption>}
     </Layout.Col>)
     return (<Layout.Row className="justify-start items-start overflow-hidden">
-        <Avatar seed={message.sent_by?.name || "user"} dimensions={[24, 24]} />
+        <Avatar seed={message.sent_by?.name || "user"} dimensions={[32, 32]} />
         <div className="border-solid border-t-secondary border-t-[12px] border-l-transparent border-r-secondary border-r-0 border-l-[12px] border-b-0" />
         <Layout.Col className="overflow-hidden max-w-[80%] items-start" onClick={toggleShowMoreInfo}>
             <Typography.Body className="bg-secondary text-black p-2 rounded-b-2xl rounded-tr-2xl overflow-hidden break-all">

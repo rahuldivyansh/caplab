@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { Document, Page } from "react-pdf";
 import { useState, useEffect } from "react";
 import supabaseClient from "@/src/services/supabase";
 import { BUCKET_NAME } from "@/src/constants/storage";

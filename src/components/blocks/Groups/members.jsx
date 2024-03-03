@@ -11,6 +11,7 @@ import useFetch from '@/src/hooks/general/useFetch'
 import { useAuth } from '@/src/providers/Auth'
 import { useGroup } from '@/src/providers/Group'
 import { TrashIcon } from '@heroicons/react/20/solid'
+import { Plus } from 'lucide-react'
 import { set } from 'nprogress'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -62,7 +63,7 @@ const AddMemberBlock = ({ groupId, getMembers, members }) => {
                     <Button className="btn-primary" loading={addMember.loading} onClick={handleAddMember}>Add</Button>
                 </Layout.Col>
             </Modal>
-            <Button className="btn-primary" loading={addMember.loading} onClick={onModalClose} >Add</Button>
+            <Button className="btn-primary" loading={addMember.loading} onClick={onModalClose} >Add <Plus size={20} className='ml-1'/></Button>
         </>
     )
 
