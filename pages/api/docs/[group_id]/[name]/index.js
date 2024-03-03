@@ -5,7 +5,16 @@ import { CustomError } from "@/src/utils/errors";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
 const GET = async (group_id, name) => {
-  return {};
+  try {
+    const PATH = `group_${group_id}/${name}`;
+    const { data: docData, error: docError } = await supabaseClient.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(PATH);
+    if (docError) throw new CustomError("Error fetching doc", 500, docError);
+    return docData;
+  } catch (err) {
+    throw err;
+  }
 };
 
 const POST = async (group_id) => {
