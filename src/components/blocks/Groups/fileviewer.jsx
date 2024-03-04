@@ -3,6 +3,7 @@ import supabaseClient from "@/src/services/supabase";
 import { BUCKET_NAME } from "@/src/constants/storage";
 import {
   IMAGE_EXTENSIONS,
+  OFFICE_EXTENSIONS,
   PROGRAMMING_EXTENSIONS,
   VIDEO_EXTENSIONS,
 } from "@/src/constants/extensions";
@@ -120,6 +121,9 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
     if (IMAGE_EXTENSIONS.includes(fileType)) {
       type = "img";
     }
+    if (OFFICE_EXTENSIONS.includes(fileType)) {
+      type = "office";
+    }
     const fileExtensions = {
       img: <img src={url} alt="File" />,
       pdf: (
@@ -130,7 +134,7 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
           <source src={url} type={`video/${fileType}`} />
         </video>
       ),
-      docx: <IFrame url={url} />,
+      office: <IFrame url={url} />,
       code: (
         <CustomEditor
           fileContent={fileContent}

@@ -29,3 +29,4 @@ export const PROGRAMMING_EXTENSIONS = [
   "sh",
   "sql",
 ];
+export const OFFICE_EXTENSIONS = ["docx", "pptx", "ppt", "xlsx"];
