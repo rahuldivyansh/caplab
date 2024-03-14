@@ -3,6 +3,7 @@ import supabaseClient from "@/src/services/supabase";
 import { BUCKET_NAME } from "@/src/constants/storage";
 import {
   IMAGE_EXTENSIONS,
+  OFFICE_EXTENSIONS,
   PROGRAMMING_EXTENSIONS,
   VIDEO_EXTENSIONS,
 } from "@/src/constants/extensions";
@@ -13,6 +14,7 @@ import Layout from "../../ui/Layout";
 import { toast } from "react-toastify";
 import dynamic from "next/dynamic";
 import PdfViewer from "../../ui/PdfViewer";
+import { IFrame } from "@/src/components/ui/DocxViewer";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -119,6 +121,9 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
     if (IMAGE_EXTENSIONS.includes(fileType)) {
       type = "img";
     }
+    if (OFFICE_EXTENSIONS.includes(fileType)) {
+      type = "office";
+    }
     const fileExtensions = {
       img: <img src={url} alt="File" />,
       pdf: (
@@ -129,8 +134,7 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
           <source src={url} type={`video/${fileType}`} />
         </video>
       ),
-      docx: <p>Some docx file</p>,
-      txt: <p>{fileContent} </p>,
+      office: <IFrame url={url} />,
       code: (
         <CustomEditor
           fileContent={fileContent}
@@ -138,7 +142,6 @@ const FileViewerBlock = ({ url, fileType, doc, groupId: group_id }) => {
           path={`group_${group_id}/${doc.name}`}
           fetchFile={fetchFile}
         />
-        // <p>{`${fileContent.publicUrl}`}</p>
       ),
     };
 
