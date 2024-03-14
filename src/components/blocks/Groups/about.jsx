@@ -52,7 +52,6 @@ const ProjectDescriptionEditor = () => {
                 <Button onClick={handleEdit} className="capitalize aspect-square transition-all bg-primary text-white border" loading={saveDescription.loading}>{edit ? <Check width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} /> : <LucidePencil width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />}</Button>
             </Layout.Row>
         </Layout.Card>
-        <hr className="my-2"/>
         <Editor content={description} disabled={!edit} onChange={onChange} />
     </Layout.Col>
 }
@@ -62,7 +61,7 @@ const GroupAboutBlock = () => {
     return (
         <Layout.Col className="p-2 gap-2 max-w-3xl mx-auto container min-h-screen">
             <Layout.Col className="gap-2 items-start">
-                <Layout.Card className="w-full divide-y">
+                <Layout.Card className="w-full divide-y dark:divide-white/5">
                     <GroupDetail value={group?.num} identifier="Group number" />
                     <GroupDetail value={group?.session} identifier="Session" />
                     <GroupDetail value={`${group?.users?.name?.toUpperCase()} (${group?.users?.email})`} identifier="Owner" />

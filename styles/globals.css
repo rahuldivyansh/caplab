@@ -3,9 +3,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-:root {
-  --color-primary: #f63232;
-}
+
 * {
   font-family: "Plus Jakarta Sans", sans-serif;
   -webkit-tap-highlight-color: transparent;
@@ -26,8 +24,15 @@
 }
 
 body {
-  @apply bg-white text-black;
+  @apply bg-white text-black dark:bg-black dark:text-white;
 }
+.bg-surface {
+  @apply bg-white dark:bg-white/10 text-black dark:text-white;
+}
+/* .bg-background{
+  @apply bg-gray-100 dark:bg-black text-black dark:text-white;
+} */
+
 /* tables */
 table {
   @apply rounded-md  border-dark_secondary overflow-hidden shadow-sm;
@@ -71,7 +76,7 @@ button {
 .btn-general {
   @apply bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
 }
-.btn-danger{
+.btn-danger {
   @apply bg-red-100 border border-red-500 active:bg-red-300/75 hover:bg-red-300/50 text-red-500;
 }
 
@@ -106,7 +111,7 @@ button {
 /* Icon */
 
 .btn-icon {
-  @apply rounded-xl text-general p-2   hover:bg-secondary/20 active:bg-secondary/30;
+  @apply rounded-xl text-general dark:text-white p-2  hover:bg-secondary/20 active:bg-secondary/30;
 }
 
 /* typography */
@@ -153,6 +158,6 @@ input::-webkit-color-swatch {
 .tiptap .ProseMirror {
   @apply p-3 w-full rounded;
 }
-.ag-theme-quartz{
-  font-family:"Roboto","Arial",sans-serif !important;
+.ag-theme-quartz {
+  font-family: "Roboto", "Arial", sans-serif !important;
 }

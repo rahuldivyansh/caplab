@@ -21,7 +21,7 @@ const GroupsPage = () => {
     const role = auth.data?.app_meta?.role
     return (
         <DashboardLayout>
-            <Layout.Col className="p-4 md:p-12 lg:p-16 gap-4 bg-secondary/5">
+            <Layout.Col className="p-4 md:p-12 lg:p-16 gap-4">
                 <Layout.Row className="justify-between flex-grow">
                     <Typography.Subtitle className="font-semibold">
                         Groups

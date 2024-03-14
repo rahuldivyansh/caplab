@@ -43,7 +43,7 @@ const Sidebar = () => {
         dashboard.setSidebarCollapsed(prev => !prev);
     }
     return (
-        <Layout.Col className={`border-r fixed sm:relative bg-white z-[3000] p-3 gap-4 h-full transition-all ease-in-out ${dashboard.sidebarCollapsed ? "w-full sm:w-1/4" : "hidden sm:block w-auto"}`}>
+        <Layout.Col className={`border-r dark:border-white/5 fixed sm:relative bg-background-light dark:bg-background-dark z-[3000] p-3 gap-4 h-full transition-all ease-in-out ${dashboard.sidebarCollapsed ? "w-full sm:w-1/4" : "hidden sm:block w-auto"}`}>
             <Layout.Row className="justify-between items-center">
                 {dashboard.sidebarCollapsed && <Logo />}
                 <Button onClick={toggleSidebar} className="btn-icon"><MenuIcon width={24} height={24} /></Button>
@@ -51,7 +51,7 @@ const Sidebar = () => {
             <Layout.Col className="gap-2">
                 {
                     LINKS.map((link, index) => (
-                        link.access.includes(role) ? <Link key={`sidebarLink_${index}`} href={link.href} prefetch className={`flex text-gray-900 gap-2 px-2 py-2 hover:bg-slate-200 active1:bg-slate-300 rounded-md font-semibold transition-all items-center ${dashboard.sidebarCollapsed ? "" : "justify-center aspect-square"}`}>
+                        link.access.includes(role) ? <Link key={`sidebarLink_${index}`} href={link.href} prefetch className={`flex text-gray-900 dark:text-white gap-2 px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600  active1:bg-slate-300 rounded-md font-semibold transition-all items-center ${dashboard.sidebarCollapsed ? "" : "justify-center aspect-square"}`}>
                             {link.Icon}
                             {dashboard.sidebarCollapsed && link.title}
                         </Link> : null

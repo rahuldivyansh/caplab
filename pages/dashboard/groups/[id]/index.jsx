@@ -27,15 +27,15 @@ const GroupPage = (props) => {
     const { id, num, session } = group
     return (
         <DashboardLayout>
-            <Layout.Col className="bg-gray-50">
+            <Layout.Col>
                 <Tab.Group>
-                    <Tab.List className="flex border-b shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10 bg-white">
+                    <Tab.List className="flex border-b dark:bg-black dark:border-white/5 shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10">
                         <Layout.Row className="flex-nowrap">
                             {TAB_LABELS.map((tab, index) =>
                                 <Tab
                                     as={Fragment}
                                     key={`group-page-tab-${index}`}
-                                >{({ selected }) => <Button className={`uppercase text-xs font-bold hover:bg-secondary rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white text-gray-800"}`}>{tab.label} {tab.Icon}</Button>}
+                                >{({ selected }) => <Button className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white dark:border-black text-gray-800 dark:text-white"}`}>{tab.label} {tab.Icon}</Button>}
                                 </Tab>
                             )}
                         </Layout.Row>
@@ -45,7 +45,7 @@ const GroupPage = (props) => {
                             <Tab.Panel>
                                 <GroupAboutBlock />
                             </Tab.Panel>
-                            <Tab.Panel className="overflow-x-scroll outline-none bg-gray-100 scroll-bar-none">
+                            <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">
                                 <GroupStatusBlock />
                             </Tab.Panel>
                             <Tab.Panel>
