@@ -7,6 +7,7 @@ const EditorUndoController = ({ editor }) => {
     return (
         <Button
             type="button"
+            className="border btn-icon"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={
                 !editor.can()

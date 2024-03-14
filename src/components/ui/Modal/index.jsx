@@ -24,13 +24,13 @@ const Modal = (props) => {
         leaveFrom="opacity-100 sm:scale-100"
         leaveTo="opacity-0 sm:scale-0"
       >
-        <Dialog.Panel className="bg-white text-black border rounded-t-xl sm:rounded-xl overflow-hidden border-secondary">
-          <Layout.Row className="items-center bg-white justify-between border-b border-secondary py-1 px-2">
-            <Typography.Body className="font-semibold text-black">
+        <Dialog.Panel className="bg-background-light dark:bg-background-dark text-black border rounded-t-xl sm:rounded-xl overflow-hidden border-secondary dark:border-white/10">
+          <Layout.Row className="items-center justify-between border-b border-secondary dark:border-white/10 py-1 px-2">
+            <Typography.Body className="font-semibold text-black dark:text-white">
               {props.title}
             </Typography.Body>
             <Button onClick={props.onClose} className="btn-icon">
-              <CloseIcon className="text-black w-5 h-5" />
+              <CloseIcon className="text-black dark:text-white w-5 h-5" />
             </Button>
           </Layout.Row>
           {props.children}

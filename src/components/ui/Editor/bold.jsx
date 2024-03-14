@@ -19,7 +19,7 @@ const EditorBoldController = ({ editor }) => {
             }
             active={editor.isActive('bold')}
         >
-            <Bold width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color} />
+            <Bold width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }

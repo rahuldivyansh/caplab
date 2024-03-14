@@ -24,7 +24,7 @@
 }
 
 body {
-  @apply bg-white text-black dark:bg-black dark:text-white;
+  @apply bg-background-light text-black dark:bg-background-dark dark:text-white;
 }
 .bg-surface {
   @apply bg-white dark:bg-white/10 text-black dark:text-white;
@@ -111,7 +111,7 @@ button {
 /* Icon */
 
 .btn-icon {
-  @apply rounded-xl text-general dark:text-white p-2  hover:bg-secondary/20 active:bg-secondary/30;
+  @apply rounded-xl  dark:text-white p-2  hover:bg-secondary/20 active:bg-secondary/30;
 }
 
 /* typography */
@@ -137,7 +137,7 @@ p {
 input,
 textarea,
 select {
-  @apply outline-none p-3 rounded-md border border-black/15   focus:border-primary transition-all font-normal  text-sm;
+  @apply outline-none bg-transparent p-3 rounded-md border-2 border-black/15 dark:border-white/20   focus:border-primary dark:focus:border-primary transition-all font-normal  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;

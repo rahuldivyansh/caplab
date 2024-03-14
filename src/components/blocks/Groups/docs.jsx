@@ -162,7 +162,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
   );
 
   return (
-    <Layout.Grid className="grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-0 sm:divide-y">
+    <Layout.Grid className="grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-0 sm:divide-y dark:divide-white/10">
       <Modal
         open={currentDoc !== null}
         onClose={() => {
@@ -228,7 +228,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               setCurrentDoc(doc);
             }}
             key={`group-doc-${doc.id}`}
-            className="px-2 py-2 sm:py-0 border sm:border-x-0 rounded sm:rounded-none overflow-hidden aspect-square sm:aspect-auto sm:flex-row justify-between items-center gap-2 hover:bg-gray-200 active:bg-gray-300 transition-all cursor-pointer select-none"
+            className="px-2 py-2 sm:py-0 border sm:border-x-0 rounded sm:rounded-none overflow-hidden aspect-square sm:aspect-auto sm:flex-row justify-between items-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-200/10 active:bg-gray-300 transition-all cursor-pointer select-none"
           >
             <Layout.Col className="sm:flex-row gap-2 w-full sm:w-auto h-full justify-center items-center overflow-hidden">
               <Layout.Row className="gap-2 items-center justify-center w-16 h-24 sm:w-8 sm:h-12 scale-90 overflow-hidden">
@@ -237,7 +237,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
                   {...defaultStyles[getExtension(doc.name)]}
                 />
               </Layout.Row>
-              <Typography.Caption className="font-semibold w-full text-gray-600 line-clamp-1">
+              <Typography.Caption className="font-semibold w-full text-gray-600 dark:text-white line-clamp-1">
                 {doc.name}
               </Typography.Caption>
             </Layout.Col>

@@ -38,12 +38,12 @@ const CurrentTaskModal = ({ task, setTask, getTasks }) => {
   }
   return <Modal open={task !== null} onClose={() => setTask(null)} title="">
     {task && (
-      <Grid className="grid-cols-1 md:grid-cols-3 divide-x h-[90vh] lg:max-w-[1000px]">
+      <Grid className="grid-cols-1 md:grid-cols-3 divide-x dark:divide-white/10 h-[90vh] lg:max-w-[1000px]">
         <Layout.Col className="flex-wrap overflow-x-hidden overflow-y-auto md:col-span-2 h-full">
           <Form onSubmit={onFormSubmit}>
-            <Input className="border-none text-xl sm:text-2xl md:text-3xl font-black w-full" value={initialState.title} name="title" onChange={onTitleChange} />
+            <Input className="border-none text-xl sm:text-2xl md:text-3xl font-black w-full dark:text-white" value={initialState.title} name="title" onChange={onTitleChange} />
             <CustomEditor content={initialState.desc} onChange={onDescriptionChange} />
-            <Layout.Row className="sticky bottom-0 bg-white p-2 border-t border-r"><Button className="btn-primary" loading={updateTask.loading}>submit</Button></Layout.Row>
+            <Layout.Row className="sticky bottom-0 bg-background-light dark:bg-background-dark  p-2 border-t border-r dark:border-white/10"><Button className="btn-primary" loading={updateTask.loading}>submit</Button></Layout.Row>
           </Form>
         </Layout.Col>
         <Layout.Col className="p-4 gap-2 h-full">
@@ -91,12 +91,12 @@ const AddTaskModal = ({ taskType, getTasks }) => {
     <>
       <Modal open={modalOpen} onClose={toggleModal} title="Add task">
         <Form onSubmit={onFormSubmit}>
-          <Layout.Col className=" h-[90vh] overflow-y-auto min-w-[100vw] sm:min-w-[480px] md:min-w-[640px] lg:min-w-[768px] gap-2">
-            <Input name="title" placeholder="Enter title" required className="border-none text-xl sm:text-2xl md:text-3xl font-black" />
+          <Layout.Col className=" h-[90vh] overflow-y-auto bg-background-light dark:bg-background-dark min-w-[100vw] sm:min-w-[480px] md:min-w-[640px] lg:min-w-[768px] gap-2">
+            <Input name="title" placeholder="Enter title" required className="border-none text-xl sm:text-2xl md:text-3xl font-black dark:text-white" />
             <Layout.Col className="h-[90%]">
               <CustomEditor content="<h1>title</h1><p>some description....</p>" onChange={onChange} />
             </Layout.Col>
-            <Layout.Row className="sticky bottom-0 bg-white p-2">
+            <Layout.Row className="sticky bottom-0 bg-background-light dark:bg-background-dark p-2">
               <Button className="btn-primary" loading={addTask.loading}>submit</Button>
             </Layout.Row>
           </Layout.Col>

@@ -19,7 +19,7 @@ const EditorCodeController = ({ editor }) => {
             }
             active={active}
         >
-            <CodeIcon width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color} />
+            <CodeIcon width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }

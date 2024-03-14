@@ -11,6 +11,7 @@ import Button from '../../ui/Button';
 import { useTheme } from '@/src/providers/Theme';
 import Typography from '../../ui/Typography';
 import Switch from '../../ui/General/Switch';
+import { twMerge } from 'tailwind-merge';
 
 
 const ThemeSwitcher = () => {
@@ -43,9 +44,9 @@ const AccountAvatar = () => {
                 <Menu.Button>
                     <Avatar seed={auth.data?.app_meta?.name} />
                 </Menu.Button>
-                <Menu.Items className="absolute w-72 right-0 bg-background-light dark:bg-background-dark backdrop-blur-sm border-secondary border rounded-xl shadow-md flex-col overflow-hidden divide-y divide-secondary/50">
+                <Menu.Items className={twMerge(styles.main_menu_items,"bg-background-light dark:bg-background-dark dark:border-white/10 divide-secondary/50 dark:divide-secondary/10")}>
                     <AccountAvatarWithName />
-                    {links.map((item, index) => <AccountAvatarLink {...item} key={index} />)}
+                    {/* {links.map((item, index) => <AccountAvatarLink {...item} key={index} />)} */}
                     <ThemeSwitcher />
                     <AccountAvatarSignoutHandler />
                 </Menu.Items>

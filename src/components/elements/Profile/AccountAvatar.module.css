@@ -2,19 +2,19 @@
   @apply relative z-20 backdrop-blur;
 }
 .main_menu_items {
-  @apply absolute w-72 right-0 bg-background-light dark:bg-background-dark backdrop-blur-sm border-secondary border rounded-xl shadow-md flex-col overflow-hidden divide-y divide-secondary/50;
+  @apply absolute w-72 right-0 backdrop-blur-sm border rounded-xl shadow-md flex-col overflow-hidden divide-y;
 }
 .with_name_row {
-  @apply p-2 gap-2 items-center border-b border-white/20 bg-background-light dark:bg-background-dark;
+  @apply p-2 gap-2 items-center border-b;
 }
 .with_name_name {
-  @apply font-bold capitalize bg-background-light dark:bg-background-dark;
+  @apply font-bold uppercase ;
 }
 .with_name_email {
-  @apply font-medium overflow-hidden text-black bg-background-light dark:bg-background-dark;
+  @apply font-medium overflow-hidden;
 }
 .with_name_role {
-  @apply font-medium overflow-hidden text-white bg-primary rounded-md px-2 max-w-16 text-center ;
+  @apply font-medium overflow-hidden text-white bg-primary rounded-md px-2  w-full text-center uppercase;
 }
 .signout_handler_main {
   @apply p-2 w-full gap-2 text-left flex flex-row cursor-pointer items-center hover:bg-red-500/15 bg-red-500/10 text-red-500;

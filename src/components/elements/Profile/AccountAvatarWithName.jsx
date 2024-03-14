@@ -7,6 +7,7 @@ import { useAuth } from '@/src/providers/Auth'
 import Typography from '@/src/components/ui/Typography'
 import Link from 'next/link';
 import { REV_ROLES } from '@/src/constants/roles';
+import { twMerge } from 'tailwind-merge';
 
 const AccountAvatarWithName = () => {
     const auth = useAuth();
@@ -14,12 +15,12 @@ const AccountAvatarWithName = () => {
     return (
         <Menu.Item>
             <Link href={`/${auth.data?.username}`}>
-                <Layout.Row className={styles.with_name_row}>
+                <Layout.Row className={twMerge(styles.with_name_row,"dark:bg-background-dark dark:border-white/10")}>
                     <Avatar seed={name} />
                     <Layout.Col className="justify-start">
-                        <Typography.Heading className={styles.with_name_name}>
+                        <Typography className={styles.with_name_name}>
                             {name}
-                        </Typography.Heading>
+                        </Typography>
                         <Typography.Caption className={styles.with_name_email}>
                             {auth?.data?.email}
                         </Typography.Caption>

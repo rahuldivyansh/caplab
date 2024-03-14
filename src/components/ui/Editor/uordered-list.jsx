@@ -12,7 +12,7 @@ const EditorUnorderedListController = ({ editor }) => {
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             active={active}
         >
-            <ListIcon width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color} />
+            <ListIcon width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }

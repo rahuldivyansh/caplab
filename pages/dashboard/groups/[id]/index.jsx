@@ -29,7 +29,7 @@ const GroupPage = (props) => {
         <DashboardLayout>
             <Layout.Col>
                 <Tab.Group>
-                    <Tab.List className="flex border-b dark:bg-black dark:border-white/5 shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10">
+                    <Tab.List className="flex border-b bg-background-light dark:bg-background-dark dark:border-white/5 shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10">
                         <Layout.Row className="flex-nowrap">
                             {TAB_LABELS.map((tab, index) =>
                                 <Tab

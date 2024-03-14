@@ -1,10 +1,10 @@
 import React from 'react'
-import Button from '../Button'
 import { Strikethrough } from 'lucide-react'
 import { ICON_DIMENSIONS } from './constants'
 import ControllerButton from './controller-button'
 
 const EditorStrikeThroughController = ({ editor }) => {
+    const active = editor.isActive('strikeThrough')
     return (
         <ControllerButton
             onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -16,7 +16,7 @@ const EditorStrikeThroughController = ({ editor }) => {
                     .run()
             }
             editor={editor}
-            activeTarget="strike"
+            active={active}
         >
             <Strikethrough width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
