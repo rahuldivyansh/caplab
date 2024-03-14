@@ -14,6 +14,7 @@ import FileViewerBlock from "@/src/components/blocks/Groups/fileviewer";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
 import { Upload } from "lucide-react";
+import KeyValue from "../../ui/Description/KeyValue";
 
 const getExtension = (filename) => {
   if (!filename || !filename.includes(".")) return "txt";
@@ -117,7 +118,7 @@ const RemoveButton = ({ doc, groupId, closeModal, getDocs }) => {
   };
   return (
     <Button
-      className="btn-danger  flex-1"
+      className="btn-danger flex-1"
       onClick={handleRemove}
       loading={removeDoc.loading}
     >
@@ -172,7 +173,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         title={currentDoc?.name}
       >
         <Layout.Grid
-          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1")}
+          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1 w-screen sm:w-[400px]")}
         >
           {viewButtonClicked && (
             <Layout.Col className=" gap-2 items-center col-span-3">
@@ -184,22 +185,17 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               />
             </Layout.Col>
           )}
-          <Layout.Col className="p-4 gap-2">
-            <Layout.Col className="gap-2 bg-gray-50 border justify-center items-center p-4">
-              <Layout.Row className="gap-2 items-center justify-center w-16 h-24 overflow-hidden">
+          <Layout.Col className="p-4 gap-2 dark:text-white">
+            <Layout.Col className="gap-2 justify-start items-start p-4">
+              <Layout.Row className="gap-2 items-start justify-start w-16 h-24 overflow-hidden">
                 <FileIcon
                   extension={getExtension(currentDoc?.name)}
                   {...defaultStyles[getExtension(currentDoc?.name)]}
                 />
               </Layout.Row>
             </Layout.Col>
-            <Typography.Caption>
-              Size - {byteToMb(currentDoc?.metadata.size).toFixed(2)}MB
-            </Typography.Caption>
-            <Typography.Caption>
-              Uploaded at -{" "}
-              {moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")}
-            </Typography.Caption>
+            <KeyValue keyData="size" value={`${byteToMb(currentDoc?.metadata.size).toFixed(2)}MB`} />
+            <KeyValue  keyData="uploaded at" value={moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")} />
             <Layout.Col className="gap-2">
               <Layout.Row className="grid-cols-2 gap-2">
                 <RemoveButton

@@ -91,7 +91,7 @@ const AddTaskModal = ({ taskType, getTasks }) => {
     <>
       <Modal open={modalOpen} onClose={toggleModal} title="Add task">
         <Form onSubmit={onFormSubmit}>
-          <Layout.Col className=" h-[90vh] overflow-y-auto bg-background-light dark:bg-background-dark min-w-[100vw] sm:min-w-[480px] md:min-w-[640px] lg:min-w-[768px] gap-2">
+          <Layout.Col className="h-[90vh] overflow-y-auto bg-background-light dark:bg-background-dark min-w-[100vw] sm:min-w-[480px] md:min-w-[640px] lg:min-w-[768px] gap-2">
             <Input name="title" placeholder="Enter title" required className="border-none text-xl sm:text-2xl md:text-3xl font-black dark:text-white" />
             <Layout.Col className="h-[90%]">
               <CustomEditor content="<h1>title</h1><p>some description....</p>" onChange={onChange} />

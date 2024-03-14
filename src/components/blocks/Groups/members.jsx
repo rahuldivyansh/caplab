@@ -75,7 +75,7 @@ const Wrapper = ({ children, groupId, getMembers, members }) => {
     const role = auth.data?.app_meta?.role;
     return (
         <Layout.Col className="p-4 gap-2 min-h-screen">
-            {ALLOWED_ROLES.includes(role) && <Layout.Col className="sm:items-end"><AddMemberBlock groupId={groupId} getMembers={getMembers} members={members} /></Layout.Col>}
+            {ALLOWED_ROLES.includes(role) && <Layout.Col className="sm:items-start"><AddMemberBlock groupId={groupId} getMembers={getMembers} members={members} /></Layout.Col>}
             {children}
         </Layout.Col>
     )
@@ -93,7 +93,7 @@ const RemoveMemberButton = ({ member, groupId, getMembers }) => {
             await getMembers()
         }
     }
-    return <Button onClick={handleRemove} className="btn-icon flex-1" loading={removeMember.loading}><TrashIcon width={16} height={16} className="text-red-500" /></Button>
+    return <Button onClick={handleRemove} className="btn-icon" loading={removeMember.loading}><TrashIcon width={16} height={16} className="text-red-500" /></Button>
 
 }
 
@@ -110,14 +110,14 @@ const GroupMembersBlock = ({ groupId }) => {
     return (
         <Wrapper getMembers={members.dispatch} members={members.data} groupId={groupId}>
             <Layout.Col>
-                <Layout.Col className="divide-y">
+                <Layout.Col className="divide-y dark:divide-white/10">
                     {members.data.map((member, index) => (
                         <Layout.Row key={`member-${index}`} className="gap-2 py-2 items-center justify-between max-w-md">
                             <Layout.Row className="items-center gap-1 flex-[2]">
                                 <Avatar seed={member.name} />
                                 <Layout.Col className="overflow-hidden">
                                     <Typography.Caption className="capitalize font-semibold line-clamp-1">{member.name}</Typography.Caption>
-                                    <Typography.Caption className="line-clamp-1 break-all">{member.email}</Typography.Caption>
+                                    <Typography.Caption className="line-clamp-1 break-all opacity-80">{member.email}</Typography.Caption>
                                 </Layout.Col>
                             </Layout.Row>
                             {currentUserId === group.owner && <RemoveMemberButton member={member} groupId={groupId} getMembers={members.dispatch} />}
