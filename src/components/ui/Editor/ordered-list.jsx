@@ -11,7 +11,7 @@ const EditorOrderedListController = ({ editor }) => {
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             active={active}
         >
-            <ListOrdered width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color} />
+            <ListOrdered width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }

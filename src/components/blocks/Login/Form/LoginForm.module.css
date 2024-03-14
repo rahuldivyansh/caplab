@@ -5,7 +5,7 @@
     @apply text-center my-4 font-semibold text-7xl;
 }
 .login_text{
-    @apply text-center my-4 font-semibold;
+    @apply text-left my-4 font-semibold;
 }
 .form_col_layout{
     @apply gap-4;

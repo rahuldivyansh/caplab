@@ -18,7 +18,7 @@ const EditorRedoController = ({ editor }) => {
                 disabled
             }
         >
-            <Redo color={disabled ? "grey" : "black"} width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
+            <Redo width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </Button>
     )
 }

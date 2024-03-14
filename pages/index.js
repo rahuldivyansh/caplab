@@ -17,7 +17,7 @@ export default function Home() {
             collaboration on various projects, fostering a conducive environment
             for team members to work together effortlessly and efficiently
           </Typography>
-          <Image src="https://illustrations.popsy.co/blue/home-office.svg" width={360} height={360}/>
+          <Image src="https://illustrations.popsy.co/blue/home-office.svg" width={360} height={360} className="dark:mix-blend-exclusion dark:brightness-150"/>
         </Layout.Col>
       </Layout.Container>
     </Layout.Col>

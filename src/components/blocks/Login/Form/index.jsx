@@ -27,7 +27,7 @@ const LoginFormBlock = () => {
     }
     return (
         <Layout.Container className={styles.main_container}>
-            <Typography.Heading className={styles.login_text}>Login to {LOGOTEXT}</Typography.Heading>
+            <Typography.Heading className={styles.login_text}>Login</Typography.Heading>
             <Form onSubmit={onSubmit} autoComplete="off">
                 <Layout.Col className={styles.form_col_layout}>
                     <Form.Input type="email" placeholder="Enter email" name="email" />

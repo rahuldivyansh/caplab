@@ -29,9 +29,9 @@ const ChatHead = ({ message, currentUserId }) => {
     </Layout.Col>)
     return (<Layout.Row className="justify-start items-start overflow-hidden">
         <Avatar seed={message.sent_by?.name || "user"} dimensions={[32, 32]} />
-        <div className="border-solid border-t-secondary border-t-[12px] border-l-transparent border-r-secondary border-r-0 border-l-[12px] border-b-0" />
+        <div className="border-solid border-t-secondary dark:border-t-white/10 border-t-[12px] border-l-transparent border-r-secondary dark:border-r-white/10 border-r-0 border-l-[12px] border-b-0" />
         <Layout.Col className="overflow-hidden max-w-[80%] items-start" onClick={toggleShowMoreInfo}>
-            <Typography.Body className="bg-secondary text-black p-2 rounded-b-2xl rounded-tr-2xl overflow-hidden break-all">
+            <Typography.Body className="bg-secondary dark:bg-white/10 dark:text-white text-black p-2 rounded-b-2xl rounded-tr-2xl overflow-hidden break-all">
                 {message.payload}
             </Typography.Body>
             {showMoreInfo && <Typography.Caption className="text-left text-gray-500 text-xs">{moment(message.created_at).format("MMMM Do YYYY, h:mm a")}</Typography.Caption>}
@@ -168,7 +168,7 @@ const GroupDiscussions = () => {
     }, [membersMap, userId])
     return (
         <>
-            <Layout.Row className="sticky top-[3.5rem] sm:top-[6.5rem] border-y py-2 right-0 z-10 bg-white justify-end">
+            <Layout.Row className="sticky top-[3.5rem] sm:top-[6.5rem] border-y dark:border-white/10 py-2 right-0 z-10 bg-background-light dark:bg-background-dark justify-end">
                 <Layout.Row className="gap-2 relative justify-end">
                     <Dropdown MenuBtn={<Button className="btn-icon font-semibold text-xs">active ({activeMembers.length})<MoreVertical /></Button>}>
                         {activeMembers.map((member, index) => (
@@ -186,7 +186,7 @@ const GroupDiscussions = () => {
                     {messages && messages.map((message, index) => (<ChatHead message={message} currentUserId={userId} key={`message-${index}`} />))}
                 </Layout.Col>
             </Layout.Col>
-            <Layout.Col className="sticky w-full left-0 right-0 bottom-0 bg-white border-t">
+            <Layout.Col className="sticky w-full left-0 right-0 bottom-0 bg-background-light dark:bg-background-dark border-t dark:border-white/10">
                 <Form onSubmit={sendMessage}>
                     <Layout.Row className="p-2 max-w-xl mx-auto container gap-2 items-center">
                         <Input name="payload" value={currentMessage} onSubmit={sendMessage} onChange={onMessageChange} className="flex-grow flex-1 rounded-full font-semibold focus:ring-2 caret-primary  py-4" placeholder="Enter message..." />

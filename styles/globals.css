@@ -3,9 +3,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-:root {
-  --color-primary: #f63232;
-}
+
 * {
   font-family: "Plus Jakarta Sans", sans-serif;
   -webkit-tap-highlight-color: transparent;
@@ -26,8 +24,15 @@
 }
 
 body {
-  @apply bg-white text-black;
+  @apply bg-background-light text-black dark:bg-background-dark dark:text-white;
 }
+.bg-surface {
+  @apply bg-white dark:bg-white/10 text-black dark:text-white;
+}
+/* .bg-background{
+  @apply bg-gray-100 dark:bg-black text-black dark:text-white;
+} */
+
 /* tables */
 table {
   @apply rounded-md  border-dark_secondary overflow-hidden shadow-sm;
@@ -49,7 +54,7 @@ td {
 
 button {
   @apply relative uppercase overflow-hidden rounded-lg font-medium text-sm py-1 px-2 md:py-1.5 md:px-3 flex justify-center items-center active:scale-95 transition-all tracking-tight 
-   disabled:hover:bg-gray-300   disabled:active:scale-100
+   disabled:hover:bg-gray-300  dark:disabled:bg-gray-300/10  disabled:active:scale-100
    disabled:bg-white/10 disabled:text-gray-300 disabled:border-none
    disabled:hover:bg-white/10;
 }
@@ -66,13 +71,13 @@ button {
   @apply bg-primary border border-primary active:bg-primary/75 hover:bg-primary/75 text-white;
 }
 .btn-secondary {
-  @apply bg-secondary border border-secondary active:bg-secondary/75 hover:bg-secondary/75 text-black;
+  @apply bg-secondary dark:bg-secondary/10 border border-secondary  active:bg-secondary/75 hover:bg-secondary/75 text-black dark:text-white;
 }
 .btn-general {
   @apply bg-white border border-general  active:bg-white/75 hover:bg-white/75  text-white dark:text-general;
 }
-.btn-danger{
-  @apply bg-red-100 border border-red-500 active:bg-red-300/75 hover:bg-red-300/50 text-red-500;
+.btn-danger {
+  @apply  border border-red-500 active:bg-red-900 hover:bg-red-900/20 text-red-500;
 }
 
 /* outlined */
@@ -106,7 +111,7 @@ button {
 /* Icon */
 
 .btn-icon {
-  @apply rounded-xl text-general p-2   hover:bg-secondary/20 active:bg-secondary/30;
+  @apply rounded-xl  dark:text-white p-2  hover:bg-secondary/20 active:bg-secondary/30;
 }
 
 /* typography */
@@ -132,7 +137,7 @@ p {
 input,
 textarea,
 select {
-  @apply outline-none p-3 rounded-md border border-black/15   focus:border-primary transition-all font-normal  text-sm;
+  @apply outline-none bg-transparent p-3 rounded-md border-2 border-black/15 dark:border-white/20   focus:border-primary dark:focus:border-primary transition-all font-normal  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;
@@ -153,6 +158,13 @@ input::-webkit-color-swatch {
 .tiptap .ProseMirror {
   @apply p-3 w-full rounded;
 }
-.ag-theme-quartz{
-  font-family:"Roboto","Arial",sans-serif !important;
+.ag-theme-quartz {
+  font-family: "Roboto", "Arial", sans-serif !important;
+}
+
+.ag-header-viewport {
+  @apply dark:bg-background-dark bg-background-light dark:text-white; 
+}
+.ag-header-cell-label {
+  @apply dark:text-white text-black;
 }
