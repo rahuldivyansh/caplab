@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { set } from 'nprogress'
 import Input from '@/src/components/ui/Form/Input'
 import { LoaderElement } from '@/src/components/elements/Loaders'
+import Avatar from '@/src/components/elements/Avatar'
 
 
 const DeleteUserBlock = (props) => {
@@ -47,7 +48,7 @@ const DeleteUserBlock = (props) => {
           </Layout.Row>
         </Layout.Col>
       </Modal>
-      <Button className="btn-sm bg-red-500 text-white" onClick={toggleDialog}>Remove</Button>
+      <Button className="btn-danger" onClick={toggleDialog}>Remove</Button>
     </>
 
   )
@@ -69,12 +70,11 @@ const UpdateRoleElement = (props) => {
       toast.error("error updating role")
     }
   }
-  console.log("role", role)
   return (
     <Layout.Row className="gap-2">
       <select disabled={updateRole.loading} value={role} onChange={updateRoleHandler} className="p-2 border capitalize rounded-md  transition-all w-full text-center">
         {Object.keys(REV_ROLES).map((role) => {
-          return <option key={role} value={role}>{REV_ROLES[role]}</option>
+          return <option key={role} value={role} className=' dark:bg-background-dark py-4'>{REV_ROLES[role]}</option>
         })}
       </select>
     </Layout.Row>
@@ -94,7 +94,10 @@ const UsersTableBlock = ({ searchValue }) => {
     return []
   }, [searchValue, users.data])
   const columns = [
-    { field: "name", headerName: "Name", cellRenderer: (params) => <Typography.Caption className="capitalize">{params.data.name}</Typography.Caption>, },
+    {
+      field: "name", headerName: "Name", cellRenderer: (params) => <Layout.Row className="items-center gap-2 h-full">
+        <Avatar seed={params.data.name}/><Typography.Caption className="uppercase">{params.data.name}</Typography.Caption></Layout.Row>,
+    },
     { field: "email", headerName: "Email" },
     {
       field: "role",

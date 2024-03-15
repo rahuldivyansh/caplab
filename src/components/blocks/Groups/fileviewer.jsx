@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import dynamic from "next/dynamic";
 import PdfViewer from "../../ui/PdfViewer";
 import { IFrame } from "@/src/components/ui/DocxViewer";
+import { useTheme } from "@/src/providers/Theme";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -25,6 +26,7 @@ const fileParser = {
 };
 
 const CustomEditor = ({ fileContent, fileType, path, fetchFile }) => {
+  const theme = useTheme();
   const [currentFileContent, setCurrentFileContent] = useState(fileContent);
 
   const handleEditorChange = (value, event) => {
@@ -63,6 +65,7 @@ const CustomEditor = ({ fileContent, fileType, path, fetchFile }) => {
         value={currentFileContent}
         onChange={handleEditorChange}
         language={fileType}
+        theme={theme.theme === "dark" ? "vs-dark" : "vs"}
         options={{
           wordWrap: "on",
           minimap: { enabled: false },

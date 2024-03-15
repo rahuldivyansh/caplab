@@ -173,10 +173,10 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         title={currentDoc?.name}
       >
         <Layout.Grid
-          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1 w-screen sm:w-[400px]")}
+          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 w-screen h-screen" : "sm:grid-cols-1 w-screen sm:w-[400px]")}
         >
           {viewButtonClicked && (
-            <Layout.Col className=" gap-2 items-center col-span-3">
+            <Layout.Col className=" gap-2 items-center col-span-4">
               <FileViewerBlock
                 url={viewButtonClicked}
                 fileType={getExtension(currentDoc?.name)}
@@ -185,7 +185,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               />
             </Layout.Col>
           )}
-          <Layout.Col className="p-4 gap-2 dark:text-white">
+          {!viewButtonClicked && <Layout.Col className="p-4 gap-2 dark:text-white">
             <Layout.Col className="gap-2 justify-start items-start p-4">
               <Layout.Row className="gap-2 items-start justify-start w-16 h-24 overflow-hidden">
                 <FileIcon
@@ -214,7 +214,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               </Layout.Row>
               <DownloadButton doc={currentDoc} groupId={groupId} />
             </Layout.Col>
-          </Layout.Col>
+          </Layout.Col>}
         </Layout.Grid>
       </Modal>
       {docsList.map((doc, _) => {

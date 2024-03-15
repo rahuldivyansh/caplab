@@ -43,9 +43,9 @@ const AddUserPage = () => {
                         <Input type="text" placeholder="Enter name" name="name" required />
                         <Input type="email" placeholder="Enter email" name="email" required />
                         <select name="role" className="input capitalize">
-                            <option value={-1}>Select Role</option>
+                            <option value={-1} className="dark:text-background-dark">Select Role</option>
                             {ROLES.map((role, index) => (
-                                <option key={`form_user_role_${index}`} value={role.value} className='capitalize'>{role.role}</option>
+                                <option key={`form_user_role_${index}`} value={role.value} className='capitalize dark:text-background-dark'>{role.role}</option>
                             ))}
                         </select>
                         <Button className="btn-primary sm:max-w-20" loading={addUser.loading}>Submit</Button>

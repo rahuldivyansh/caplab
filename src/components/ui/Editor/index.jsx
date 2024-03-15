@@ -25,7 +25,7 @@ const MenuBar = () => {
         return null
     }
     return (
-        <Layout.Row className="flex-wrap gap-2 items-center justify-start p-2 border-b dark:border-white/10 bg-background-light dark:bg-background-dark">
+        <Layout.Row className="flex-wrap sticky top-[6.45rem] rounded-t-4 z-10 gap-2 items-center justify-start p-2 border-b dark:border-white/10 bg-background-light dark:bg-background-dark">
             <EditorBoldController editor={editor} />
             <EditorItalicController editor={editor} />
             <EditorStrikeThroughController editor={editor} />
@@ -66,7 +66,7 @@ const CustomEditor = ({ disabled, content, onChange }) => {
         onChange(state.editor?.getHTML())
     }
     return (
-        <Layout.Col className="flex-grow dark:prose-hr:border-white/20 dark:prose-strong:text-white/85 dark:prose-p:text-white/85  w-full rounded-lg border dark:border-white/5 overflow-hidden" key={`readme-${disabled}`}>
+        <Layout.Col className="flex-grow dark:prose-hr:border-white/20 dark:prose-strong:text-white/85 dark:prose-p:text-white/85 prose-a:text-primary  w-full rounded-lg border dark:border-white/5" key={`readme-${disabled}`}>
             <EditorProvider
                 autofocus={true}
                 editorProps={{
