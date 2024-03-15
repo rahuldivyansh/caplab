@@ -12,6 +12,7 @@ import { ScaleLoader } from 'react-spinners'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Avatar from '@/src/components/elements/Avatar'
 import { LoaderElement } from '@/src/components/elements/Loaders'
+import Page from '@/src/components/pages'
 
 const ALLOWED_ROLES = [ROLES.TEACHER];
 
@@ -20,6 +21,7 @@ const GroupsPage = () => {
     const groups = useFetch({ method: "GET", url: "/api/groups", get_autoFetch: true })
     const role = auth.data?.app_meta?.role
     return (
+        <Page title="Groups">
         <DashboardLayout>
             <Layout.Col className="p-4 md:p-12 lg:p-16 gap-4">
                 <Layout.Row className="justify-between flex-grow">
@@ -62,6 +64,7 @@ const GroupsPage = () => {
                 </ResponsiveMasonry>
             </Layout.Col>
         </DashboardLayout>
+        </Page>
     )
 }
 

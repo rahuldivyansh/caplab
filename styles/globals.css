@@ -163,8 +163,15 @@ input::-webkit-color-swatch {
 }
 
 .ag-header-viewport {
-  @apply dark:bg-background-dark bg-background-light dark:text-white; 
+  @apply dark:bg-background-dark bg-background-light dark:text-white dark:border-white/5 ; 
 }
 .ag-header-cell-label {
   @apply dark:text-white text-black;
+}
+.ag-center-cols-viewport{
+  @apply dark:bg-background-dark bg-background-light dark:text-white; 
+
+}
+.ag-center-cols-container div[role="row"]{
+  @apply dark:bg-white/10 bg-background-light dark:text-white w-screen dark:border-white/5; 
 }
