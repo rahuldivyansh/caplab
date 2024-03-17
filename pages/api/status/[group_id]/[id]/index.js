@@ -41,7 +41,7 @@ const PUT = async (status_id, payload) => {
       .from("status")
       .update(payload)
       .eq("id", status_id)
-      .select();
+      .select().single();
 
     if (updateError) throw updateError;
     return updateData;
@@ -76,7 +76,7 @@ const handler = async (req, res) => {
     const { body } = req;
     try {
       const data = await PUT(status_id, body);
-      return res.status(StatusCodes.OK).json({ data });
+      return res.status(StatusCodes.OK).json(data);
     } catch (error) {
       console.log(error);
       return res

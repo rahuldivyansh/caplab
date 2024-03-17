@@ -12,6 +12,7 @@ const Modal = (props) => {
       open={props.open}
       className="bg-black bg-opacity-90 fixed inset-0 justify-end sm:justify-center z-2 items-center"
       as={Layout.Col}
+      style={props.style}
     >
       <Transition
         appear
@@ -42,6 +43,7 @@ const Modal = (props) => {
 
 Modal.defaultProps = {
   title: "",
+  style: {},
 };
 
 export default Modal;

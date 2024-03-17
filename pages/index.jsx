@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Layout from "@/src/components/ui/Layout";
 import NavbarFixed from "@/src/components/sections/Navbar/NavbarFixed";
@@ -79,7 +80,7 @@ export default function Home() {
       <footer className="bg-background-light dark:bg-background-dark border-t dark:border-white/5">
         <Layout.Container className="py-8">
           <Typography className="text-center opacity-75">
-            &copy; 2022 CAPLAB. All rights reserved.
+            &copy; 2024 CAPLAB. All rights reserved.
           </Typography>
         </Layout.Container>
       </footer>

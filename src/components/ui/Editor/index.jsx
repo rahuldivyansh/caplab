@@ -18,14 +18,14 @@ import EditorUndoController from './undo'
 import EditorRedoController from './redo'
 import EditorStrikeThroughController from './strikethrough'
 
-const MenuBar = () => {
+const MenuBar = (props) => {
     const { editor } = useCurrentEditor()
 
     if (!editor) {
         return null
     }
     return (
-        <Layout.Row className="flex-wrap sticky top-[6.45rem] rounded-t-4 z-10 gap-2 items-center justify-start p-2 border-b dark:border-white/10 bg-background-light dark:bg-background-dark">
+        <Layout.Row className="flex-wrap rounded-t-4 z-10 gap-2 items-center justify-start p-2 border-b dark:border-white/10 bg-background-light dark:bg-background-dark" {...props}>
             <EditorBoldController editor={editor} />
             <EditorItalicController editor={editor} />
             <EditorStrikeThroughController editor={editor} />
@@ -61,7 +61,7 @@ const extensions = [
 
 
 
-const CustomEditor = ({ disabled, content, onChange }) => {
+const CustomEditor = ({ disabled, content, onChange, menuProps }) => {
     const handleChange = (state) => {
         onChange(state.editor?.getHTML())
     }
@@ -72,17 +72,18 @@ const CustomEditor = ({ disabled, content, onChange }) => {
                 editorProps={{
                     attributes: {
                         class: "w-full rounded bg-background-light dark:bg-background-dark dark:prose-headings:text-white dark:text-white p-4 prose lg:prose-lg  mx-auto container focus:outline-none",
-                        contentEditable:!disabled
+                        contentEditable: !disabled
                     }
 
-                }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar /> : null} extensions={extensions} content={content} />
+                }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar {...menuProps} /> : null} extensions={extensions} content={content} />
         </Layout.Col>
     )
 }
 
 CustomEditor.defaultProps = {
     disabled: false,
-    content: "Editor"
+    content: "Editor",
+    menuProps: {}
 }
 
 export default CustomEditor;
