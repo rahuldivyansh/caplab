@@ -7,14 +7,15 @@ import { useAuth } from '@/src/providers/Auth';
 import DashboardGroupsBlock from '@/src/components/blocks/Dashboard/Groups/groups';
 import DashboardTeachersBlock from '@/src/components/blocks/Dashboard/Teachers';
 import DashboardStudentsBlock from '@/src/components/blocks/Dashboard/Students';
+import Page from '@/src/components/pages';
+import AdminOnlyBlock from '@/src/components/blocks/Dashboard/AdminOnly';
 
 
 const MainSection = () => {
     return (
         <Layout.Grid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <DashboardGroupsBlock />
-            <DashboardTeachersBlock/>
-            <DashboardStudentsBlock/>
+            <AdminOnlyBlock />
         </Layout.Grid>
     )
 }
@@ -23,14 +24,16 @@ const DashboardPage = () => {
     const auth = useAuth();
     const name = auth.data?.app_meta?.name || "User";
     return (
-        <DashboardLayout>
-            <Layout.Col className="p-2">
-                <Typography.Subtitle className="font-semibold">
-                    Welcome back, {name}!
-                </Typography.Subtitle>
-                <MainSection />
-            </Layout.Col>
-        </DashboardLayout>
+        <Page title="Dashboard">
+            <DashboardLayout>
+                <Layout.Col className="p-2">
+                    <Typography.Subtitle className="font-semibold capitalize">
+                        Welcome back, {name}!
+                    </Typography.Subtitle>
+                    <MainSection />
+                </Layout.Col>
+            </DashboardLayout>
+        </Page>
     )
 }
 

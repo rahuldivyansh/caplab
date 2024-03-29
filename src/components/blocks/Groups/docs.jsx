@@ -14,6 +14,7 @@ import FileViewerBlock from "@/src/components/blocks/Groups/fileviewer";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
 import { Upload } from "lucide-react";
+import KeyValue from "../../ui/Description/KeyValue";
 
 const getExtension = (filename) => {
   if (!filename || !filename.includes(".")) return "txt";
@@ -117,7 +118,7 @@ const RemoveButton = ({ doc, groupId, closeModal, getDocs }) => {
   };
   return (
     <Button
-      className="btn-danger  flex-1"
+      className="btn-danger flex-1"
       onClick={handleRemove}
       loading={removeDoc.loading}
     >
@@ -162,7 +163,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
   );
 
   return (
-    <Layout.Grid className="grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-0 sm:divide-y">
+    <Layout.Grid className="grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-0 sm:divide-y dark:divide-white/10">
       <Modal
         open={currentDoc !== null}
         onClose={() => {
@@ -172,10 +173,10 @@ const DocsList = ({ docs, groupId, getDocs }) => {
         title={currentDoc?.name}
       >
         <Layout.Grid
-          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 lg:w-screen h-screen" : "sm:grid-cols-1")}
+          className={twMerge(`grid-cols-1 gap-2`, viewButtonClicked ? "sm:grid-cols-4 w-screen h-screen" : "sm:grid-cols-1 w-screen sm:w-[400px]")}
         >
           {viewButtonClicked && (
-            <Layout.Col className=" gap-2 items-center col-span-3">
+            <Layout.Col className=" gap-2 items-center col-span-4">
               <FileViewerBlock
                 url={viewButtonClicked}
                 fileType={getExtension(currentDoc?.name)}
@@ -184,22 +185,17 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               />
             </Layout.Col>
           )}
-          <Layout.Col className="p-4 gap-2">
-            <Layout.Col className="gap-2 bg-gray-50 border justify-center items-center p-4">
-              <Layout.Row className="gap-2 items-center justify-center w-16 h-24 overflow-hidden">
+          {!viewButtonClicked && <Layout.Col className="p-4 gap-2 dark:text-white">
+            <Layout.Col className="gap-2 justify-start items-start p-4">
+              <Layout.Row className="gap-2 items-start justify-start w-16 h-24 overflow-hidden">
                 <FileIcon
                   extension={getExtension(currentDoc?.name)}
                   {...defaultStyles[getExtension(currentDoc?.name)]}
                 />
               </Layout.Row>
             </Layout.Col>
-            <Typography.Caption>
-              Size - {byteToMb(currentDoc?.metadata.size).toFixed(2)}MB
-            </Typography.Caption>
-            <Typography.Caption>
-              Uploaded at -{" "}
-              {moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")}
-            </Typography.Caption>
+            <KeyValue keyData="size" value={`${byteToMb(currentDoc?.metadata.size).toFixed(2)}MB`} />
+            <KeyValue  keyData="uploaded at" value={moment(currentDoc?.created_at).format("MMMM Do YYYY, h:mm a")} />
             <Layout.Col className="gap-2">
               <Layout.Row className="grid-cols-2 gap-2">
                 <RemoveButton
@@ -218,7 +214,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               </Layout.Row>
               <DownloadButton doc={currentDoc} groupId={groupId} />
             </Layout.Col>
-          </Layout.Col>
+          </Layout.Col>}
         </Layout.Grid>
       </Modal>
       {docsList.map((doc, _) => {
@@ -228,7 +224,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
               setCurrentDoc(doc);
             }}
             key={`group-doc-${doc.id}`}
-            className="px-2 py-2 sm:py-0 border sm:border-x-0 rounded sm:rounded-none overflow-hidden aspect-square sm:aspect-auto sm:flex-row justify-between items-center gap-2 hover:bg-gray-200 active:bg-gray-300 transition-all cursor-pointer select-none"
+            className="px-2 py-2 sm:py-0 border sm:border-x-0 rounded sm:rounded-none overflow-hidden aspect-square sm:aspect-auto sm:flex-row justify-between items-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-200/10 active:bg-gray-300 transition-all cursor-pointer select-none"
           >
             <Layout.Col className="sm:flex-row gap-2 w-full sm:w-auto h-full justify-center items-center overflow-hidden">
               <Layout.Row className="gap-2 items-center justify-center w-16 h-24 sm:w-8 sm:h-12 scale-90 overflow-hidden">
@@ -237,7 +233,7 @@ const DocsList = ({ docs, groupId, getDocs }) => {
                   {...defaultStyles[getExtension(doc.name)]}
                 />
               </Layout.Row>
-              <Typography.Caption className="font-semibold w-full text-gray-600 line-clamp-1">
+              <Typography.Caption className="font-semibold w-full text-gray-600 dark:text-white line-clamp-1">
                 {doc.name}
               </Typography.Caption>
             </Layout.Col>

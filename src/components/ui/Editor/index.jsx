@@ -18,14 +18,14 @@ import EditorUndoController from './undo'
 import EditorRedoController from './redo'
 import EditorStrikeThroughController from './strikethrough'
 
-const MenuBar = () => {
+const MenuBar = (props) => {
     const { editor } = useCurrentEditor()
 
     if (!editor) {
         return null
     }
     return (
-        <Layout.Row className="flex-wrap gap-2 items-center justify-start p-2 border-b bg-white">
+        <Layout.Row className="flex-wrap rounded-t-4 z-10 gap-2 items-center justify-start p-2 border-b dark:border-white/10 bg-background-light dark:bg-background-dark" {...props}>
             <EditorBoldController editor={editor} />
             <EditorItalicController editor={editor} />
             <EditorStrikeThroughController editor={editor} />
@@ -61,28 +61,29 @@ const extensions = [
 
 
 
-const CustomEditor = ({ disabled, content, onChange }) => {
+const CustomEditor = ({ disabled, content, onChange, menuProps }) => {
     const handleChange = (state) => {
         onChange(state.editor?.getHTML())
     }
     return (
-        <Layout.Col className="flex-grow  w-full rounded-lg border overflow-hidden bg-white" key={`readme-${disabled}`}>
+        <Layout.Col className="flex-grow dark:prose-hr:border-white/20 dark:prose-strong:text-white/85 dark:prose-p:text-white/85 prose-a:text-primary  w-full rounded-lg border dark:border-white/5" key={`readme-${disabled}`}>
             <EditorProvider
                 autofocus={true}
                 editorProps={{
                     attributes: {
-                        class: "w-full rounded bg-white p-4 prose lg:prose-lg mx-auto container focus:outline-none",
-                        contentEditable:!disabled
+                        class: "w-full rounded bg-background-light dark:bg-background-dark dark:prose-headings:text-white dark:text-white p-4 prose lg:prose-lg  mx-auto container focus:outline-none",
+                        contentEditable: !disabled
                     }
 
-                }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar /> : null} extensions={extensions} content={content} />
+                }} onUpdate={handleChange} slotBefore={!disabled ? <MenuBar {...menuProps} /> : null} extensions={extensions} content={content} />
         </Layout.Col>
     )
 }
 
 CustomEditor.defaultProps = {
     disabled: false,
-    content: "Editor"
+    content: "Editor",
+    menuProps: {}
 }
 
 export default CustomEditor;

@@ -1,8 +1,8 @@
 .main{
-    @apply p-2 border-b inset-x-0 z-10 items-center top-0 backdrop-blur-lg border-dark_secondary;
+    @apply border-b inset-x-0 z-10 items-center top-0 backdrop-blur-lg;
 }
 .main_container{
-    @apply max-w-4xl;
+    @apply max-w-4xl h-full p-2;
 }
 .navbar_row{
     @apply justify-between items-center;

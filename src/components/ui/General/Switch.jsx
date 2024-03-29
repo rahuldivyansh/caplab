@@ -1,7 +1,6 @@
 import { Switch as HeadlessSwitch } from "@headlessui/react";
 
 export default function Switch(props) {
-  if (props === {}) return null;
   return (
     <HeadlessSwitch
       checked={props.enabled}

@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
 const DashboardNavbar = (props) => {
     const dashboard = useDashboardLayout();
     return (
-        <Layout.Row className={twMerge("items-center border-b p-2 sticky top-0 bg-white z-40", dashboard.sidebarCollapsed ? "justify-end" : "justify-between")}>
+        <Layout.Row className={twMerge("items-center border-b dark:border-white/5 bg-background-light dark:bg-background-dark p-2 sticky top-0  z-40", dashboard.sidebarCollapsed ? "justify-end" : "justify-between")}>
             <Navbar withLogo={!dashboard.sidebarCollapsed} />
         </Layout.Row>
     )

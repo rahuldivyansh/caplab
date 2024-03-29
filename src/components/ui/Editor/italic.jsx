@@ -19,7 +19,7 @@ const EditorItalicController = ({ editor }) => {
             }
             active={active}
         >
-            <Italic width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color}/>
+            <Italic width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT}/>
         </ControllerButton>
     )
 }

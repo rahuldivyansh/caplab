@@ -208,7 +208,7 @@ const GroupGeneralSettings = ({ groupId }) => {
       <Typography.Heading className="font-semibold">General Settings</Typography.Heading>
       <Layout.Col className="gap-2">
         <Typography.Heading className="text-red-500 ">Danger zone</Typography.Heading>
-        <Layout.Col className="bg-red-50 p-2 rounded gap-4">
+        <Layout.Col className="bg-red-50 dark:bg-transparent p-2 rounded gap-4">
           <SettingsChangeOwner groupId={groupId} />
           <SettingsRemoveGroup groupId={groupId} />
         </Layout.Col>

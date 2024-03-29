@@ -12,7 +12,7 @@ const EditorParagraphController = ({ editor }) => {
             onClick={() => editor.chain().focus().setParagraph().run()}
             active={active}
         >
-            <Text width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} color={color} />
+            <Text width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />
         </ControllerButton>
     )
 }

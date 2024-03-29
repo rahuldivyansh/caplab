@@ -25,8 +25,7 @@ const DashboardGroupsBlock = () => {
         !notAllowed && getGroups();
     }, [])
 
-    if (notAllowed) return null;
-    console.log(groups.data)
+    if (notAllowed) return null
     return (
         <Layout.Card>
             <Layout.Row className="justify-between items-center">
@@ -35,7 +34,7 @@ const DashboardGroupsBlock = () => {
                 </Typography>
                 <Typography className="font-semibold">
                     {groups.loading && <ScaleLoader className='text-gray-500' height={24} width={2} />}
-                    {groups.error && <>error loading groups</>}
+                    {groups.error && "error loading groups"}
                     {groups.data !== null && groups.data.length}
                 </Typography>
             </Layout.Row>

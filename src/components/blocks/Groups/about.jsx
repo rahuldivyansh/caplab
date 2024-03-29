@@ -8,12 +8,12 @@ import { toast } from 'react-toastify'
 import Editor from '../../ui/Editor'
 import { Check, LucidePencil } from 'lucide-react'
 import { ICON_DIMENSIONS } from '../../ui/Editor/constants'
+import KeyValue from '../../ui/Description/KeyValue'
 
 const GroupDetail = ({ identifier, value }) => {
     return (
-        <Layout.Col className="justify-between sm:flex-row py-2">
-            <Typography className="font-semibold capitalize">{identifier}</Typography>
-            <Typography>{value}</Typography>
+        <Layout.Col className="py-2 w-full">
+            <KeyValue keyData={identifier} value={value} direction="row" />
         </Layout.Col>
     )
 }
@@ -49,11 +49,10 @@ const ProjectDescriptionEditor = () => {
         <Layout.Card className="w-full">
             <Layout.Row className="flex-wrap justify-between items-center">
                 <Typography className="font-semibold">{edit ? "Save Changes" : "Description"}</Typography>
-                <Button onClick={handleEdit} className="capitalize aspect-square transition-all bg-primary text-white border" loading={saveDescription.loading}>{edit ? <Check width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} /> : <LucidePencil width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />}</Button>
+                <Button onClick={handleEdit} className="capitalize aspect-square transition-all bg-primary text-white border dark:border-none" loading={saveDescription.loading}>{edit ? <Check width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} /> : <LucidePencil width={ICON_DIMENSIONS.WIDTH} height={ICON_DIMENSIONS.HEIGHT} />}</Button>
             </Layout.Row>
         </Layout.Card>
-        <hr className="my-2"/>
-        <Editor content={description} disabled={!edit} onChange={onChange} />
+        <Editor content={description} disabled={!edit} onChange={onChange} menuProps={{ style: { position: "sticky", top: "6.45rem" } }} />
     </Layout.Col>
 }
 
@@ -62,11 +61,11 @@ const GroupAboutBlock = () => {
     return (
         <Layout.Col className="p-2 gap-2 max-w-3xl mx-auto container min-h-screen">
             <Layout.Col className="gap-2 items-start">
-                <Layout.Card className="w-full divide-y">
+                <Layout.Col className="w-full divide-y border bg-background-light dark:bg-background-dark p-2 rounded-lg dark:border-white/10 dark:divide-white/5">
                     <GroupDetail value={group?.num} identifier="Group number" />
                     <GroupDetail value={group?.session} identifier="Session" />
                     <GroupDetail value={`${group?.users?.name?.toUpperCase()} (${group?.users?.email})`} identifier="Owner" />
-                </Layout.Card>
+                </Layout.Col>
                 <ProjectDescriptionEditor />
             </Layout.Col>
         </Layout.Col>
