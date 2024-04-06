@@ -12,6 +12,7 @@ import { useTheme } from '@/src/providers/Theme';
 import Typography from '../../ui/Typography';
 import Switch from '../../ui/General/Switch';
 import { twMerge } from 'tailwind-merge';
+import { useRouter } from 'next/router';
 
 
 const ThemeSwitcher = () => {
@@ -38,6 +39,10 @@ const AccountAvatar = () => {
     const auth = useAuth();
     const {theme} = useTheme();
     if (!auth.data) return null;
+    const router = useRouter();
+    const handleOnClick = ()=>{
+        router.push('/reset-password');
+    }
     return (
         <>
             <Menu className={styles.main} as="div" key={theme}>
@@ -48,6 +53,7 @@ const AccountAvatar = () => {
                     <AccountAvatarWithName />
                     {/* {links.map((item, index) => <AccountAvatarLink {...item} key={index} />)} */}
                     <ThemeSwitcher />
+                    <button onClick={handleOnClick}><Typography.Caption>Reset Password</Typography.Caption></button> 
                     <AccountAvatarSignoutHandler />
                 </Menu.Items>
             </Menu>
