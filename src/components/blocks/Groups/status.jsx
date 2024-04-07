@@ -78,8 +78,8 @@ const AssignMembersBlock = ({ status_id }) => {
       {assignees.data && assignees.data.map((assignee) => (
         <Layout.Row key={assignee.uid} className="flex-wrap justify-center items-center gap-1 bg-gray-100 dark:bg-white/5 p-1 rounded-full">
           <Avatar seed={assignee.name} dimensions={[24, 24]} />
-          <Typography className="uppercase caption text-[0.3rem]">{assignee.name}</Typography>
-          <Button className="btn-icon dark:text-red-500" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16} /></Button>
+          <Typography className="uppercase caption text-[0.3rem] font-bold">{assignee.name}</Typography>
+          <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16}/></Button>
         </Layout.Row>
       ))}
     </Layout.Row>
@@ -160,8 +160,9 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
       </Grid>
     )}
     <Modal open={actionsModalOpen} onClose={toggleActionsModal} title="Actions" style={{ zIndex: 3000 }}>
-      <Layout.Col className="p-4 gap-2 h-[64vh] w-screen">
+      <Layout.Col className="p-4 gap-2 h-[84vh] w-screen">
         <CurrentTaskActions currentTask={currentTask} onStatusChange={onStatusChange} />
+        <AssignMembersBlock status_id={task.id} />
       </Layout.Col>
     </Modal>
   </Modal>
