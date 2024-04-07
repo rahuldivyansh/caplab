@@ -8,13 +8,13 @@
   @apply p-2 gap-2 items-center border-b;
 }
 .with_name_name {
-  @apply font-bold uppercase ;
+  @apply font-bold uppercase flex justify-between;
 }
 .with_name_email {
   @apply font-medium overflow-hidden;
 }
 .with_name_role {
-  @apply font-medium overflow-hidden text-white bg-primary rounded-md px-2  w-full text-center uppercase;
+  @apply font-medium overflow-hidden text-primary  rounded-md  w-full uppercase;
 }
 .signout_handler_main {
   @apply p-2 w-full gap-2 text-left flex flex-row cursor-pointer items-center hover:bg-red-500/15 bg-red-500/10 text-red-500;

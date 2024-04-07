@@ -57,8 +57,8 @@ const AddMemberBlock = ({ groupId, getMembers, members }) => {
 
     return (
         <>
-            <Modal open={modalOpen} onClose={onModalClose} title="Add member">
-                <Layout.Col className="gap-4 p-4 h-screen lg:min-w-[500px]">
+            <Modal open={modalOpen} onClose={onModalClose} title="Add Member">
+                <Layout.Col className="gap-4 p-4 h-screen min-w-[100vw] sm:min-w-[500px]">
                     <CustomComboBox placeholder="Select Members" list={availableMembers().map(member => ({ value: member.email, displayValue: member.name }))} onChange={onOptionChange} multiple={true} showValue/>
                     <Button className="btn-primary" loading={addMember.loading} onClick={handleAddMember}>Add</Button>
                 </Layout.Col>
@@ -116,7 +116,7 @@ const GroupMembersBlock = ({ groupId }) => {
                             <Layout.Row className="items-center gap-1 flex-[2]">
                                 <Avatar seed={member.name} />
                                 <Layout.Col className="overflow-hidden">
-                                    <Typography.Caption className="capitalize font-semibold line-clamp-1">{member.name}</Typography.Caption>
+                                    <Typography.Caption className="font-semibold line-clamp-1 uppercase">{member.name}</Typography.Caption>
                                     <Typography.Caption className="line-clamp-1 break-all opacity-80">{member.email}</Typography.Caption>
                                 </Layout.Col>
                             </Layout.Row>
