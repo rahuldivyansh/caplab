@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Layout from "../../ui/Layout";
 import Typography from "../../ui/Typography";
 import Button from "../../ui/Button";
@@ -12,7 +12,9 @@ import { toast } from "react-toastify";
 import Grid from "../../ui/Layout/Grid";
 import CustomEditor from "../../ui/Editor";
 import GroupStatusListBoxElement from "../../elements/GroupStatus/list-box";
-import { ChevronsUpDown, MoreHorizontal, Trash } from "lucide-react";
+import { ChevronsUpDown, MoreHorizontal, PlusIcon, Trash, X } from "lucide-react";
+import ComboBox from "../../ui/ComboBox";
+import Avatar from "../../elements/Avatar";
 
 const COLUMN_TYPES_MAP = {
   "-1": "Backlog",
@@ -23,6 +25,71 @@ const COLUMN_TYPES_MAP = {
 }
 
 const COLUMN_TYPES = [{ title: "Backlog", type: -1, color: "#ff5555" }, { title: "Todo", type: 0, color: "gray" }, { title: "In progress", type: 1, color: "#009d00" }, { title: "In Review", type: 2, color: "#4343ff" }, { title: "Completed", type: 3, color: "#9e9e00" }];
+
+const AssignMembersBlock = ({ status_id }) => {
+  const [addMemberComboBoxOpen, setAddMemberComboBoxOpen] = useState(false)
+  const assigneesToAdd = useRef([]);
+  const group = useGroup();
+  const members = useFetch({ method: "GET", url: `/api/members/${group.id}`, get_autoFetch: true })
+  const removeAssignees = useFetch({ method: "DELETE", url: `/api/status/${group.id}/${status_id}/assignees` })
+  const addAssignees = useFetch({ method: "POST", url: `/api/status/${group.id}/${status_id}/assignees` })
+  const assignees = useFetch({ method: "GET", url: `/api/status/${group.id}/${status_id}/assignees`, get_autoFetch: true })
+  const membersEmailToUidMapper = useMemo(() => (members.data?.reduce((acc, curr) => {
+    acc[curr.email] = curr.uid;
+    return acc;
+  }, {})), [members.data])
+  const onOptionChange = async (values) => {
+    const updatedMembers = values.map((item) => (membersEmailToUidMapper[item.value]))
+    if (assignees) {
+      assigneesToAdd.current = updatedMembers.filter((member) => !assignees.data.find((assignee) => assignee.uid === member))
+    } else {
+      assigneesToAdd.current = updatedMembers;
+    }
+    console.log("assignees to add ", assigneesToAdd.current)
+  }
+  const onAddAssignees = async () => {
+    if (assigneesToAdd.current.length === 0) return;
+    const { data, error } = await addAssignees.dispatch({ members: assigneesToAdd.current })
+    if (error) {
+      toast.error("unable to add assignee(s), please try again later.");
+    }
+    if (data) console.log(data)
+    if (data) {
+      assigneesToAdd.current = [];
+      await assignees.dispatch();
+      setAddMemberComboBoxOpen(false);
+    }
+  }
+  const onDeleteAssignees = async (member) => {
+    const { data, error } = await removeAssignees.dispatch({ member })
+    if (error) {
+      toast.error("unable to remove assignee(s), please try again later.");
+    }
+    if (data) {
+      await assignees.dispatch();
+    }
+  }
+  return <Layout.Col className="dark:text-white gap-2">
+    <Layout.Row className="justify-between items-center">
+      <Typography.Caption className="uppercase font-bold">assignees</Typography.Caption>
+      <Button onClick={() => setAddMemberComboBoxOpen(prev => !prev)} className="btn-icon"><PlusIcon size={20} /></Button>
+    </Layout.Row>
+    <Layout.Row className="gap-2 flex-wrap">
+      {assignees.data && assignees.data.map((assignee) => (
+        <Layout.Row key={assignee.uid} className="flex-wrap justify-center items-center gap-1 bg-gray-100 dark:bg-white/5 p-1 rounded-full">
+          <Avatar seed={assignee.name} dimensions={[24, 24]} />
+          <Typography className="uppercase caption text-[0.3rem] font-bold">{assignee.name}</Typography>
+          <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16}/></Button>
+        </Layout.Row>
+      ))}
+    </Layout.Row>
+    {addMemberComboBoxOpen && members.data && <><ComboBox placeholder="Select Members" list={members.data.map(member => ({ value: member.email, displayValue: member.name }))} onChange={onOptionChange} multiple={true} showValue />
+      <Button className="btn-primary" onClick={onAddAssignees} loading={addAssignees.loading}>add</Button>
+    </>}
+
+  </Layout.Col>
+
+}
 
 const CurrentTaskActions = ({ currentTask, onStatusChange }) => {
   return <><GroupStatusListBoxElement
@@ -35,6 +102,8 @@ const CurrentTaskActions = ({ currentTask, onStatusChange }) => {
 const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
   const [currentTask, setCurrentTask] = useState(task);
   const [actionsModalOpen, setActionsModalOpen] = useState(false);
+  const group = useGroup();
+  const members = useFetch({ method: "GET", url: `/api/members/${group.id}`, get_autoFetch: true })
   const updateTask = useFetch({ method: "PUT", url: `/api/status/${task.group_id}/${task.id}` });
   const [initialState, setInitialState] = useState({ title: task.title, desc: task.desc });
   const onTitleChange = (e) => {
@@ -63,6 +132,7 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
       setTasks((prev) => prev.map((task) => task.id === data.id ? data : task));
     }
   }
+
   const toggleActionsModal = () => setActionsModalOpen(prev => !prev);
   return <Modal open={task !== null} onClose={() => setTask(null)} title="">
     {task && (
@@ -85,12 +155,14 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
         </Layout.Col>
         <Layout.Col className="p-4 gap-2 h-full hidden md:flex">
           <CurrentTaskActions currentTask={currentTask} onStatusChange={onStatusChange} />
+          <AssignMembersBlock status_id={task.id} />
         </Layout.Col>
       </Grid>
     )}
     <Modal open={actionsModalOpen} onClose={toggleActionsModal} title="Actions" style={{ zIndex: 3000 }}>
-      <Layout.Col className="p-4 gap-2 h-[64vh] w-screen">
+      <Layout.Col className="p-4 gap-2 h-[84vh] w-screen">
         <CurrentTaskActions currentTask={currentTask} onStatusChange={onStatusChange} />
+        <AssignMembersBlock status_id={task.id} />
       </Layout.Col>
     </Modal>
   </Modal>

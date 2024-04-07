@@ -14,22 +14,21 @@ const AccountAvatarWithName = () => {
     const name = auth.data?.app_meta?.name;
     return (
         <Menu.Item>
-            <Link href={`/${auth.data?.username}`}>
-                <Layout.Row className={twMerge(styles.with_name_row,"dark:bg-background-dark dark:border-white/10")}>
-                    <Avatar seed={name} />
-                    <Layout.Col className="justify-start">
-                        <Typography className={styles.with_name_name}>
-                            {name}
-                        </Typography>
-                        <Typography.Caption className={styles.with_name_email}>
-                            {auth?.data?.email}
-                        </Typography.Caption>
-                        <Typography.Caption className={styles.with_name_role}>
-                            {REV_ROLES[auth.data?.app_meta?.role]}
-                        </Typography.Caption>
-                    </Layout.Col>
-                </Layout.Row>
-            </Link>
+            <Layout.Row className={twMerge(styles.with_name_row, "dark:bg-background-dark dark:border-white/10")}>
+                <Avatar seed={name} />
+                <Layout.Col className="justify-start flex-wrap">
+                    <Typography.Caption className="uppercase lg:text-lg">
+                        {name}
+                    </Typography.Caption>
+                    <Typography.Caption className="text-primary uppercase font-bold">
+                        {REV_ROLES[auth.data?.app_meta?.role]}
+                    </Typography.Caption>
+                    <Typography.Caption className={styles.with_name_email}>
+                        {auth?.data?.email}
+                    </Typography.Caption>
+
+                </Layout.Col>
+            </Layout.Row>
         </Menu.Item>
     )
 }
