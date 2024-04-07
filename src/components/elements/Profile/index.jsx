@@ -41,7 +41,7 @@ const AccountAvatar = () => {
     if (!auth.data) return null;
     const router = useRouter();
     const handleOnClick = ()=>{
-        router.push('/reset-password');
+        router.push('reset-password');
     }
     return (
         <>

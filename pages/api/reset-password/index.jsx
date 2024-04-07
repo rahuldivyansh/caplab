@@ -5,13 +5,10 @@ import Input from "@/src/components/ui/Form/Input";
 import Layout from "@/src/components/ui/Layout";
 import Typography from "@/src/components/ui/Typography";
 import useFetch from "@/src/hooks/general/useFetch";
-import { useAuth } from "@/src/providers/Auth";
-import Cookies from "cookies";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { CustomError } from "@/src/utils/errors";
 import { StatusCodes } from "http-status-codes";
-import supabaseClient from "@/src/services/supabase";
 
 const ResetPasswordForm = (props) => {
   const router = useRouter();
@@ -29,22 +26,18 @@ const ResetPasswordForm = (props) => {
         );
       }
       if (body.newPassword === body.oldPassword) {
-        toast.error("new Passwords cannot be same as the old password");
-        throw new Error("new Passwords cannot be same as the old password");
+        toast.error("new Password cannot be same as the old password");
+        throw new Error("new Password cannot be same as the old password");
       }
-
       const response = await resetPassword.dispatch(body);
       if (response) {
         toast.success("password updated successfully");
         router.push("/dashboard");
-      } else {
-        toast.error("password is not updated!!");
-        throw new Error("password is not updated", StatusCodes.BAD_REQUEST);
       }
       //
     } catch (error) {
       console.log(error);
-      toast.error("password is not updated!!");
+      toast.error();
     }
   };
   return (
@@ -96,7 +89,9 @@ const ResetPasswordPage = (props) => {
               </Typography.Caption>
             )}
           </Layout.Col>
-          {!props.auth && <ResetPasswordForm />}
+          {!props.auth && (
+            <ResetPasswordForm  />
+          )}
         </Layout.Card>
       </Layout.Col>
     </Layout.Container>
