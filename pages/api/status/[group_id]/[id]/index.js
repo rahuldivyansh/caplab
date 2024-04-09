@@ -39,9 +39,10 @@ const PUT = async (status_id, payload) => {
   try {
     const { data: updateData, error: updateError } = await supabaseClient
       .from("status")
-      .update(payload)
+      .update({ ...payload, updated_at: new Date().toUTCString() })
       .eq("id", status_id)
-      .select().single();
+      .select()
+      .single();
 
     if (updateError) throw updateError;
     return updateData;

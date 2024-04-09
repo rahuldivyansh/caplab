@@ -17,8 +17,9 @@ import Avatar from '@/src/components/elements/Avatar';
 import { File, Info, ListTodo, MessageCircle, Settings, Users } from 'lucide-react';
 import GroupSettingsBlock from '@/src/components/blocks/Groups/settings';
 import Page from '@/src/components/pages';
+import GroupMilestonesBlock from '@/src/components/blocks/Groups/milestones';
 
-const TAB_LABELS = [{ label: "about", Icon: <Info className="ml-2" size={20}/> }, { label: "status", Icon: <ListTodo className="ml-2" size={20}/> }, { label: "documents", Icon: <File className="ml-2" size={20} /> }, { label: "members", Icon: <Users className="ml-2" size={20}/> }, { label: "discussions", Icon: <MessageCircle className="ml-2" size={20} /> }, { label: "settings", Icon: <Settings className="ml-2" size={20} /> }];
+const TAB_LABELS = [{ label: "about", Icon: <Info className="ml-2" size={20} /> }, { label: "status", Icon: <ListTodo className="ml-2" size={20} /> }, { label: "documents", Icon: <File className="ml-2" size={20} /> }, { label: "members", Icon: <Users className="ml-2" size={20} /> }, { label: "discussions", Icon: <MessageCircle className="ml-2" size={20} /> }, { label: "settings", Icon: <Settings className="ml-2" size={20} /> }];
 
 
 
@@ -28,45 +29,57 @@ const GroupPage = (props) => {
     const { id, num, session } = group
     return (
         <Page title={`Group-${num}-Session-${session}`}>
-        <DashboardLayout>
-            <Layout.Col className="bg-gray-100 dark:bg-background-dark">
-                <Tab.Group>
-                    <Tab.List className="flex border-b bg-background-light dark:bg-background-dark dark:border-white/5 shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10">
-                        <Layout.Row className="flex-nowrap">
-                            {TAB_LABELS.map((tab, index) =>
-                                <Tab
-                                    as={Fragment}
-                                    key={`group-page-tab-${index}`}
-                                >{({ selected }) => <Button className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white dark:border-black text-gray-800 dark:text-white"}`}>{tab.label} {tab.Icon}</Button>}
-                                </Tab>
-                            )}
-                        </Layout.Row>
-                    </Tab.List>
-                    <GroupProvider group={group}>
-                        <Tab.Panels>
-                            <Tab.Panel>
-                                <GroupAboutBlock />
-                            </Tab.Panel>
-                            <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">
-                                <GroupStatusBlock />
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <GroupDocsBlock groupId={id} />
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <GroupMembersBlock groupId={id} />
-                            </Tab.Panel>
-                            <Tab.Panel as={Fragment}>
-                                <GroupDiscussions />
-                            </Tab.Panel>
-                            <Tab.Panel >
-                                <GroupSettingsBlock groupId={id}/>
-                            </Tab.Panel>
-                        </Tab.Panels>
-                    </GroupProvider>
-                </Tab.Group>
-            </Layout.Col>
-        </DashboardLayout>
+            <DashboardLayout>
+                <Layout.Col className="bg-gray-100 dark:bg-background-dark">
+                    <Tab.Group>
+                        <Tab.List className="flex border-b bg-background-light dark:bg-background-dark dark:border-white/5 shadow-sm overflow-x-scroll scroll-bar-none sticky top-[3.5rem] sm:top-[3.8rem] right-0 z-10">
+                            <Layout.Row className="flex-nowrap">
+                                {TAB_LABELS.map((tab, index) =>
+                                    <Tab
+                                        as={Fragment}
+                                        key={`group-page-tab-${index}`}
+                                    >{({ selected }) => <Button className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white dark:border-black text-gray-800 dark:text-white"}`}>{tab.label} {tab.Icon}</Button>}
+                                    </Tab>
+                                )}
+                            </Layout.Row>
+                        </Tab.List>
+                        <GroupProvider group={group}>
+                            <Tab.Panels>
+                                <Tab.Panel>
+                                    <GroupAboutBlock />
+                                </Tab.Panel>
+                                <Tab.Panel >
+                                    <Tab.Group>
+                                        <Tab.List className="flex bg-white dark:bg-transparent">
+                                            {["tasks", "milestones"].map((tab, index) => <Tab key={`group-status-tab-${index}`} as={Fragment}>{({ selected }) => <Button className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white dark:border-black text-gray-800 dark:text-white"}`}>{tab}</Button>}</Tab>)}
+                                        </Tab.List>
+                                        <Tab.Panels>
+                                            <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">
+                                                <GroupStatusBlock />
+                                            </Tab.Panel>
+                                            <Tab.Panel>
+                                                <GroupMilestonesBlock />
+                                            </Tab.Panel>
+                                        </Tab.Panels>
+                                    </Tab.Group>
+                                </Tab.Panel>
+                                <Tab.Panel>
+                                    <GroupDocsBlock groupId={id} />
+                                </Tab.Panel>
+                                <Tab.Panel>
+                                    <GroupMembersBlock groupId={id} />
+                                </Tab.Panel>
+                                <Tab.Panel as={Fragment}>
+                                    <GroupDiscussions />
+                                </Tab.Panel>
+                                <Tab.Panel >
+                                    <GroupSettingsBlock groupId={id} />
+                                </Tab.Panel>
+                            </Tab.Panels>
+                        </GroupProvider>
+                    </Tab.Group>
+                </Layout.Col>
+            </DashboardLayout>
         </Page>
     )
 }
