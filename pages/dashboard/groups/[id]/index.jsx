@@ -50,9 +50,8 @@ const GroupPage = (props) => {
                                 </Tab.Panel>
                                 <Tab.Panel >
                                     <Tab.Group>
-                                        <Tab.List className="flex">
-                                            <Tab>tasks</Tab>
-                                            <Tab>milestones</Tab>
+                                        <Tab.List className="flex bg-white dark:bg-transparent">
+                                            {["tasks", "milestones"].map((tab, index) => <Tab key={`group-status-tab-${index}`} as={Fragment}>{({ selected }) => <Button className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected ? "text-primary border-primary" : " border-white dark:border-black text-gray-800 dark:text-white"}`}>{tab}</Button>}</Tab>)}
                                         </Tab.List>
                                         <Tab.Panels>
                                             <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">

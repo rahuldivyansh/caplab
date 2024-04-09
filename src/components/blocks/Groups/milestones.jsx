@@ -9,6 +9,7 @@ import { useGroup } from '@/src/providers/Group';
 import { LoaderElement } from '../../elements/Loaders';
 import EmptyElement from '../../elements/Empty';
 import Typography from '../../ui/Typography';
+import { TrashIcon } from "lucide-react";
 
 const AddMilestoneBlock = (props) => {
     const group = useGroup();
@@ -53,21 +54,56 @@ const AddMilestoneBlock = (props) => {
     )
 }
 
+const RemoveMilestoneBlock = (props) => {
+    const group = useGroup();
+    const removeMilestone = useFetch({
+        method: "DELETE",
+        url: `/api/milestones/${group.id}/${props.id}`,
+    });
+    const handleRemoveMilestone = async () => {
+        try {
+            const { data, error } = await removeMilestone.dispatch();
+            if (error) {
+                throw error;
+            }
+            if (data) {
+                props.status.dispatch();
+                props.milestones.dispatch();
+                toast.success("Milestone removed successfully");
+            }
+        } catch (error) {
+            toast.error("An error occurred while removing milestone");
+            console.log(error);
+        }
+    }
+    return <Button onClick={handleRemoveMilestone} className="btn-icon absolute top-4 right-4"><TrashIcon size={20} className='text-red-500' /></Button>
+}
+
 const MilestonesBlock = (props) => {
     const progress = (milestone_id) => {
         if (props.progress[milestone_id]) {
             let { completed, total } = props.progress[milestone_id];
-            return `${completed}/${total}`;
+            if (total == 0) return `0%`;
+            return `${Math.round((completed / total) * 100)}%`;
         }
     }
     if (props.milestones.loading) return <LoaderElement />
     if (!props.milestones.data) return null;
     if (Array.isArray(props.milestones.data) && props.milestones.data.length == 0) return <EmptyElement />
-    return <Layout.Grid className="grid-cols-1 md:grid-cols-2 gap-2">
+    return <Layout.Grid className="grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
         {props.milestones.data.map(milestone => (
-            <Layout.Card key={milestone.id} className="p-4 border border-gray-200 rounded-md flex justify-between">
-                <Typography.Caption className="text-lg font-semibold">{milestone.description}</Typography.Caption>
-                <Typography.Caption className="text-sm font-semibold">{progress(milestone.id)}</Typography.Caption>
+            <Layout.Card key={milestone.id} className="relative p-4 sm:aspect-square border border-gray-200 rounded-md flex flex-col items-center justify-center gap-2">
+                <RemoveMilestoneBlock id={milestone.id} milestones={props.milestones} status={props.status} />
+                <Typography.Title className="font-semibold">{progress(milestone.id)}</Typography.Title>
+                <Layout.Row className="items-center gap-2">
+                    <Layout className="w-4 h-4 bg-primary block rounded-full"></Layout>
+                    <Typography.Caption className="capitalize">{props.progress[milestone.id].completed} completed</Typography.Caption>
+                </Layout.Row>
+                <Layout.Row className="items-center gap-2">
+                    <Layout className="w-4 h-4 bg-gray-200 block rounded-full"></Layout>
+                    <Typography.Caption className="capitalize">{props.progress[milestone.id].total} total</Typography.Caption>
+                </Layout.Row>
+                <Typography.Caption className="text-lg font-semibold capitalize">{milestone.description}</Typography.Caption>
             </Layout.Card>
         ))}
     </Layout.Grid>
@@ -109,7 +145,7 @@ const GroupMilestonesBlock = () => {
     return (
         <Layout.Col className="p-4 min-h-screen gap-2">
             <AddMilestoneBlock milestones={milestones} />
-            <MilestonesBlock milestones={milestones} progress={milestonesProgress} />
+            <MilestonesBlock milestones={milestones} progress={milestonesProgress} status={status} />
         </Layout.Col>
     )
 }
