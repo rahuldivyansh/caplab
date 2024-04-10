@@ -79,7 +79,7 @@ const AssignMembersBlock = ({ status_id }) => {
         <Layout.Row key={assignee.uid} className="flex-wrap justify-center items-center gap-1 bg-gray-100 dark:bg-white/5 p-1 rounded-full">
           <Avatar seed={assignee.name} dimensions={[24, 24]} />
           <Typography className="uppercase caption text-[0.3rem] font-bold">{assignee.name}</Typography>
-          <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16}/></Button>
+          <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16} /></Button>
         </Layout.Row>
       ))}
     </Layout.Row>
@@ -91,12 +91,25 @@ const AssignMembersBlock = ({ status_id }) => {
 
 }
 
-const CurrentTaskActions = ({ currentTask, onStatusChange }) => {
+const CurrentTaskActions = ({ currentTask, onStatusChange, onMilestoneChange }) => {
+  const group = useGroup();
+  const milestones = useFetch({ method: "GET", url: `/api/milestones/${group.id}`, get_autoFetch: true });
+  const milestoneIdMapper = useMemo(() => milestones.data ? milestones.data?.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {}
+  ) : null, [milestones.data])
+
   return <><GroupStatusListBoxElement
     onItemSelect={onStatusChange}
     currentItem={{ title: currentTask.title, id: currentTask.type }}
     ListBoxButton={<Button className="w-full capitalize border dark:hover:bg-white/5 hover:bg-gray-50 text-black dark:text-white dark:border-white/10 justify-between active:scale-100 mb-2">{COLUMN_TYPES_MAP[currentTask.type]}<ChevronsUpDown size={16} /> </Button>}
-    list={COLUMN_TYPES.map((COLUMN_TYPE) => ({ title: COLUMN_TYPE.title, id: COLUMN_TYPE.type }))} /></>
+    list={COLUMN_TYPES.map((COLUMN_TYPE) => ({ title: COLUMN_TYPE.title, id: COLUMN_TYPE.type }))} />
+    {milestones.data && milestones.data.length !== 0 && <GroupStatusListBoxElement
+      onItemSelect={onMilestoneChange}
+      currentItem={{ title: milestoneIdMapper?.[currentTask.milestone]?.description || "link milestone", id: currentTask.milestone || -1 }}
+      ListBoxButton={<Button className="w-full capitalize border dark:hover:bg-white/5 hover:bg-gray-50 text-black dark:text-white dark:border-white/10 justify-between active:scale-100 mb-2">{milestoneIdMapper?.[currentTask.milestone]?.description || "link milestone"}<ChevronsUpDown size={16} /> </Button>}
+      list={milestones.data.map((milestone) => ({ title: milestone.description, id: milestone.id }))} />}</>
 };
 
 const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
@@ -132,6 +145,16 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
       setTasks((prev) => prev.map((task) => task.id === data.id ? data : task));
     }
   }
+  const onMilestoneChange = async (milestone) => {
+    const { data, error } = await updateTask.dispatch({ milestone: milestone.id });
+    if (error) {
+      toast.error("unable to update task, please try again later.");
+    }
+    if (data) {
+      setCurrentTask((prev) => ({ ...prev, milestone: milestone.id }));
+      setTasks((prev) => prev.map((task) => task.id === data.id ? data : task));
+    }
+  }
 
   const toggleActionsModal = () => setActionsModalOpen(prev => !prev);
   return <Modal open={task !== null} onClose={() => setTask(null)} title="">
@@ -154,7 +177,7 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
           </Form>
         </Layout.Col>
         <Layout.Col className="p-4 gap-2 h-full hidden md:flex">
-          <CurrentTaskActions currentTask={currentTask} onStatusChange={onStatusChange} />
+          <CurrentTaskActions currentTask={currentTask} onStatusChange={onStatusChange} onMilestoneChange={onMilestoneChange} />
           <AssignMembersBlock status_id={task.id} />
         </Layout.Col>
       </Grid>

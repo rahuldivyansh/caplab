@@ -137,7 +137,7 @@ p {
 input,
 textarea,
 select {
-  @apply outline-none bg-transparent p-3 rounded-md border-2 border-black/15 dark:border-white/20   focus:border-primary dark:focus:border-primary transition-all font-normal  text-sm;
+  @apply outline-none bg-transparent p-3 rounded-md border-2 border-black/15 dark:border-white/20   focus:border-primary dark:focus:border-primary transition-all font-normal dark:text-white  text-sm;
 }
 input::-webkit-color-swatch {
   border: none;

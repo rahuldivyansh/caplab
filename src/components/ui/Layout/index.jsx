@@ -7,7 +7,7 @@ import Grid from './Grid'
 
 const Layout = (props) => {
   return (
-    <>{props.children}</>
+    <div {...props} />
   )
 }
 
