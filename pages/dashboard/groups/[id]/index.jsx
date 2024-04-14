@@ -28,6 +28,7 @@ import GroupMilestonesBlock from "@/src/components/blocks/Groups/milestones";
 import GradesBlock from "@/src/components/blocks/Groups/grades";
 import { useAuth } from "@/src/providers/Auth";
 import Contribution from "@/src/components/blocks/Groups/contribution";
+import GradingPhasesBlock from "@/src/components/blocks/Groups/grading_phases";
 
 const TAB_LABELS = [
   { label: "about", Icon: <Info className="ml-2" size={20} /> },
@@ -55,11 +56,10 @@ const GroupPage = (props) => {
                     <Tab as={Fragment} key={`group-page-tab-${index}`}>
                       {({ selected }) => (
                         <Button
-                          className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${
-                            selected
+                          className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
                               ? "text-primary border-primary"
                               : " border-white dark:border-black text-gray-800 dark:text-white"
-                          }`}
+                            }`}
                         >
                           {tab.label} {tab.Icon}
                         </Button>
@@ -80,11 +80,10 @@ const GroupPage = (props) => {
                           <Tab key={`group-status-tab-${index}`} as={Fragment}>
                             {({ selected }) => (
                               <Button
-                                className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${
-                                  selected
+                                className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
                                     ? "text-primary border-primary"
                                     : " border-white dark:border-black text-gray-800 dark:text-white"
-                                }`}
+                                  }`}
                               >
                                 {tab}
                               </Button>
@@ -112,21 +111,20 @@ const GroupPage = (props) => {
                     <GroupDiscussions />
                   </Tab.Panel>
                   <Tab.Panel>
-                    {auth.data.app_meta.role == 2 ? (
+                    {auth.data?.app_meta.role == 2 ? (
                       <Tab.Group>
                         <Tab.List className="flex bg-white dark:bg-transparent">
-                          {["Grades", "Contributions"].map((tab, index) => (
+                          {["Grades", "Contributions","phases"].map((tab, index) => (
                             <Tab
                               key={`group-status-tab-${index}`}
                               as={Fragment}
                             >
                               {({ selected }) => (
                                 <Button
-                                  className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${
-                                    selected
+                                  className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
                                       ? "text-primary border-primary"
                                       : " border-white dark:border-black text-gray-800 dark:text-white"
-                                  }`}
+                                    }`}
                                 >
                                   {tab}
                                 </Button>
@@ -138,11 +136,12 @@ const GroupPage = (props) => {
                           <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">
                             <GradesBlock groupId={id} />
                           </Tab.Panel>
-                          {
-                            <Tab.Panel>
-                              <Contribution groupId={id} />
-                            </Tab.Panel>
-                          }
+                          <Tab.Panel>
+                            <Contribution groupId={id} />
+                          </Tab.Panel>
+                          <Tab.Panel>
+                            <GradingPhasesBlock />
+                          </Tab.Panel>
                         </Tab.Panels>
                       </Tab.Group>
                     ) : (
