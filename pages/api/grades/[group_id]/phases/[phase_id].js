@@ -1,52 +1,48 @@
 import withAuthApi from "@/src/middlewares/withAuthApi";
 import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
-const GET = async (group_id) => {
+const DELETE = async (phase_id) => {
   try {
-    const { data: gradesData, error: gradesError } = await supabaseClient
-      .from("grades")
-      .select("*, users(*)")
-      .eq("group_id", group_id);
-    if (gradesError) {
+    const { data: removePhaseData, error: removePhaseError } =
+      await supabaseClient
+        .from("grading_phases")
+        .delete()
+        .eq("id", phase_id)
+        .select("*")
+        .single();
+    if (removePhaseError) {
       throw new CustomError(
-        "unable to fetch grades",
+        "unable to remove phase",
         StatusCodes.BAD_REQUEST,
-        gradesError
+        removePhaseError
       );
     }
-    if (gradesData.length == 0) return [];
-    return gradesData;
+    return removePhaseData;
   } catch (error) {
     throw error;
   }
 };
-const POST = async (group_id, payload) => {
+const PUT = async (phase_id, payload) => {
   try {
-    const { data: isAlreadyExist, error: isAlreadyExistError } =
-      await supabaseClient
-        .from("grades")
-        .select("*")
-        .eq("group_id", group_id)
-        .eq("phase", payload.phase)
-        .eq("uid", payload.uid)
-        .single();
-    if (isAlreadyExist) {
+    const { name } = payload;
+    if (!description) {
       throw new CustomError(
-        "Grade already exist",
+        "description is required",
         StatusCodes.BAD_REQUEST,
-        isAlreadyExist
+        {}
       );
     }
     const { data, error } = await supabaseClient
-      .from("grades")
-      .insert(payload)
+      .from("grading_phases")
+      .update({ name })
+      .eq("id", phase_id)
       .select("*")
       .single();
     if (error) {
       throw new CustomError(
-        "unable to add grade",
+        "unable to update milestone",
         StatusCodes.BAD_REQUEST,
         error
       );
@@ -59,14 +55,14 @@ const POST = async (group_id, payload) => {
 
 const handler = async (req, res) => {
   const { method, query } = req;
-  const { group_id } = query;
+  const { phase_id } = query;
   try {
-    if (method === "GET") {
-      const data = await GET(group_id);
+    if (method === "DELETE") {
+      const data = await DELETE(phase_id);
       return res.status(StatusCodes.OK).json(data);
     }
-    if (method === "POST") {
-      const data = await POST(group_id, req.body);
+    if (method === "PUT") {
+      const data = await PUT(phase_id, req.body);
       return res.status(StatusCodes.CREATED).json(data);
     }
     return res.status(405).json({ message: "Method not allowed" });
