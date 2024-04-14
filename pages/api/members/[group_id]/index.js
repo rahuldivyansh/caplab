@@ -44,6 +44,31 @@ const POST = async (group_id, payload) => {
         StatusCodes.BAD_REQUEST,
         error
       );
+    for (let i = 0; i < members.length; i++) {
+      const { data: roleData, error } = await supabaseClient
+        .from("roles")
+        .select("role")
+        .eq("uid", members[i]);
+      if (roleData[0].role === 1) {
+        const entry = {
+          mid_term: 0,
+          end_term: 0,
+          uid: members[i],
+          group_id: group_id,
+        };
+        const { data, error } = await supabaseClient
+          .from("grades")
+          .insert(entry)
+          .select("*");
+        console.log(data);
+        if (error) {
+          throw new Error("error adding members", StatusCodes.BAD_REQUEST);
+        }
+      }
+      if (error) {
+        throw new Error("error adding members", StatusCodes.BAD_REQUEST);
+      }
+    }
     return data;
   } catch (error) {
     throw error;
