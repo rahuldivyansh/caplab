@@ -57,8 +57,8 @@ const GroupPage = (props) => {
                       {({ selected }) => (
                         <Button
                           className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
-                              ? "text-primary border-primary"
-                              : " border-white dark:border-black text-gray-800 dark:text-white"
+                            ? "text-primary border-primary"
+                            : " border-white dark:border-black text-gray-800 dark:text-white"
                             }`}
                         >
                           {tab.label} {tab.Icon}
@@ -81,8 +81,8 @@ const GroupPage = (props) => {
                             {({ selected }) => (
                               <Button
                                 className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
-                                    ? "text-primary border-primary"
-                                    : " border-white dark:border-black text-gray-800 dark:text-white"
+                                  ? "text-primary border-primary"
+                                  : " border-white dark:border-black text-gray-800 dark:text-white"
                                   }`}
                               >
                                 {tab}
@@ -114,7 +114,7 @@ const GroupPage = (props) => {
                     {auth.data?.app_meta.role == 2 ? (
                       <Tab.Group>
                         <Tab.List className="flex bg-white dark:bg-transparent">
-                          {["Grades", "Contributions","phases"].map((tab, index) => (
+                          {["Grades", "phases"].map((tab, index) => (
                             <Tab
                               key={`group-status-tab-${index}`}
                               as={Fragment}
@@ -122,8 +122,8 @@ const GroupPage = (props) => {
                               {({ selected }) => (
                                 <Button
                                   className={`uppercase text-xs font-bold dark:font-medium hover:bg-secondary dark:hover:bg-secondary/10 rounded-none py-3 px-4 border-b-2 outline-none ${selected
-                                      ? "text-primary border-primary"
-                                      : " border-white dark:border-black text-gray-800 dark:text-white"
+                                    ? "text-primary border-primary"
+                                    : " border-white dark:border-black text-gray-800 dark:text-white"
                                     }`}
                                 >
                                   {tab}
@@ -135,9 +135,6 @@ const GroupPage = (props) => {
                         <Tab.Panels>
                           <Tab.Panel className="overflow-x-scroll outline-none scroll-bar-none">
                             <GradesBlock groupId={id} />
-                          </Tab.Panel>
-                          <Tab.Panel>
-                            <Contribution groupId={id} />
                           </Tab.Panel>
                           <Tab.Panel>
                             <GradingPhasesBlock />
