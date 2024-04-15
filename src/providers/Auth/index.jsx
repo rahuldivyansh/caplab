@@ -86,18 +86,18 @@ const AuthProvider = (props) => {
     updateProfileInfoHandler.error,
     updateProfileInfoHandler.loading,
   ]);
-  // useEffect(() => {
-  //   if (typeof window !== "undefined" && authHandlers.data) {
-  //     window.addEventListener("visibilitychange", function () {
-  //       if (document?.hidden) {
-  //         inactiveStatusHandler.dispatch()
-  //       } else {
-  //         activeStatusHandler.dispatch()
-  //       }
-  //     }
-  //     )
-  //   }
-  // }, [authHandlers.data])
+  useEffect(() => {
+    if (typeof window !== "undefined" && authHandlers.data) {
+      window.addEventListener("visibilitychange", function () {
+        if (document?.hidden) {
+          inactiveStatusHandler.dispatch()
+        } else {
+          activeStatusHandler.dispatch()
+        }
+      }
+      )
+    }
+  }, [authHandlers.data])
   return (
     <AuthContext.Provider
       value={{

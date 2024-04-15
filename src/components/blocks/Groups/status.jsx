@@ -15,6 +15,7 @@ import GroupStatusListBoxElement from "../../elements/GroupStatus/list-box";
 import { ChevronsUpDown, MoreHorizontal, PlusIcon, Trash, X } from "lucide-react";
 import ComboBox from "../../ui/ComboBox";
 import Avatar from "../../elements/Avatar";
+import { useAuth } from "@/src/providers/Auth";
 
 const COLUMN_TYPES_MAP = {
   "-1": "Backlog",
@@ -27,6 +28,7 @@ const COLUMN_TYPES_MAP = {
 const COLUMN_TYPES = [{ title: "Backlog", type: -1, color: "#ff5555" }, { title: "Todo", type: 0, color: "gray" }, { title: "In progress", type: 1, color: "#009d00" }, { title: "In Review", type: 2, color: "#4343ff" }, { title: "Completed", type: 3, color: "#9e9e00" }];
 
 const AssignMembersBlock = ({ status_id }) => {
+  const auth = useAuth();
   const [addMemberComboBoxOpen, setAddMemberComboBoxOpen] = useState(false)
   const assigneesToAdd = useRef([]);
   const group = useGroup();
@@ -72,14 +74,14 @@ const AssignMembersBlock = ({ status_id }) => {
   return <Layout.Col className="dark:text-white gap-2">
     <Layout.Row className="justify-between items-center">
       <Typography.Caption className="uppercase font-bold">assignees</Typography.Caption>
-      <Button onClick={() => setAddMemberComboBoxOpen(prev => !prev)} className="btn-icon"><PlusIcon size={20} /></Button>
+      {auth.data?.id === group?.owner && <Button onClick={() => setAddMemberComboBoxOpen(prev => !prev)} className="btn-icon"><PlusIcon size={20} /></Button>}
     </Layout.Row>
     <Layout.Row className="gap-2 flex-wrap">
       {assignees.data && assignees.data.map((assignee) => (
         <Layout.Row key={assignee.uid} className="flex-wrap justify-center items-center gap-1 bg-gray-100 dark:bg-white/5 p-1 rounded-full">
           <Avatar seed={assignee.name} dimensions={[24, 24]} />
           <Typography className="uppercase caption text-[0.3rem] font-bold">{assignee.name}</Typography>
-          <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16} /></Button>
+          {auth.data?.id === group?.owner && <Button className="rounded-full p-0 z-0" onClick={() => onDeleteAssignees(assignee.uid)}><X size={16} /></Button>}
         </Layout.Row>
       ))}
     </Layout.Row>
@@ -93,6 +95,7 @@ const AssignMembersBlock = ({ status_id }) => {
 
 const CurrentTaskActions = ({ currentTask, onStatusChange, onMilestoneChange }) => {
   const group = useGroup();
+  const auth = useAuth();
   const milestones = useFetch({ method: "GET", url: `/api/milestones/${group.id}`, get_autoFetch: true });
   const milestoneIdMapper = useMemo(() => milestones.data ? milestones.data?.reduce((acc, curr) => {
     acc[curr.id] = curr;
@@ -101,6 +104,7 @@ const CurrentTaskActions = ({ currentTask, onStatusChange, onMilestoneChange }) 
   ) : null, [milestones.data])
 
   return <><GroupStatusListBoxElement
+    disabled={auth.data?.id === group.owner ? false : true}
     onItemSelect={onStatusChange}
     currentItem={{ title: currentTask.title, id: currentTask.type }}
     ListBoxButton={<Button className="w-full capitalize border dark:hover:bg-white/5 hover:bg-gray-50 text-black dark:text-white dark:border-white/10 justify-between active:scale-100 mb-2">{COLUMN_TYPES_MAP[currentTask.type]}<ChevronsUpDown size={16} /> </Button>}
@@ -113,6 +117,7 @@ const CurrentTaskActions = ({ currentTask, onStatusChange, onMilestoneChange }) 
 };
 
 const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
+  const auth = useAuth();
   const [currentTask, setCurrentTask] = useState(task);
   const [actionsModalOpen, setActionsModalOpen] = useState(false);
   const group = useGroup();
@@ -136,6 +141,14 @@ const CurrentTaskModal = ({ task, setTask, getTasks, setTasks }) => {
     }
   }
   const onStatusChange = async (statusUpdate) => {
+    if (statusUpdate.id === 3 && auth.data?.id !== group?.owner) {
+      toast.error("only group owner can move tasks to completed");
+      return;
+    }
+    if (task?.type === 3 && auth.data?.id !== group?.owner) {
+      toast.error("only group owner can move tasks from completed");
+      return;
+    }
     const { data, error } = await updateTask.dispatch({ type: statusUpdate.id });
     if (error) {
       toast.error("unable to update task, please try again later.");
@@ -260,6 +273,8 @@ const RemoveTaskButton = ({ getTasks, taskId, onModalClose, setTasks }) => {
 }
 
 const StatusTypeColumn = ({ title, tasks, type, color, getTasks, setCurrentTask, setTasks, currentDraggedTask, setCurrentDraggedTask }) => {
+  const auth = useAuth();
+  const group = useGroup();
   const updateTask = useFetch({ method: "PUT", url: `/api/status/${currentDraggedTask?.group_id}/${currentDraggedTask?.id}` });
   const onDragStart = (e, task) => {
     e.dataTransfer.setData("task", JSON.stringify(task));
@@ -274,6 +289,14 @@ const StatusTypeColumn = ({ title, tasks, type, color, getTasks, setCurrentTask,
     e.preventDefault();
     if (!currentDraggedTask) return;
     if (currentDraggedTask.type === type) return;
+    if (type === 3 && auth.data?.id !== group.owner) {
+      toast.error("only group owner can move tasks to completed");
+      return;
+    }
+    if (currentDraggedTask.type === 3 && auth.data?.id !== group.owner) {
+      toast.error("only group owner can move tasks from completed");
+      return;
+    }
     const { data, error } = await updateTask.dispatch({ type });
     if (error) {
       toast.error("unable to update task, please try again later.");

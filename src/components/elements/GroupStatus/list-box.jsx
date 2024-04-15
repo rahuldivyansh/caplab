@@ -16,7 +16,7 @@ const GroupStatusListBoxElement = (props) => {
                     <Listbox.Option
                         key={listItem.id}
                         value={listItem}
-                        className={twMerge("cursor-pointer select-none p-2 text-sm hover:bg-gray-50  dark:hover:bg-white/10", selectedItem.id === listItem.id ? "bg-primary/10 text-primary":"text-black dark:text-white")}
+                        className={twMerge("cursor-pointer select-none p-2 text-sm hover:bg-gray-50  dark:hover:bg-white/10", selectedItem.id === listItem.id ? "bg-primary/10 text-primary" : "text-black dark:text-white")}
                     >
                         <span>{listItem.title}</span>
                     </Listbox.Option>
@@ -31,6 +31,7 @@ GroupStatusListBoxElement.defaultProps = {
     currentItem: { id: -1, title: "item1" },
     onItemSelect: () => { },
     ListBoxButton: () => <>button</>,
+    disabled: false
 }
 
 export default GroupStatusListBoxElement;
