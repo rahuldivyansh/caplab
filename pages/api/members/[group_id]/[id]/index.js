@@ -4,33 +4,7 @@ import { StatusCodes } from "http-status-codes";
 
 const DELETE = async (group_id, id) => {
   try {
-    const { data: userID, error: fetchError } = await supabaseClient
-      .from("members")
-      .select("uid")
-      .eq("id", id);
-    if (fetchError) {
-      console.log("fetch error");
-      throw new Error("cannot delete member", StatusCodes.BAD_REQUEST);
-    }
-    const { data: role, error: roleError } = await supabaseClient
-      .from("roles")
-      .select("role")
-      .eq("uid", userID[0].uid);
-    if (role[0].role === 1) {
-      const { data: gradeData, error: gradeError } = await supabaseClient
-        .from("grades")
-        .delete()
-        .eq("uid", userID[0].uid)
-        .select();
-      if (gradeError) {
-        console.log("grade error");
-        throw new Error("cannot delete member", StatusCodes.BAD_REQUEST);
-      }
-      if(roleError){
-        throw new Error("cannot delete the member",StatusCodes.BAD_REQUEST);
-      }
-    }
-
+    console.log(id);
     const { data, error } = await supabaseClient
       .from("members")
       .delete()
@@ -43,7 +17,6 @@ const DELETE = async (group_id, id) => {
         StatusCodes.BAD_REQUEST,
         error
       );
-
     return data;
   } catch (error) {
     throw error;

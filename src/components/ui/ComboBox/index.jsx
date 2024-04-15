@@ -21,12 +21,12 @@ const CustomComboBox = (props) => {
         console.log(value);
     return (
         <>
-            <Combobox value={value} onChange={onChange} as={Layout.Col} className="relative z-10 rounded-md border dark:border-white/10 shadow-sm bg-background-light dark:bg-background-dark text-sm w-full" multiple={props.multiple}>
+            <Combobox value={value} onChange={onChange} as={Layout.Col} className="relative rounded-md border-2 dark:border-white/10 bg-background-light dark:bg-background-dark text-sm w-full" multiple={props.multiple}>
                 <Layout.Row className="rounded overflow-hidden justify-between">
-                    <Combobox.Input name="combobox_name" placeholder={props.placeholder} className="border-none bg-transparent p-2 capitalize flex-grow" onChange={onInputChange} />
+                    <Combobox.Input name="combobox_name" placeholder={props.placeholder} className="border-none bg-transparent p-3 capitalize flex-grow" onChange={onInputChange} />
                     <Combobox.Button><ChevronUpDownIcon className='w-6 h-6 dark:text-white' /></Combobox.Button>
                 </Layout.Row>
-                <Combobox.Options onBlur={() => setQuery("")} className="absolute max-h-[200px] overflow-y-scroll top-10 border dark:border-white/5 shadow-md divide-y dark:divide-white/5 bg-background-light dark:bg-background-dark overflow-hidden inset-x-0 rounded-md">
+                <Combobox.Options onBlur={() => setQuery("")} className="absolute max-h-[200px] overflow-y-scroll top-14 border dark:border-white/5 shadow-md divide-y dark:divide-white/5 bg-background-light dark:bg-background-dark overflow-hidden inset-x-0 rounded-md z-50">
                     {filteredList.length == 0 && query !== "" ? <Typography.Caption>Nothing found</Typography.Caption>
                         :
                         filteredList.map((item, index) => <Combobox.Option order={index} className="p-2 bg-background-light dark:bg-background-dark text-black dark:text-white hover:bg-secondary dark:hover:bg-white/5 cursor-pointer" value={item} key={item.value}>
