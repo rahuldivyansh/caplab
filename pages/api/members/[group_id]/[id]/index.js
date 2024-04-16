@@ -1,23 +1,43 @@
+import EmailService from "@/src/services/email";
 import supabaseClient from "@/src/services/supabase";
+import Handlebars from "handlebars";
 import { CustomError } from "@/src/utils/errors";
 import { StatusCodes } from "http-status-codes";
+import memberRemovalEmailTemplate from "@/src/services/email/templates/member-removal";
 
 const DELETE = async (group_id, id) => {
   try {
     console.log(id);
-    const { data, error } = await supabaseClient
-      .from("members")
-      .delete()
-      .eq("id", parseInt(id))
-      .select("*")
-      .single();
-    if (error)
+    const { data: memberRemovalData, error: memberRemovalError } =
+      await supabaseClient
+        .from("members")
+        .delete()
+        .eq("id", parseInt(id))
+        .select("*,users(name,email)")
+        .single();
+    if (memberRemovalError)
       throw new CustomError(
         "unable to delete member",
         StatusCodes.BAD_REQUEST,
-        error
+        memberRemovalError
       );
-    return data;
+    const template = Handlebars.compile(memberRemovalEmailTemplate);
+    const { data: groupData, error: groupError } = await supabaseClient
+      .from("groups")
+      .select("num,session")
+      .eq("id", group_id)
+      .single();
+    if (groupError) return data;
+    await EmailService.emails.send({
+      from: "caplab@shortr.in",
+      to: memberRemovalData.users.email,
+      subject: `Removed from group ${groupData.num} - session - ${groupData.session}`,
+      html: template({
+        group_num: groupData.num,
+        group_session: groupData.session,
+      }),
+    });
+    return memberRemovalData;
   } catch (error) {
     throw error;
   }

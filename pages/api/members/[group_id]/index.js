@@ -1,5 +1,9 @@
+import { LOGOTEXT } from "@/src/constants";
+import EmailService from "@/src/services/email";
+import memberAdditionEmailTemplate from "@/src/services/email/templates/member-addition";
 import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
+import Handlebars from "handlebars";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 
 const GET = async (group_id) => {
@@ -44,6 +48,33 @@ const POST = async (group_id, payload) => {
         StatusCodes.BAD_REQUEST,
         error
       );
+    const { data: usersViaUidData, error: usersViaUidError } =
+      await supabaseClient
+        .from("users")
+        .select("name,email")
+        .in(
+          "uid",
+          members.map((uid) => uid)
+        );
+    if (usersViaUidError) return data;
+    const { data: groupData, error: groupError } = await supabaseClient
+      .from("groups")
+      .select("*")
+      .eq("id", group_id)
+      .single();
+    if (groupError) return data;
+    const template = Handlebars.compile(memberAdditionEmailTemplate);
+    await EmailService.emails.send({
+      from: "caplab@shortr.in",
+      to: usersViaUidData.map((user) => user.email),
+      subject: `Added to group ${groupData.num} - session - ${groupData.session}`,
+      html: template({
+        appName: LOGOTEXT,
+        group_id,
+        group_num: groupData.num,
+        group_session: groupData.session,
+      }),
+    });
     return data;
   } catch (error) {
     throw error;
