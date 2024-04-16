@@ -1,7 +1,10 @@
 import withAuthApi from "@/src/middlewares/withAuthApi";
+import EmailService from "@/src/services/email";
+import memberGradingEmailTemplate from "@/src/services/email/templates/member-grading";
 import supabaseClient from "@/src/services/supabase";
 import { CustomError } from "@/src/utils/errors";
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import Handlebars from "handlebars";
+import { StatusCodes } from "http-status-codes";
 
 const GET = async (group_id) => {
   try {
@@ -51,6 +54,41 @@ const POST = async (group_id, payload) => {
         error
       );
     }
+    const { data: groupData, error: groupError } = await supabaseClient
+      .from("groups")
+      .select("*")
+      .eq("id", group_id)
+      .single();
+    if (groupError) return data;
+    const { data: phaseData, error: phaseError } = await supabaseClient
+      .from("grading_phases")
+      .select("*")
+      .eq("id", payload.phase)
+      .single();
+
+    if (phaseError) return data;
+    console.log(phaseData);
+    const { data: memberData, error: memberError } = await supabaseClient
+      .from("members")
+      .select("users(email)")
+      .eq("uid", payload.uid)
+      .eq("group_id", group_id)
+      .single();
+    console.log(memberError);
+    if (memberError) return data;
+    console.log(memberData);
+    const template = Handlebars.compile(memberGradingEmailTemplate);
+    await EmailService.emails.send({
+      from: "caplab@shortr.in",
+      to: memberData.users.email,
+      subject: `🎉Results are out`,
+      html: template({
+        group_id,
+        group_num: groupData.num,
+        group_session: groupData.session,
+        phase_name: phaseData.name,
+      }),
+    });
     return data;
   } catch (error) {
     throw error;
